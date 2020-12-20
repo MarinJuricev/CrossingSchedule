@@ -2,12 +2,11 @@ package com.example.crossingschedule
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.Text
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.setContent
-import androidx.ui.tooling.preview.Preview
 import com.example.crossingschedule.ui.CrossingScheduleTheme
 
 class MainActivity : AppCompatActivity() {
@@ -28,12 +27,4 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun Greeting(name: String) {
     Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    CrossingScheduleTheme {
-        Greeting("Android")
-    }
 }
