@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CrossingSchedule</string>
+    <string name="add_todo">Add a new TODO</string>
 </resources>

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Dimension
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -56,7 +57,7 @@ fun HomePage() {
                                     end.linkTo(parent.end)
                                 },
                         elevation = 4.dp,
-                        shape = RoundedCornerShape(16.dp),
+                        shape = MaterialTheme.shapes.large,
                 ) {
                     Text(
                             modifier = Modifier
@@ -84,6 +85,9 @@ fun HomePage() {
                                 CrossingTodo("Drugi", true),
                                 CrossingTodo("Treci", false),
                                 CrossingTodo("Cevrti", true),
+                                CrossingTodo("Peti", false),
+                                CrossingTodo("Sesti", true),
+                                CrossingTodo("Sedmi", false),
                         )//TODO REMOVE HARD CODED DATA
                 )
             }
