@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.domain.model.CrossingTodo
+import com.example.crossingschedule.presentation.core.components.CrossingCard
 import com.example.crossingschedule.ui.crossingTypography
 
 @Composable
@@ -57,11 +58,7 @@ fun DailyCheckListCard(modifier: Modifier) {
 
 @Composable
 fun CurrentDateCard(modifier: Modifier) {
-    Card(
-            modifier = modifier,
-            elevation = 4.dp,
-            shape = MaterialTheme.shapes.large,
-    ) {
+    CrossingCard(modifier = modifier){
         Text(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
                 text = "Date: 18.12.2020", // TODO Actually set the current date.
@@ -127,10 +124,7 @@ fun CrossingTodoList(
         modifier: Modifier = Modifier,
         todos: List<CrossingTodo>
 ) {
-    Card(
-            shape = MaterialTheme.shapes.large,
-            modifier = modifier
-    ) {
+    CrossingCard(modifier = modifier){
         Column {
             Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -173,10 +167,7 @@ fun CrossingTodoList(
 
 @Composable
 fun CrossingShops(modifier: Modifier = Modifier) {
-    Card(
-            modifier = modifier,
-            shape = MaterialTheme.shapes.large,
-    ) {
+    CrossingCard(modifier = modifier){
         Column {
             Text(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
@@ -245,11 +236,7 @@ fun CrossingShops(modifier: Modifier = Modifier) {
 
 @Composable
 fun TurnipPriceList(modifier: Modifier = Modifier) {
-    Card(
-            modifier = modifier,
-            elevation = 4.dp,
-            shape = RoundedCornerShape(16.dp),
-    ) {
+    CrossingCard(modifier = modifier){
         Row(
                 modifier = Modifier
                         .fillMaxWidth()
@@ -274,11 +261,7 @@ fun TurnipPriceList(modifier: Modifier = Modifier) {
 
 @Composable
 fun VillagerList(modifier: Modifier = Modifier){
-    Card(
-            modifier = modifier,
-            elevation = 4.dp,
-            shape = RoundedCornerShape(16.dp),
-    ){
+    CrossingCard(modifier = modifier){
 
     }
 }
