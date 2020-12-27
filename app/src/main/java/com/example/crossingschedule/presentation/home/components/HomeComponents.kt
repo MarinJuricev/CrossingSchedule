@@ -186,38 +186,99 @@ fun CrossingShops(modifier: Modifier = Modifier) {
             )
             Row(
                     modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .padding(8.dp),
                     horizontalArrangement = Arrangement.SpaceAround
             ) {
-                Image(
-                        modifier = Modifier
-                                .size(42.dp)
-                                .padding(top = 4.dp),
-                        bitmap = imageFromResource(
-                                AmbientContext.current.resources,
-                                R.drawable.able_sisters_shop_icon
-                        )
-                )
-                Image(
-                        modifier = Modifier
-                                .size(42.dp)
-                                .padding(top = 4.dp),
-                        bitmap = imageFromResource(
-                                AmbientContext.current.resources,
-                                R.drawable.nooks_cranny_shop_icon
-                        )
-                )
-                Image(
-                        modifier = Modifier
-                                .size(42.dp)
-                                .padding(top = 4.dp),
-                        bitmap = imageFromResource(
-                                AmbientContext.current.resources,
-                                R.drawable.museum_shop_icon
-                        )
-                )
+                Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                            modifier = Modifier
+                                    .size(42.dp)
+                                    .padding(vertical = 8.dp),
+                            bitmap = imageFromResource(
+                                    AmbientContext.current.resources,
+                                    R.drawable.able_sisters_shop_icon
+                            )
+                    )
+                    Checkbox(
+                            checked = false,
+                            onCheckedChange = { })
+                }
+                Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                            modifier = Modifier
+                                    .size(42.dp)
+                                    .padding(vertical = 8.dp),
+                            bitmap = imageFromResource(
+                                    AmbientContext.current.resources,
+                                    R.drawable.nooks_cranny_shop_icon
+                            )
+                    )
+                    Checkbox(
+                            checked = false,
+                            onCheckedChange = { })
+                }
+                Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                            modifier = Modifier
+                                    .size(42.dp)
+                                    .padding(vertical = 8.dp),
+                            bitmap = imageFromResource(
+                                    AmbientContext.current.resources,
+                                    R.drawable.museum_shop_icon
+                            )
+                    )
+                    Checkbox(
+                            checked = false,
+                            onCheckedChange = { })
+                }
             }
         }
     }
+}
 
+@Composable
+fun TurnipPriceList(modifier: Modifier = Modifier) {
+    Card(
+            modifier = modifier,
+            elevation = 4.dp,
+            shape = RoundedCornerShape(16.dp),
+    ) {
+        Row(
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+        ) {
+            Column {
+                Text(text = stringResource(R.string.turnip_prices))
+                Text(text = "AM: 90")
+                Text(text = "PM: 150")
+            }
+            Image(
+                    modifier = Modifier
+                            .padding(start = 8.dp),
+                    bitmap = imageFromResource(
+                            AmbientContext.current.resources,
+                            R.drawable.daisy_mae
+                    )
+            )
+        }
+    }
+}
+
+@Composable
+fun VillagerList(modifier: Modifier = Modifier){
+    Card(
+            modifier = modifier,
+            elevation = 4.dp,
+            shape = RoundedCornerShape(16.dp),
+    ){
+
+    }
 }

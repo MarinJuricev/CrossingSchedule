@@ -63,13 +63,24 @@ fun HomePage() {
                                 CrossingTodo("Sedmi", false),
                         )//TODO REMOVE HARD CODED DATA
                 )
-                CrossingShops(Modifier
-                        .constrainAs(shopContainer) {
-                            width = Dimension.fillToConstraints
-                            top.linkTo(rawIngredientRow.bottom, margin = 16.dp)
-                            start.linkTo(dateSelector.start)
-                            end.linkTo(dateSelector.end)
-                        })
+                CrossingShops(
+                        Modifier
+                                .constrainAs(shopContainer) {
+                                    width = Dimension.fillToConstraints
+                                    top.linkTo(rawIngredientRow.bottom, margin = 16.dp)
+                                    start.linkTo(dateSelector.start)
+                                    end.linkTo(dateSelector.end)
+                                },
+                )
+                TurnipPriceList(
+                        Modifier
+                                .constrainAs(turnipPriceList) {
+                                    width = Dimension.fillToConstraints
+                                    top.linkTo(shopContainer.bottom, margin = 16.dp)
+                                    start.linkTo(shopContainer.start)
+                                    end.linkTo(parent.end, margin = 8.dp)
+                                },
+                )
             }
         }
     }
