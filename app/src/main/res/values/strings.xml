@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">CrossingSchedule</string>
-    <string name="add_todo">Add a new TODO</string>
+    <string name="add_todo">Add TODO</string>
+    <string name="check_each_shop">Check Each Shop:</string>
+    <string name="daily_checklist">Daily Checklist</string>
 </resources>
