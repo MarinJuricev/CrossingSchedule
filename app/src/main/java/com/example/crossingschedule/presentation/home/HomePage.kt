@@ -93,7 +93,7 @@ fun HomePage() {
                                     end.linkTo(turnipPriceList.end)
                                 },
                         villagerInteractions = listOf(
-                                VillagerInteraction(villagerName = "Sterrling", talkedTo = false, receivedGift = false),
+                                VillagerInteraction(villagerName = "Sterling", talkedTo = false, receivedGift = false),
                                 VillagerInteraction(villagerName = "Ava", talkedTo = false, receivedGift = false),
                                 VillagerInteraction(villagerName = "Kiki", talkedTo = false, receivedGift = false),
                                 VillagerInteraction(villagerName = "Stitches", talkedTo = false, receivedGift = false),
