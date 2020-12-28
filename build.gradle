@@ -11,6 +11,9 @@ buildscript {
 
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
+        def google_services = '4.3.4'
+        classpath "com.google.gms:google-services:$google_services"
+
     }
 }
 
