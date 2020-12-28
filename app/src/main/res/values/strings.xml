@@ -4,4 +4,6 @@
     <string name="check_each_shop">Check Each Shop:</string>
     <string name="daily_checklist">Daily Checklist</string>
     <string name="turnip_prices">Turnip Prices</string>
+    <string name="villagers">Villagers:</string>
+    <string name="notes">Notes:</string>
 </resources>

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.domain.model.CrossingTodo
+import com.example.crossingschedule.domain.model.VillagerInteraction
 import com.example.crossingschedule.presentation.core.components.CrossingCard
 import com.example.crossingschedule.ui.crossingTypography
 
@@ -58,7 +59,7 @@ fun DailyCheckListCard(modifier: Modifier) {
 
 @Composable
 fun CurrentDateCard(modifier: Modifier) {
-    CrossingCard(modifier = modifier){
+    CrossingCard(modifier = modifier) {
         Text(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
                 text = "Date: 18.12.2020", // TODO Actually set the current date.
@@ -124,7 +125,7 @@ fun CrossingTodoList(
         modifier: Modifier = Modifier,
         todos: List<CrossingTodo>
 ) {
-    CrossingCard(modifier = modifier){
+    CrossingCard(modifier = modifier) {
         Column {
             Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -167,7 +168,7 @@ fun CrossingTodoList(
 
 @Composable
 fun CrossingShops(modifier: Modifier = Modifier) {
-    CrossingCard(modifier = modifier){
+    CrossingCard(modifier = modifier) {
         Column {
             Text(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
@@ -236,14 +237,17 @@ fun CrossingShops(modifier: Modifier = Modifier) {
 
 @Composable
 fun TurnipPriceList(modifier: Modifier = Modifier) {
-    CrossingCard(modifier = modifier){
+    CrossingCard(modifier = modifier) {
         Row(
                 modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),
         ) {
             Column {
-                Text(text = stringResource(R.string.turnip_prices))
+                Text(
+                        text = stringResource(R.string.turnip_prices),
+                        style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
+                )
                 Text(text = "AM: 90")
                 Text(text = "PM: 150")
             }
@@ -260,8 +264,44 @@ fun TurnipPriceList(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun VillagerList(modifier: Modifier = Modifier){
-    CrossingCard(modifier = modifier){
+fun VillagerInteractionsList(villagerInteractions: List<VillagerInteraction>, modifier: Modifier = Modifier) {
+    CrossingCard(modifier = modifier) {
+        Column(modifier = Modifier.padding(8.dp)) {
+            Text(
+                    text = stringResource(R.string.villagers),
+                    style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            LazyColumn(
+                    content = {
+                        itemsIndexed(villagerInteractions) { index, villagerInteraction ->
+                            Row {
+                                Text(text = (index + 1).toString())
+                                Text(
+                                        modifier = Modifier.padding(start = 8.dp),
+                                        text = villagerInteraction.villagerName,
+                                )
+                            }
+                        }
+                    },
+            )
+        }
+    }
+}
 
+@Composable
+fun Notes(modifier: Modifier = Modifier, notes: String = "") {
+    CrossingCard(modifier = modifier) {
+        Column(modifier = Modifier
+                .fillMaxWidth()
+                .preferredHeight(150.dp)
+                .padding(8.dp)
+        ) {
+            Text(
+                    text = stringResource(R.string.notes),
+                    style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
+            )
+            Text(text = notes)
+        }
     }
 }

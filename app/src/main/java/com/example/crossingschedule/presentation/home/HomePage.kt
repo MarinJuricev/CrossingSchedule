@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.domain.model.CrossingTodo
+import com.example.crossingschedule.domain.model.VillagerInteraction
 import com.example.crossingschedule.presentation.home.components.*
 
 @Composable
@@ -39,20 +40,22 @@ fun HomePage() {
                                     end.linkTo(parent.end)
                                 },
                 )
-                RawIngredientRow(Modifier
-                        .constrainAs(rawIngredientRow) {
-                            start.linkTo(checkListText.end, margin = 8.dp)
-                            top.linkTo(dateSelector.bottom)
-                            end.linkTo(parent.end, margin = 8.dp)
-                        }
+                RawIngredientRow(
+                        modifier = Modifier
+                                .constrainAs(rawIngredientRow) {
+                                    start.linkTo(checkListText.end, margin = 8.dp)
+                                    top.linkTo(dateSelector.bottom)
+                                    end.linkTo(parent.end, margin = 8.dp)
+                                }
                 )
-                CrossingTodoList(Modifier
-                        .constrainAs(todoList) {
-                            width = Dimension.fillToConstraints
-                            start.linkTo(checkListText.start, margin = 16.dp)
-                            end.linkTo(checkListText.end)
-                            top.linkTo(checkListText.bottom, margin = 16.dp)
-                        },
+                CrossingTodoList(
+                        modifier = Modifier
+                                .constrainAs(todoList) {
+                                    width = Dimension.fillToConstraints
+                                    start.linkTo(checkListText.start, margin = 16.dp)
+                                    end.linkTo(checkListText.end)
+                                    top.linkTo(checkListText.bottom, margin = 16.dp)
+                                },
                         listOf(
                                 CrossingTodo("Prvi", false),
                                 CrossingTodo("Drugi", true),
@@ -64,7 +67,7 @@ fun HomePage() {
                         )//TODO REMOVE HARD CODED DATA
                 )
                 CrossingShops(
-                        Modifier
+                        modifier = Modifier
                                 .constrainAs(shopContainer) {
                                     width = Dimension.fillToConstraints
                                     top.linkTo(rawIngredientRow.bottom, margin = 16.dp)
@@ -73,13 +76,39 @@ fun HomePage() {
                                 },
                 )
                 TurnipPriceList(
-                        Modifier
+                        modifier = Modifier
                                 .constrainAs(turnipPriceList) {
                                     width = Dimension.fillToConstraints
                                     top.linkTo(shopContainer.bottom, margin = 16.dp)
                                     start.linkTo(shopContainer.start)
                                     end.linkTo(parent.end, margin = 8.dp)
                                 },
+                )
+                VillagerInteractionsList(
+                        modifier = Modifier
+                                .constrainAs(villagerList) {
+                                    width = Dimension.fillToConstraints
+                                    top.linkTo(turnipPriceList.bottom, margin = 16.dp)
+                                    start.linkTo(turnipPriceList.start)
+                                    end.linkTo(turnipPriceList.end)
+                                },
+                        villagerInteractions = listOf(
+                                VillagerInteraction(villagerName = "Sterrling", talkedTo = false, receivedGift = false),
+                                VillagerInteraction(villagerName = "Ava", talkedTo = false, receivedGift = false),
+                                VillagerInteraction(villagerName = "Kiki", talkedTo = false, receivedGift = false),
+                                VillagerInteraction(villagerName = "Stitches", talkedTo = false, receivedGift = false),
+                                VillagerInteraction(villagerName = "Fang", talkedTo = false, receivedGift = false),
+                                VillagerInteraction(villagerName = "Rosie", talkedTo = false, receivedGift = false),
+                        ), //TODO REMOVE MOCKED DATA
+                )
+                Notes(
+                        modifier = Modifier
+                                .constrainAs(notes){
+                                    width = Dimension.fillToConstraints
+                                    top.linkTo(todoList.bottom, margin = 16.dp)
+                                    start.linkTo(todoList.start)
+                                    end.linkTo(todoList.end)
+                                }
                 )
             }
         }
