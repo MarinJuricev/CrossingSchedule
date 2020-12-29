@@ -1,4 +1,4 @@
-package com.example.crossingschedule.presentation.home
+package com.example.crossingschedule.presentation.schedule
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ConstraintLayout
@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.domain.model.CrossingTodo
 import com.example.crossingschedule.domain.model.VillagerInteraction
-import com.example.crossingschedule.presentation.home.components.*
+import com.example.crossingschedule.presentation.schedule.components.*
 
 @Composable
 fun HomePage() {

@@ -1,4 +1,4 @@
-package com.example.crossingschedule.presentation.home.components
+package com.example.crossingschedule.presentation.schedule.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image

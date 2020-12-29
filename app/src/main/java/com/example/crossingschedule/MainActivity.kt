@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.platform.setContent
-import com.example.crossingschedule.presentation.home.HomePage
+import com.example.crossingschedule.presentation.schedule.HomePage
 import com.example.crossingschedule.ui.CrossingScheduleTheme
 
 class MainActivity : AppCompatActivity() {
