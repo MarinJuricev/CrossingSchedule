@@ -14,7 +14,9 @@ import com.example.crossingschedule.domain.model.VillagerInteraction
 import com.example.crossingschedule.presentation.schedule.components.*
 
 @Composable
-fun HomePage() {
+fun HomePage(scheduleViewModel: ScheduleViewModel) {
+    scheduleViewModel.getActivitiesForDay()
+
     Scaffold {
         Box {
             BackgroundImage(resourceId = R.drawable.home_background)

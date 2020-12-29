@@ -15,15 +15,20 @@ import kotlinx.coroutines.flow.callbackFlow
 class ActivitiesRepositoryImpl(
     private val fireStore: FirebaseFirestore
 ) : ActivitiesRepository {
-    override suspend fun getCurrentActivities(): Flow<Either<Failure, List<CrossingDailyActivities>>> =
+    override suspend fun getCurrentActivities(): Flow<Either<Failure, CrossingDailyActivities>> =
         callbackFlow {
             val listener = fireStore
-                .collection("islands")
+                .collection("/users/IYwmWMpVP3aV4RmWEa8q/islands/")
                 .addSnapshotListener { value, error ->
                     if (error != null && error.localizedMessage != null) {
                         offer(Either.Error(Failure.RemoteFailure(error.localizedMessage!!)))
                     } else if (value != null) {
-                        offer(Either.Success(value.toObjects(CrossingDailyActivities::class.java)))
+                        offer(
+                            Either.Success(
+                                value.toObjects(CrossingDailyActivities::class.java).firstOrNull()
+                                    ?: CrossingDailyActivities()
+                            )
+                        )
                     }
                 }
             awaitClose {

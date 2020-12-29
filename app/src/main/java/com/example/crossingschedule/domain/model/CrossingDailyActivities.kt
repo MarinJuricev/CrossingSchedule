@@ -1,12 +1,12 @@
 package com.example.crossingschedule.domain.model
 
-import java.util.Date
+import java.util.*
 
 data class CrossingDailyActivities(
-    val currentDate: Date,
-    val shopStatus: ShopStatus,
-    val crossingTodos: List<CrossingTodo>,
-    val notes: String,
-    val turnipPrices: TurnipPrices,
-    val villagersInteraction: List<VillagerInteraction>
+    val currentDate: Date = Date(),
+    val shops: List<Shop> = emptyList(),
+    val crossingTodos: List<CrossingTodo> = emptyList(),
+    val notes: String = "",
+    val turnipPrices: TurnipPrices = TurnipPrices(null, null),
+    val villagersInteraction: List<VillagerInteraction> = emptyList()
 )
