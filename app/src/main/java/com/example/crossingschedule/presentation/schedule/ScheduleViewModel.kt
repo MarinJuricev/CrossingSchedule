@@ -24,6 +24,8 @@ class ScheduleViewModel @ViewModelInject constructor(
 
     fun getActivitiesForDay(selectedDay: String) {
         viewModelScope.launch {
+            triggerViewStateLoading()
+
             getActivitiesForDay.invoke(selectedDay).collect {
                 when (it) {
                     is Either.Success -> _crossingDailyActivities.postValue(
@@ -33,5 +35,9 @@ class ScheduleViewModel @ViewModelInject constructor(
                 }
             }
         }
+    }
+
+    private fun triggerViewStateLoading() {
+        _crossingDailyActivities.value?.copy(isLoading = true)
     }
 }

@@ -3,8 +3,10 @@ package com.example.crossingschedule.presentation.schedule.mapper
 import com.example.crossingschedule.domain.core.Mapper
 import com.example.crossingschedule.domain.model.CrossingDailyActivities
 import com.example.crossingschedule.presentation.schedule.ScheduleViewState
+import javax.inject.Inject
 
-class ActivitiesToScheduleViewStateMapper : Mapper<ScheduleViewState, CrossingDailyActivities> {
+class ActivitiesToScheduleViewStateMapper @Inject constructor(
+) : Mapper<ScheduleViewState, CrossingDailyActivities> {
 
     override fun map(origin: CrossingDailyActivities): ScheduleViewState {
         return with(origin) {
@@ -16,7 +18,7 @@ class ActivitiesToScheduleViewStateMapper : Mapper<ScheduleViewState, CrossingDa
                 crossingTodos = crossingTodos,
                 notes = notes,
                 turnipPrices = turnipPrices,
-                villagersInteraction = villagersInteraction
+                villagersInteraction = villagerInteractions
             )
         }
     }

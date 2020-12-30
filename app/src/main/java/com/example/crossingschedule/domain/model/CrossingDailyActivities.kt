@@ -8,5 +8,5 @@ data class CrossingDailyActivities(
     val crossingTodos: List<CrossingTodo> = emptyList(),
     val notes: String = "",
     val turnipPrices: TurnipPrices = TurnipPrices(null, null),
-    val villagersInteraction: List<VillagerInteraction> = emptyList()
+    val villagerInteractions: List<VillagerInteraction> = emptyList()
 )

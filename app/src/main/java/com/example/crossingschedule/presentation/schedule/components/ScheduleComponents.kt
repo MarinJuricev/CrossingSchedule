@@ -26,45 +26,48 @@ import com.example.crossingschedule.presentation.core.ui.crossingTypography
 
 @Composable
 fun BackgroundImage(
-        @DrawableRes resourceId: Int,
-        modifier: Modifier = Modifier,
+    @DrawableRes resourceId: Int,
+    modifier: Modifier = Modifier,
 ) {
     Image(
-            modifier = modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-            contentScale = ContentScale.FillBounds,
-            bitmap = imageFromResource(
-                    AmbientContext.current.resources,
-                    resourceId
-            )
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        contentScale = ContentScale.FillBounds,
+        bitmap = imageFromResource(
+            AmbientContext.current.resources,
+            resourceId
+        )
     )
 }
 
 @Composable
 fun DailyCheckListCard(modifier: Modifier) {
     Card(
-            modifier = modifier,
-            elevation = 4.dp,
-            shape = RoundedCornerShape(topRight = 16.dp, bottomRight = 16.dp),
+        modifier = modifier,
+        elevation = 4.dp,
+        shape = RoundedCornerShape(topRight = 16.dp, bottomRight = 16.dp),
     ) {
         Text(
-                modifier = Modifier
-                        .padding(start = 24.dp, top = 8.dp, bottom = 8.dp, end = 16.dp),
-                text = stringResource(R.string.daily_checklist),
-                style = crossingTypography.h2,
+            modifier = Modifier
+                .padding(start = 24.dp, top = 8.dp, bottom = 8.dp, end = 16.dp),
+            text = stringResource(R.string.daily_checklist),
+            style = crossingTypography.h2,
         )
     }
 }
 
 @Composable
-fun CurrentDateCard(modifier: Modifier) {
+fun CurrentDateCard(
+    modifier: Modifier,
+    dateToDisplay: String
+) {
     CrossingCard(modifier = modifier) {
         Text(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                text = "Date: 18.12.2020", // TODO Actually set the current date.
-                textAlign = TextAlign.Center,
-                style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+            text = dateToDisplay, // Desired format "Date: 18.12.2020"
+            textAlign = TextAlign.Center,
+            style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
         )
     }
 }
@@ -73,69 +76,69 @@ fun CurrentDateCard(modifier: Modifier) {
 fun RawIngredientRow(modifier: Modifier = Modifier) {
     Row(modifier = modifier) {
         Image(
-                modifier = Modifier
-                        .size(42.dp)
-                        .padding(top = 4.dp),
-                bitmap = imageFromResource(
-                        AmbientContext.current.resources,
-                        R.drawable.tree_branch
-                )
+            modifier = Modifier
+                .size(42.dp)
+                .padding(top = 4.dp),
+            bitmap = imageFromResource(
+                AmbientContext.current.resources,
+                R.drawable.tree_branch
+            )
         )
         Image(
-                modifier = Modifier
-                        .size(42.dp)
-                        .padding(bottom = 4.dp),
-                bitmap = imageFromResource(
-                        AmbientContext.current.resources,
-                        R.drawable.stone
-                )
+            modifier = Modifier
+                .size(42.dp)
+                .padding(bottom = 4.dp),
+            bitmap = imageFromResource(
+                AmbientContext.current.resources,
+                R.drawable.stone
+            )
         )
         Image(
-                modifier = Modifier
-                        .size(42.dp)
-                        .padding(top = 4.dp),
-                bitmap = imageFromResource(
-                        AmbientContext.current.resources,
-                        R.drawable.clay
-                )
+            modifier = Modifier
+                .size(42.dp)
+                .padding(top = 4.dp),
+            bitmap = imageFromResource(
+                AmbientContext.current.resources,
+                R.drawable.clay
+            )
         )
         Image(
-                modifier = Modifier
-                        .size(42.dp)
-                        .padding(bottom = 4.dp),
-                bitmap = imageFromResource(
-                        AmbientContext.current.resources,
-                        R.drawable.hard_wood
-                )
+            modifier = Modifier
+                .size(42.dp)
+                .padding(bottom = 4.dp),
+            bitmap = imageFromResource(
+                AmbientContext.current.resources,
+                R.drawable.hard_wood
+            )
         )
         Image(
-                modifier = Modifier
-                        .size(42.dp)
-                        .padding(top = 4.dp),
-                bitmap = imageFromResource(
-                        AmbientContext.current.resources,
-                        R.drawable.iron_nugget
-                )
+            modifier = Modifier
+                .size(42.dp)
+                .padding(top = 4.dp),
+            bitmap = imageFromResource(
+                AmbientContext.current.resources,
+                R.drawable.iron_nugget
+            )
         )
     }
 }
 
 @Composable
 fun CrossingTodoList(
-        modifier: Modifier = Modifier,
-        todos: List<CrossingTodo>
+    modifier: Modifier = Modifier,
+    todos: List<CrossingTodo>
 ) {
     CrossingCard(modifier = modifier) {
         Column {
             Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                        modifier = Modifier.padding(start = 16.dp),
-                        textAlign = TextAlign.Center,
-                        text = stringResource(id = R.string.add_todo),
+                    modifier = Modifier.padding(start = 16.dp),
+                    textAlign = TextAlign.Center,
+                    text = stringResource(id = R.string.add_todo),
                 )
                 IconButton(onClick = { }) {
                     Icon(imageVector = Icons.Default.Add)
@@ -143,24 +146,24 @@ fun CrossingTodoList(
             }
             Divider()
             LazyColumn(
-                    modifier = Modifier
-                            .padding(bottom = 8.dp, top = 8.dp),
-                    content = {
-                        items(todos) { todo ->
-                            Row(
-                                    modifier = Modifier.padding(4.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(bottom = 8.dp, top = 8.dp),
+                content = {
+                    items(todos) { todo ->
+                        Row(
+                            modifier = Modifier.padding(4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
 
-                                    ) {
-                                Checkbox(checked = todo.isDone, onCheckedChange = { })
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                        text = todo.message,
-                                        style = crossingTypography.h4,
-                                )
-                            }
+                            ) {
+                            Checkbox(checked = todo.isDone, onCheckedChange = { })
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = todo.message,
+                                style = crossingTypography.h4,
+                            )
                         }
                     }
+                }
             )
         }
     }
@@ -171,64 +174,64 @@ fun CrossingShops(modifier: Modifier = Modifier) {
     CrossingCard(modifier = modifier) {
         Column {
             Text(
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                    text = stringResource(R.string.check_each_shop),
-                    textAlign = TextAlign.Center,
-                    style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                text = stringResource(R.string.check_each_shop),
+                textAlign = TextAlign.Center,
+                style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
             )
             Row(
-                    modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                    horizontalArrangement = Arrangement.SpaceAround
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
                 Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
-                            modifier = Modifier
-                                    .size(42.dp)
-                                    .padding(vertical = 8.dp),
-                            bitmap = imageFromResource(
-                                    AmbientContext.current.resources,
-                                    R.drawable.able_sisters_shop_icon
-                            )
+                        modifier = Modifier
+                            .size(42.dp)
+                            .padding(vertical = 8.dp),
+                        bitmap = imageFromResource(
+                            AmbientContext.current.resources,
+                            R.drawable.able_sisters_shop_icon
+                        )
                     )
                     Checkbox(
-                            checked = false,
-                            onCheckedChange = { })
+                        checked = false,
+                        onCheckedChange = { })
                 }
                 Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
-                            modifier = Modifier
-                                    .size(42.dp)
-                                    .padding(vertical = 8.dp),
-                            bitmap = imageFromResource(
-                                    AmbientContext.current.resources,
-                                    R.drawable.nooks_cranny_shop_icon
-                            )
+                        modifier = Modifier
+                            .size(42.dp)
+                            .padding(vertical = 8.dp),
+                        bitmap = imageFromResource(
+                            AmbientContext.current.resources,
+                            R.drawable.nooks_cranny_shop_icon
+                        )
                     )
                     Checkbox(
-                            checked = false,
-                            onCheckedChange = { })
+                        checked = false,
+                        onCheckedChange = { })
                 }
                 Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
-                            modifier = Modifier
-                                    .size(42.dp)
-                                    .padding(vertical = 8.dp),
-                            bitmap = imageFromResource(
-                                    AmbientContext.current.resources,
-                                    R.drawable.museum_shop_icon
-                            )
+                        modifier = Modifier
+                            .size(42.dp)
+                            .padding(vertical = 8.dp),
+                        bitmap = imageFromResource(
+                            AmbientContext.current.resources,
+                            R.drawable.museum_shop_icon
+                        )
                     )
                     Checkbox(
-                            checked = false,
-                            onCheckedChange = { })
+                        checked = false,
+                        onCheckedChange = { })
                 }
             }
         }
@@ -239,51 +242,54 @@ fun CrossingShops(modifier: Modifier = Modifier) {
 fun TurnipPriceList(modifier: Modifier = Modifier) {
     CrossingCard(modifier = modifier) {
         Row(
-                modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
         ) {
             Column {
                 Text(
-                        text = stringResource(R.string.turnip_prices),
-                        style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
+                    text = stringResource(R.string.turnip_prices),
+                    style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
                 )
                 Text(text = "AM: 90")
                 Text(text = "PM: 150")
             }
             Image(
-                    modifier = Modifier
-                            .padding(start = 8.dp),
-                    bitmap = imageFromResource(
-                            AmbientContext.current.resources,
-                            R.drawable.daisy_mae
-                    )
+                modifier = Modifier
+                    .padding(start = 8.dp),
+                bitmap = imageFromResource(
+                    AmbientContext.current.resources,
+                    R.drawable.daisy_mae
+                )
             )
         }
     }
 }
 
 @Composable
-fun VillagerInteractionsList(villagerInteractions: List<VillagerInteraction>, modifier: Modifier = Modifier) {
+fun VillagerInteractionsList(
+    villagerInteractions: List<VillagerInteraction>,
+    modifier: Modifier = Modifier
+) {
     CrossingCard(modifier = modifier) {
         Column(modifier = Modifier.padding(8.dp)) {
             Text(
-                    text = stringResource(R.string.villagers),
-                    style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
+                text = stringResource(R.string.villagers),
+                style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
             )
             Spacer(modifier = Modifier.height(8.dp))
             LazyColumn(
-                    content = {
-                        itemsIndexed(villagerInteractions) { index, villagerInteraction ->
-                            Row {
-                                Text(text = (index + 1).toString())
-                                Text(
-                                        modifier = Modifier.padding(start = 8.dp),
-                                        text = villagerInteraction.villagerName,
-                                )
-                            }
+                content = {
+                    itemsIndexed(villagerInteractions) { index, villagerInteraction ->
+                        Row {
+                            Text(text = (index + 1).toString())
+                            Text(
+                                modifier = Modifier.padding(start = 8.dp),
+                                text = villagerInteraction.villagerName,
+                            )
                         }
-                    },
+                    }
+                },
             )
         }
     }
@@ -292,14 +298,15 @@ fun VillagerInteractionsList(villagerInteractions: List<VillagerInteraction>, mo
 @Composable
 fun Notes(modifier: Modifier = Modifier, notes: String = "") {
     CrossingCard(modifier = modifier) {
-        Column(modifier = Modifier
+        Column(
+            modifier = Modifier
                 .fillMaxWidth()
                 .preferredHeight(150.dp)
                 .padding(8.dp)
         ) {
             Text(
-                    text = stringResource(R.string.notes),
-                    style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
+                text = stringResource(R.string.notes),
+                style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
             )
             Text(text = notes)
         }

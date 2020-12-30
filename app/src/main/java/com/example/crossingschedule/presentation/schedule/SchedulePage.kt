@@ -10,16 +10,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
-import com.example.crossingschedule.domain.model.CrossingDailyActivities
-import com.example.crossingschedule.domain.model.VillagerInteraction
 import com.example.crossingschedule.presentation.schedule.components.*
 
 @Composable
 fun HomePage(scheduleViewModel: ScheduleViewModel) {
-    scheduleViewModel.getActivitiesForDay()
+    scheduleViewModel.getActivitiesForDay("TEST_DAY")//TODO ACTUALLY IMPLEMENT MULTIPLE DAYS
 
     val viewState =
-        scheduleViewModel.crossingDailyActivities.observeAsState(CrossingDailyActivities())
+        scheduleViewModel.crossingDailyActivities.observeAsState(ScheduleViewState())
 
     Scaffold {
         Box {
@@ -45,6 +43,7 @@ fun HomePage(scheduleViewModel: ScheduleViewModel) {
                             start.linkTo(checkListText.end, margin = 24.dp)
                             end.linkTo(parent.end)
                         },
+                    dateToDisplay = viewState.value.currentDate
                 )
                 RawIngredientRow(
                     modifier = Modifier
@@ -62,7 +61,7 @@ fun HomePage(scheduleViewModel: ScheduleViewModel) {
                             end.linkTo(checkListText.end)
                             top.linkTo(checkListText.bottom, margin = 16.dp)
                         },
-                    viewState.value.crossingTodos
+                    todos = viewState.value.crossingTodos
                 )
                 CrossingShops(
                     modifier = Modifier
@@ -90,38 +89,7 @@ fun HomePage(scheduleViewModel: ScheduleViewModel) {
                             start.linkTo(turnipPriceList.start)
                             end.linkTo(turnipPriceList.end)
                         },
-                    villagerInteractions = listOf(
-                        VillagerInteraction(
-                            villagerName = "Sterling",
-                            talkedTo = false,
-                            receivedGift = false
-                        ),
-                        VillagerInteraction(
-                            villagerName = "Ava",
-                            talkedTo = false,
-                            receivedGift = false
-                        ),
-                        VillagerInteraction(
-                            villagerName = "Kiki",
-                            talkedTo = false,
-                            receivedGift = false
-                        ),
-                        VillagerInteraction(
-                            villagerName = "Stitches",
-                            talkedTo = false,
-                            receivedGift = false
-                        ),
-                        VillagerInteraction(
-                            villagerName = "Fang",
-                            talkedTo = false,
-                            receivedGift = false
-                        ),
-                        VillagerInteraction(
-                            villagerName = "Rosie",
-                            talkedTo = false,
-                            receivedGift = false
-                        ),
-                    ), //TODO REMOVE MOCKED DATA
+                    villagerInteractions = viewState.value.villagersInteraction
                 )
                 Notes(
                     modifier = Modifier
@@ -130,7 +98,8 @@ fun HomePage(scheduleViewModel: ScheduleViewModel) {
                             top.linkTo(todoList.bottom, margin = 16.dp)
                             start.linkTo(todoList.start)
                             end.linkTo(todoList.end)
-                        }
+                        },
+                    notes = viewState.value.notes
                 )
             }
         }
