@@ -2,27 +2,34 @@ package com.example.crossingschedule.presentation.schedule
 
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.crossingschedule.domain.core.Either
+import com.example.crossingschedule.domain.core.Mapper
 import com.example.crossingschedule.domain.model.CrossingDailyActivities
-import com.example.crossingschedule.domain.repository.ActivitiesRepository
+import com.example.crossingschedule.domain.usecase.GetActivitiesForDay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ScheduleViewModel @ViewModelInject constructor(
-    private val repository: ActivitiesRepository
+    private val getActivitiesForDay: GetActivitiesForDay,
+    private val activitiesToScheduleViewStateMapper: Mapper<ScheduleViewState, CrossingDailyActivities>
 ) : ViewModel() {
 
-    val crossingDailyActivities = MutableLiveData<CrossingDailyActivities>()
+    private val _crossingDailyActivities = MutableLiveData<ScheduleViewState>()
+    val crossingDailyActivities: LiveData<ScheduleViewState>
+        get() = _crossingDailyActivities
 
-    fun getActivitiesForDay() {
+    fun getActivitiesForDay(selectedDay: String) {
         viewModelScope.launch {
-            repository.getCurrentActivities().collect {
+            getActivitiesForDay.invoke(selectedDay).collect {
                 when (it) {
-                    is Either.Success -> crossingDailyActivities.postValue(it.value)
-                    is Either.Error -> Log.d("FAIL SILENTLY FOR NOW", "FAIL SILENTLY FOR NOW")
+                    is Either.Success -> _crossingDailyActivities.postValue(
+                        activitiesToScheduleViewStateMapper.map(it.value)
+                    )
+                    is Either.Error -> Log.d("FAIL SILENTLY FOR NOW", it.error.toString())
                 }
             }
         }

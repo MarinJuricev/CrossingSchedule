@@ -1,4 +1,4 @@
-package com.example.crossingschedule.ui
+package com.example.crossingschedule.presentation.core.ui
 
 import androidx.compose.ui.graphics.Color
 

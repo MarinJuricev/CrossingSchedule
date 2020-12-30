@@ -22,7 +22,7 @@ import com.example.crossingschedule.R
 import com.example.crossingschedule.domain.model.CrossingTodo
 import com.example.crossingschedule.domain.model.VillagerInteraction
 import com.example.crossingschedule.presentation.core.components.CrossingCard
-import com.example.crossingschedule.ui.crossingTypography
+import com.example.crossingschedule.presentation.core.ui.crossingTypography
 
 @Composable
 fun BackgroundImage(

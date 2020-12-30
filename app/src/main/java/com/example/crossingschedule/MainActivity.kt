@@ -8,7 +8,7 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.platform.setContent
 import com.example.crossingschedule.presentation.schedule.HomePage
 import com.example.crossingschedule.presentation.schedule.ScheduleViewModel
-import com.example.crossingschedule.ui.CrossingScheduleTheme
+import com.example.crossingschedule.presentation.core.ui.CrossingScheduleTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
