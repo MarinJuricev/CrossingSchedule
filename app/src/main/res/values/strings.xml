@@ -7,4 +7,6 @@
     <string name="villagers">Villagers:</string>
     <string name="notes">Notes:</string>
     <string name="current_date">Date: %s</string>
+    <string name="turnip_am_price">AM PRICE</string>
+    <string name="turnip_pm_price">PM PRICE</string>
 </resources>

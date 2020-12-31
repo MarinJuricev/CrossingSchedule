@@ -6,10 +6,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.imageFromResource
@@ -17,6 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
@@ -80,6 +84,7 @@ fun CurrentDateCard(
 @Composable
 fun RawIngredientRow(modifier: Modifier = Modifier) {
     Row(modifier = modifier) {
+        //TODO: Get the ingredients from BE and just map through the list
         Image(
             modifier = Modifier
                 .size(42.dp)
@@ -217,12 +222,14 @@ fun CrossingShops(
     }
 }
 
+@ExperimentalLayout
 @Composable
 fun TurnipPriceList(modifier: Modifier = Modifier) {
+    val amPrice = mutableStateOf("")
+
     CrossingCard(modifier = modifier) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(8.dp),
         ) {
             Column {
@@ -230,7 +237,17 @@ fun TurnipPriceList(modifier: Modifier = Modifier) {
                     text = stringResource(R.string.turnip_prices),
                     style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
                 )
-                Text(text = "AM: 90")
+                FlowRow(
+                    mainAxisSize = SizeMode.Wrap
+                ) {
+                    Text(text = "AM:")
+                    BasicTextField(
+                        value = amPrice.value,
+                        onValueChange = { amPrice.value = it },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    )
+                }
+
                 Text(text = "PM: 150")
             }
             Image(
