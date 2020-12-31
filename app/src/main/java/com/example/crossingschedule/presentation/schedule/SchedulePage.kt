@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.presentation.schedule.components.*
+import com.example.crossingschedule.presentation.schedule.model.ScheduleViewState
 
 @Composable
 fun HomePage(scheduleViewModel: ScheduleViewModel) {
@@ -71,6 +72,7 @@ fun HomePage(scheduleViewModel: ScheduleViewModel) {
                             start.linkTo(dateSelector.start)
                             end.linkTo(dateSelector.end)
                         },
+                    shops = viewState.value.shops
                 )
                 TurnipPriceList(
                     modifier = Modifier

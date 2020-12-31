@@ -6,4 +6,5 @@
     <string name="turnip_prices">Turnip Prices</string>
     <string name="villagers">Villagers:</string>
     <string name="notes">Notes:</string>
+    <string name="current_date">Date: %s</string>
 </resources>

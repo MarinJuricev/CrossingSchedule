@@ -10,6 +10,7 @@ import com.example.crossingschedule.domain.core.Either
 import com.example.crossingschedule.domain.core.Mapper
 import com.example.crossingschedule.domain.model.CrossingDailyActivities
 import com.example.crossingschedule.domain.usecase.GetActivitiesForDay
+import com.example.crossingschedule.presentation.schedule.model.ScheduleViewState
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 

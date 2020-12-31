@@ -23,6 +23,7 @@ import com.example.crossingschedule.domain.model.CrossingTodo
 import com.example.crossingschedule.domain.model.VillagerInteraction
 import com.example.crossingschedule.presentation.core.components.CrossingCard
 import com.example.crossingschedule.presentation.core.ui.crossingTypography
+import com.example.crossingschedule.presentation.schedule.model.UiShop
 
 @Composable
 fun BackgroundImage(
@@ -65,7 +66,10 @@ fun CurrentDateCard(
     CrossingCard(modifier = modifier) {
         Text(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-            text = dateToDisplay, // Desired format "Date: 18.12.2020"
+            text = stringResource(
+                id = R.string.current_date,
+                dateToDisplay
+            ),
             textAlign = TextAlign.Center,
             style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
         )
@@ -170,7 +174,10 @@ fun CrossingTodoList(
 }
 
 @Composable
-fun CrossingShops(modifier: Modifier = Modifier) {
+fun CrossingShops(
+    shops: List<UiShop>,
+    modifier: Modifier = Modifier
+) {
     CrossingCard(modifier = modifier) {
         Column {
             Text(
@@ -185,53 +192,23 @@ fun CrossingShops(modifier: Modifier = Modifier) {
                     .padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .size(42.dp)
-                            .padding(vertical = 8.dp),
-                        bitmap = imageFromResource(
-                            AmbientContext.current.resources,
-                            R.drawable.able_sisters_shop_icon
+                for (shop in shops) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .size(42.dp)
+                                .padding(vertical = 8.dp),
+                            bitmap = imageFromResource(
+                                AmbientContext.current.resources,
+                                shop.resourceImageId
+                            )
                         )
-                    )
-                    Checkbox(
-                        checked = false,
-                        onCheckedChange = { })
-                }
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .size(42.dp)
-                            .padding(vertical = 8.dp),
-                        bitmap = imageFromResource(
-                            AmbientContext.current.resources,
-                            R.drawable.nooks_cranny_shop_icon
-                        )
-                    )
-                    Checkbox(
-                        checked = false,
-                        onCheckedChange = { })
-                }
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .size(42.dp)
-                            .padding(vertical = 8.dp),
-                        bitmap = imageFromResource(
-                            AmbientContext.current.resources,
-                            R.drawable.museum_shop_icon
-                        )
-                    )
-                    Checkbox(
-                        checked = false,
-                        onCheckedChange = { })
+                        Checkbox(
+                            checked = shop.isVisited,
+                            onCheckedChange = { })
+                    }
                 }
             }
         }
