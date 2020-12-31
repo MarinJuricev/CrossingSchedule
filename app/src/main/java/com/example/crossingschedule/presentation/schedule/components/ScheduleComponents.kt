@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -186,31 +187,32 @@ fun CrossingShops(
                 textAlign = TextAlign.Center,
                 style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
             )
-            Row(
+            LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                for (shop in shops) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Image(
-                            modifier = Modifier
-                                .size(42.dp)
-                                .padding(vertical = 8.dp),
-                            bitmap = imageFromResource(
-                                AmbientContext.current.resources,
-                                shop.resourceImageId
+                horizontalArrangement = Arrangement.SpaceAround,
+                content = {
+                    items(shops) { shop ->
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Image(
+                                modifier = Modifier
+                                    .size(42.dp)
+                                    .padding(vertical = 8.dp),
+                                bitmap = imageFromResource(
+                                    AmbientContext.current.resources,
+                                    shop.resourceImageId
+                                )
                             )
-                        )
-                        Checkbox(
-                            checked = shop.isVisited,
-                            onCheckedChange = { })
+                            Checkbox(
+                                checked = shop.isVisited,
+                                onCheckedChange = { })
+                        }
                     }
                 }
-            }
+            )
         }
     }
 }

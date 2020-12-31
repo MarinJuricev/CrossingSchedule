@@ -1,7 +1,6 @@
 package com.example.crossingschedule.presentation.schedule.model
 
 import com.example.crossingschedule.domain.model.CrossingTodo
-import com.example.crossingschedule.domain.model.Shop
 import com.example.crossingschedule.domain.model.TurnipPrices
 import com.example.crossingschedule.domain.model.VillagerInteraction
 
