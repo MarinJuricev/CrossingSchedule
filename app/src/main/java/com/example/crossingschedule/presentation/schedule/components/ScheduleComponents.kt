@@ -224,7 +224,6 @@ fun CrossingShops(
 
 @Composable
 fun TurnipPriceList(modifier: Modifier = Modifier, turnipPrices: UiTurnipPrices) {
-
     CrossingCard(modifier = modifier) {
         Column(
             modifier = Modifier.padding(8.dp),

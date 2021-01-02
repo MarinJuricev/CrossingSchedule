@@ -63,7 +63,7 @@ class ActivitiesToScheduleViewStateMapper @Inject constructor(
         with(turnipPrices) {
             UiTurnipPrices(
                 amPrice = amPrice.toString(),
-                pmPrice = amPrice.toString()
+                pmPrice = pmPrice.toString()
             )
         }
 }
