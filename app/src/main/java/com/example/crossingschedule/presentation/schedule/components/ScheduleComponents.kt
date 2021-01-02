@@ -6,13 +6,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.imageFromResource
@@ -22,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.domain.model.CrossingTodo
@@ -29,6 +28,7 @@ import com.example.crossingschedule.domain.model.VillagerInteraction
 import com.example.crossingschedule.presentation.core.components.CrossingCard
 import com.example.crossingschedule.presentation.core.ui.crossingTypography
 import com.example.crossingschedule.presentation.schedule.model.UiShop
+import com.example.crossingschedule.presentation.schedule.model.UiTurnipPrices
 
 @Composable
 fun BackgroundImage(
@@ -222,41 +222,57 @@ fun CrossingShops(
     }
 }
 
-@ExperimentalLayout
 @Composable
-fun TurnipPriceList(modifier: Modifier = Modifier) {
-    val amPrice = mutableStateOf("")
+fun TurnipPriceList(modifier: Modifier = Modifier, turnipPrices: UiTurnipPrices) {
 
     CrossingCard(modifier = modifier) {
-        Row(
-            modifier = Modifier
-                .padding(8.dp),
+        Column(
+            modifier = Modifier.padding(8.dp),
         ) {
-            Column {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
                     text = stringResource(R.string.turnip_prices),
                     style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
                 )
-                FlowRow(
-                    mainAxisSize = SizeMode.Wrap
-                ) {
-                    Text(text = "AM:")
-                    BasicTextField(
-                        value = amPrice.value,
-                        onValueChange = { amPrice.value = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                Image(
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .size(36.dp),
+                    bitmap = imageFromResource(
+                        AmbientContext.current.resources,
+                        R.drawable.daisy_mae
                     )
-                }
-
-                Text(text = "PM: 150")
-            }
-            Image(
-                modifier = Modifier
-                    .padding(start = 8.dp),
-                bitmap = imageFromResource(
-                    AmbientContext.current.resources,
-                    R.drawable.daisy_mae
                 )
+            }
+            OutlinedTextField(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                value = turnipPrices.amPrice,
+                singleLine = true,
+                maxLines = 1,
+                label = {
+                    Text(
+                        text = stringResource(id = R.string.turnip_am_price),
+                        fontSize = TextUnit.Sp(10)
+                    )
+                },
+                onValueChange = { },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            )
+            OutlinedTextField(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                value = turnipPrices.pmPrice,
+                singleLine = true,
+                maxLines = 1,
+                label = {
+                    Text(
+                        text = stringResource(id = R.string.turnip_pm_price),
+                        fontSize = TextUnit.Sp(10)
+                    )
+                },
+                onValueChange = { },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
         }
     }

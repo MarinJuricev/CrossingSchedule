@@ -4,9 +4,11 @@ import android.text.format.DateFormat
 import com.example.crossingschedule.domain.core.Mapper
 import com.example.crossingschedule.domain.model.CrossingDailyActivities
 import com.example.crossingschedule.domain.model.Shop
+import com.example.crossingschedule.domain.model.TurnipPrices
 import com.example.crossingschedule.presentation.schedule.model.KnownShops
 import com.example.crossingschedule.presentation.schedule.model.ScheduleViewState
 import com.example.crossingschedule.presentation.schedule.model.UiShop
+import com.example.crossingschedule.presentation.schedule.model.UiTurnipPrices
 import java.util.*
 import javax.inject.Inject
 
@@ -24,7 +26,7 @@ class ActivitiesToScheduleViewStateMapper @Inject constructor(
                 shops = mapToUIShops(shops),
                 crossingTodos = crossingTodos,
                 notes = notes,
-                turnipPrices = turnipPrices,
+                turnipPrices = mapToUiTurnipPrices(turnipPrices),
                 villagersInteraction = villagerInteractions
             )
         }
@@ -56,4 +58,12 @@ class ActivitiesToScheduleViewStateMapper @Inject constructor(
 
         return DateFormat.format(DESIRED_UI_FORMAT, calendar).toString()
     }
+
+    private fun mapToUiTurnipPrices(turnipPrices: TurnipPrices): UiTurnipPrices =
+        with(turnipPrices) {
+            UiTurnipPrices(
+                amPrice = amPrice.toString(),
+                pmPrice = amPrice.toString()
+            )
+        }
 }

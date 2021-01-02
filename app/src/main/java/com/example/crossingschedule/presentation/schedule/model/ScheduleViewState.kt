@@ -1,7 +1,6 @@
 package com.example.crossingschedule.presentation.schedule.model
 
 import com.example.crossingschedule.domain.model.CrossingTodo
-import com.example.crossingschedule.domain.model.TurnipPrices
 import com.example.crossingschedule.domain.model.VillagerInteraction
 
 data class ScheduleViewState(
@@ -11,6 +10,9 @@ data class ScheduleViewState(
     val shops: List<UiShop> = emptyList(),
     val crossingTodos: List<CrossingTodo> = emptyList(),
     val notes: String = "",
-    val turnipPrices: TurnipPrices = TurnipPrices(null, null),
+    val turnipPrices: UiTurnipPrices = UiTurnipPrices(
+        UI_TURNIP_DEFAULT_VALUE,
+        UI_TURNIP_DEFAULT_VALUE
+    ),
     val villagersInteraction: List<VillagerInteraction> = emptyList()
 )
