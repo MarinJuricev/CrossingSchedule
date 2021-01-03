@@ -1,6 +1,12 @@
 package com.example.crossingschedule.presentation.schedule.components
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.DpPropKey
+import androidx.compose.animation.core.FloatPropKey
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.transitionDefinition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.transition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,8 +17,11 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AmbientContext
@@ -27,6 +36,7 @@ import com.example.crossingschedule.domain.model.CrossingTodo
 import com.example.crossingschedule.domain.model.VillagerInteraction
 import com.example.crossingschedule.presentation.core.components.CrossingCard
 import com.example.crossingschedule.presentation.core.ui.crossingTypography
+import com.example.crossingschedule.presentation.schedule.model.TodoContainerState
 import com.example.crossingschedule.presentation.schedule.model.UiShop
 import com.example.crossingschedule.presentation.schedule.model.UiTurnipPrices
 
@@ -133,16 +143,59 @@ fun RawIngredientRow(modifier: Modifier = Modifier) {
     }
 }
 
+val crossingTodoHeight = DpPropKey(label = "crossingTodoHeight")
+val addTodoOpacity = FloatPropKey(label = "addTodoOpacity")
+
+val transitionDefinition = transitionDefinition<TodoContainerState> {
+    state(TodoContainerState.IDLE) {
+        this[crossingTodoHeight] = 48.dp
+        this[addTodoOpacity] = 0f
+    }
+
+    state(TodoContainerState.PRESSED) {
+        this[crossingTodoHeight] = 64.dp
+        this[addTodoOpacity] = 1f
+    }
+
+    transition(fromState = TodoContainerState.IDLE, toState = TodoContainerState.PRESSED) {
+        crossingTodoHeight using tween(durationMillis = 750)
+        addTodoOpacity using tween(durationMillis = 1000, easing = LinearOutSlowInEasing)
+    }
+
+    transition(fromState = TodoContainerState.PRESSED, toState = TodoContainerState.IDLE) {
+        crossingTodoHeight using tween(durationMillis = 750)
+        addTodoOpacity using tween(durationMillis = 1000, easing = LinearOutSlowInEasing)
+    }
+}
+
 @Composable
 fun CrossingTodoList(
     modifier: Modifier = Modifier,
     todos: List<CrossingTodo>,
     onDoneClick: (List<CrossingTodo>, CrossingTodo) -> Unit
 ) {
-    CrossingCard(modifier = modifier) {
+    val containerState = remember { mutableStateOf(TodoContainerState.IDLE) }
+
+    val toState = if (containerState.value == TodoContainerState.IDLE) {
+        TodoContainerState.PRESSED
+    } else {
+        TodoContainerState.IDLE
+    }
+
+    val state = transition(
+        definition = transitionDefinition,
+        initState = containerState.value,
+        toState = toState
+    )
+
+    CrossingCard(
+        modifier = modifier
+    ) {
         Column {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(state[crossingTodoHeight]),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -151,9 +204,23 @@ fun CrossingTodoList(
                     textAlign = TextAlign.Center,
                     text = stringResource(id = R.string.add_todo),
                 )
-                IconButton(onClick = { }) {
+                IconButton(onClick = {
+                    containerState.value =
+                        if (containerState.value == TodoContainerState.IDLE) {
+                            TodoContainerState.PRESSED
+                        } else {
+                            TodoContainerState.IDLE
+                        }
+                }) {
                     Icon(imageVector = Icons.Default.Add)
                 }
+            }
+            if (containerState.value == TodoContainerState.IDLE) {
+                Text(
+                    modifier = Modifier
+                        .alpha(state[addTodoOpacity]),
+                    text = "Dodaj ovo plix ?"
+                )
             }
             Divider()
             LazyColumn(
