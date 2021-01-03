@@ -62,7 +62,8 @@ fun HomePage(scheduleViewModel: ScheduleViewModel) {
                             end.linkTo(checkListText.end)
                             top.linkTo(checkListText.bottom, margin = 16.dp)
                         },
-                    todos = viewState.value.crossingTodos
+                    todos = viewState.value.crossingTodos,
+                    onDoneClick = scheduleViewModel::onTodoItemChanged
                 )
                 CrossingShops(
                     modifier = Modifier

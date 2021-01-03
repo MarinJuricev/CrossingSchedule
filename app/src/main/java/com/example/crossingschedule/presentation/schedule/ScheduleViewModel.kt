@@ -9,13 +9,16 @@ import androidx.lifecycle.viewModelScope
 import com.example.crossingschedule.domain.core.Either
 import com.example.crossingschedule.domain.core.Mapper
 import com.example.crossingschedule.domain.model.CrossingDailyActivities
+import com.example.crossingschedule.domain.model.CrossingTodo
 import com.example.crossingschedule.domain.usecase.GetActivitiesForDay
+import com.example.crossingschedule.domain.usecase.TodoItemDoneClicked
 import com.example.crossingschedule.presentation.schedule.model.ScheduleViewState
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ScheduleViewModel @ViewModelInject constructor(
     private val getActivitiesForDay: GetActivitiesForDay,
+    private val todoItemDoneClicked: TodoItemDoneClicked,
     private val activitiesToScheduleViewStateMapper: Mapper<ScheduleViewState, CrossingDailyActivities>
 ) : ViewModel() {
 
@@ -29,12 +32,18 @@ class ScheduleViewModel @ViewModelInject constructor(
 
             getActivitiesForDay.invoke(selectedDay).collect {
                 when (it) {
-                    is Either.Success -> _crossingDailyActivities.postValue(
+                    is Either.Right -> _crossingDailyActivities.postValue(
                         activitiesToScheduleViewStateMapper.map(it.value)
                     )
-                    is Either.Error -> Log.d("FAIL SILENTLY FOR NOW", it.error.toString())
+                    is Either.Left -> Log.d("FAIL SILENTLY FOR NOW", it.error.toString())
                 }
             }
+        }
+    }
+
+    fun onTodoItemChanged(currentList: List<CrossingTodo>, updatedItem: CrossingTodo) {
+        viewModelScope.launch {
+            todoItemDoneClicked(currentList, updatedItem)
         }
     }
 

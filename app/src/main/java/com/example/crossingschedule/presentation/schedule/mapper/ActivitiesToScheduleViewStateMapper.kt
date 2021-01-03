@@ -17,6 +17,7 @@ const val DESIRED_UI_FORMAT = "dd.MM.yyyy"
 class ActivitiesToScheduleViewStateMapper @Inject constructor(
 ) : Mapper<ScheduleViewState, CrossingDailyActivities> {
 
+    //TODO Separate into more independent mappers ?
     override fun map(origin: CrossingDailyActivities): ScheduleViewState {
         return with(origin) {
             ScheduleViewState(

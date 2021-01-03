@@ -136,7 +136,8 @@ fun RawIngredientRow(modifier: Modifier = Modifier) {
 @Composable
 fun CrossingTodoList(
     modifier: Modifier = Modifier,
-    todos: List<CrossingTodo>
+    todos: List<CrossingTodo>,
+    onDoneClick: (List<CrossingTodo>, CrossingTodo) -> Unit
 ) {
     CrossingCard(modifier = modifier) {
         Column {
@@ -165,7 +166,10 @@ fun CrossingTodoList(
                             verticalAlignment = Alignment.CenterVertically,
 
                             ) {
-                            Checkbox(checked = todo.isDone, onCheckedChange = { })
+                            Checkbox(
+                                checked = todo.isDone,
+                                onCheckedChange = { onDoneClick(todos, todo) },
+                            )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = todo.message,
