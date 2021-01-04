@@ -9,4 +9,5 @@
     <string name="current_date">Date: %s</string>
     <string name="turnip_am_price">AM PRICE</string>
     <string name="turnip_pm_price">PM PRICE</string>
+    <string name="create_todo">Create a new TODO</string>
 </resources>

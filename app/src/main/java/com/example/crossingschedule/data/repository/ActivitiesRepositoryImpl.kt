@@ -44,7 +44,7 @@ class ActivitiesRepositoryImpl(
                 .collection("users")
                 .document("IYwmWMpVP3aV4RmWEa8q") //TODO Actually get this data from some kind of user object
                 .collection("islands")
-                .document("TdWrr3sOWOzylTApiuV6") ////TODO Actually get this data from some kind of user object
+                .document("TdWrr3sOWOzylTApiuV6") //TODO Actually get this data from some kind of user object
 
 
         fireStore.runTransaction { transaction ->

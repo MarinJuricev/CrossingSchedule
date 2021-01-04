@@ -1,5 +1,6 @@
 package com.example.crossingschedule.presentation.schedule.components
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.DpPropKey
 import androidx.compose.animation.core.FloatPropKey
@@ -22,11 +23,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.gesture.longPressGestureFilter
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
@@ -148,23 +151,31 @@ val addTodoOpacity = FloatPropKey(label = "addTodoOpacity")
 
 val transitionDefinition = transitionDefinition<TodoContainerState> {
     state(TodoContainerState.IDLE) {
-        this[crossingTodoHeight] = 48.dp
+        this[crossingTodoHeight] = 36.dp
         this[addTodoOpacity] = 0f
     }
 
     state(TodoContainerState.PRESSED) {
-        this[crossingTodoHeight] = 64.dp
+        this[crossingTodoHeight] = 42.dp
         this[addTodoOpacity] = 1f
     }
 
     transition(fromState = TodoContainerState.IDLE, toState = TodoContainerState.PRESSED) {
         crossingTodoHeight using tween(durationMillis = 750)
-        addTodoOpacity using tween(durationMillis = 1000, easing = LinearOutSlowInEasing)
+        addTodoOpacity using tween(
+            durationMillis = 1000,
+            delayMillis = 100,
+            easing = LinearOutSlowInEasing
+        )
     }
 
     transition(fromState = TodoContainerState.PRESSED, toState = TodoContainerState.IDLE) {
         crossingTodoHeight using tween(durationMillis = 750)
-        addTodoOpacity using tween(durationMillis = 1000, easing = LinearOutSlowInEasing)
+        addTodoOpacity using tween(
+            durationMillis = 1000,
+            delayMillis = 100,
+            easing = LinearOutSlowInEasing
+        )
     }
 }
 
@@ -172,56 +183,17 @@ val transitionDefinition = transitionDefinition<TodoContainerState> {
 fun CrossingTodoList(
     modifier: Modifier = Modifier,
     todos: List<CrossingTodo>,
-    onDoneClick: (List<CrossingTodo>, CrossingTodo) -> Unit
+    onDoneClick: (List<CrossingTodo>, CrossingTodo) -> Unit,
+    onNewTodoCreated: (List<CrossingTodo>, String) -> Unit
 ) {
-    val containerState = remember { mutableStateOf(TodoContainerState.IDLE) }
-
-    val toState = if (containerState.value == TodoContainerState.IDLE) {
-        TodoContainerState.PRESSED
-    } else {
-        TodoContainerState.IDLE
-    }
-
-    val state = transition(
-        definition = transitionDefinition,
-        initState = containerState.value,
-        toState = toState
-    )
-
     CrossingCard(
         modifier = modifier
     ) {
         Column {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(state[crossingTodoHeight]),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    modifier = Modifier.padding(start = 16.dp),
-                    textAlign = TextAlign.Center,
-                    text = stringResource(id = R.string.add_todo),
-                )
-                IconButton(onClick = {
-                    containerState.value =
-                        if (containerState.value == TodoContainerState.IDLE) {
-                            TodoContainerState.PRESSED
-                        } else {
-                            TodoContainerState.IDLE
-                        }
-                }) {
-                    Icon(imageVector = Icons.Default.Add)
-                }
-            }
-            if (containerState.value == TodoContainerState.IDLE) {
-                Text(
-                    modifier = Modifier
-                        .alpha(state[addTodoOpacity]),
-                    text = "Dodaj ovo plix ?"
-                )
-            }
+            AddTodoContainer(
+                todos = todos,
+                onNewTodoCreated = onNewTodoCreated
+            )
             Divider()
             LazyColumn(
                 modifier = Modifier
@@ -229,7 +201,11 @@ fun CrossingTodoList(
                 content = {
                     items(todos) { todo ->
                         Row(
-                            modifier = Modifier.padding(4.dp),
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .longPressGestureFilter {
+                                    Log.d("TEST", "TEST")
+                                },
                             verticalAlignment = Alignment.CenterVertically,
 
                             ) {
@@ -247,6 +223,69 @@ fun CrossingTodoList(
                 }
             )
         }
+    }
+}
+
+@Composable
+fun AddTodoContainer(
+    todos: List<CrossingTodo>,
+    onNewTodoCreated: (List<CrossingTodo>, String) -> Unit
+) {
+    val containerState = remember { mutableStateOf(TodoContainerState.IDLE) }
+    val addTodoText = mutableStateOf("")
+
+    val toState = if (containerState.value == TodoContainerState.IDLE) {
+        TodoContainerState.PRESSED
+    } else {
+        TodoContainerState.IDLE
+    }
+
+    val addTodoContainerState = transition(
+        definition = transitionDefinition,
+        initState = containerState.value,
+        toState = toState
+    )
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(addTodoContainerState[crossingTodoHeight]),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            modifier = Modifier.padding(start = 16.dp),
+            textAlign = TextAlign.Center,
+            text = stringResource(id = R.string.add_todo),
+        )
+
+        IconButton(onClick = {
+            containerState.value =
+                if (containerState.value == TodoContainerState.IDLE) {
+                    TodoContainerState.PRESSED
+                } else {
+                    TodoContainerState.IDLE
+                }
+        }) {
+            Icon(imageVector = Icons.Default.Add)
+        }
+    }
+    if (containerState.value == TodoContainerState.IDLE) {
+        OutlinedTextField(
+            modifier = Modifier
+                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                .alpha(addTodoContainerState[addTodoOpacity]),
+            value = addTodoText.value,
+            onValueChange = { addTodoText.value = it },
+            singleLine = true,
+            label = { Text(stringResource(R.string.create_todo)) },
+            onImeActionPerformed = { imeAction, _ ->
+                if (imeAction == ImeAction.Done) {
+                    onNewTodoCreated(todos, addTodoText.value)
+                    containerState.value = TodoContainerState.PRESSED
+                }
+            }
+        )
     }
 }
 

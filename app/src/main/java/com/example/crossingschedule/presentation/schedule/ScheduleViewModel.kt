@@ -10,6 +10,7 @@ import com.example.crossingschedule.domain.core.Either
 import com.example.crossingschedule.domain.core.Mapper
 import com.example.crossingschedule.domain.model.CrossingDailyActivities
 import com.example.crossingschedule.domain.model.CrossingTodo
+import com.example.crossingschedule.domain.usecase.CreateNewTodoItem
 import com.example.crossingschedule.domain.usecase.GetActivitiesForDay
 import com.example.crossingschedule.domain.usecase.TodoItemDoneClicked
 import com.example.crossingschedule.presentation.schedule.model.ScheduleViewState
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 class ScheduleViewModel @ViewModelInject constructor(
     private val getActivitiesForDay: GetActivitiesForDay,
     private val todoItemDoneClicked: TodoItemDoneClicked,
+    private val createNewTodoItem: CreateNewTodoItem,
     private val activitiesToScheduleViewStateMapper: Mapper<ScheduleViewState, CrossingDailyActivities>
 ) : ViewModel() {
 
@@ -44,6 +46,12 @@ class ScheduleViewModel @ViewModelInject constructor(
     fun onTodoItemChanged(currentList: List<CrossingTodo>, updatedItem: CrossingTodo) {
         viewModelScope.launch {
             todoItemDoneClicked(currentList, updatedItem)
+        }
+    }
+
+    fun onTodoCreated(currentList: List<CrossingTodo>, newTodoMessage: String) {
+        viewModelScope.launch {
+            createNewTodoItem(currentList, newTodoMessage)
         }
     }
 

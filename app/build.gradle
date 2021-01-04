@@ -43,6 +43,15 @@ android {
         def kotlin_compiler_extension_version = "1.0.0-alpha09"
         kotlinCompilerExtensionVersion kotlin_compiler_extension_version
     }
+
+    // Without this task we couldn't communicate with the new compiler, and actions
+    // like opening the soft keyboard would never happen
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            freeCompilerArgs += ["-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check"]
+        }
+    }
 }
 
 dependencies {
