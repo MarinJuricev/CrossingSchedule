@@ -1,5 +1,5 @@
 package com.example.crossingschedule.presentation.schedule.model
 
 enum class TodoContainerState {
-    IDLE, PRESSED
+    DO_NOT_ANIMATE,IDLE, PRESSED
 }
