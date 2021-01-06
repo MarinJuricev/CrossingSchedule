@@ -11,6 +11,7 @@ import com.example.crossingschedule.domain.core.Mapper
 import com.example.crossingschedule.domain.model.CrossingDailyActivities
 import com.example.crossingschedule.domain.model.CrossingTodo
 import com.example.crossingschedule.domain.usecase.CreateNewTodoItem
+import com.example.crossingschedule.domain.usecase.DeleteTodoItem
 import com.example.crossingschedule.domain.usecase.GetActivitiesForDay
 import com.example.crossingschedule.domain.usecase.TodoItemDoneClicked
 import com.example.crossingschedule.presentation.schedule.model.ScheduleViewState
@@ -21,6 +22,7 @@ class ScheduleViewModel @ViewModelInject constructor(
     private val getActivitiesForDay: GetActivitiesForDay,
     private val todoItemDoneClicked: TodoItemDoneClicked,
     private val createNewTodoItem: CreateNewTodoItem,
+    private val deleteTodoItem: DeleteTodoItem,
     private val activitiesToScheduleViewStateMapper: Mapper<ScheduleViewState, CrossingDailyActivities>
 ) : ViewModel() {
 
@@ -51,7 +53,20 @@ class ScheduleViewModel @ViewModelInject constructor(
 
     fun onTodoCreated(currentList: List<CrossingTodo>, newTodoMessage: String) {
         viewModelScope.launch {
-            createNewTodoItem(currentList, newTodoMessage)
+            when (val result = createNewTodoItem(currentList, newTodoMessage)) {
+                is Either.Right -> _crossingDailyActivities.postValue(
+                    _crossingDailyActivities.value?.copy(errorMessage = "")
+                )
+                is Either.Left -> _crossingDailyActivities.postValue(
+                    _crossingDailyActivities.value?.copy(errorMessage = result.error.errorMessage)
+                )
+            }
+        }
+    }
+
+    fun onTodoItemDeleted(currentList: List<CrossingTodo>, itemToBeDeleted: CrossingTodo) {
+        viewModelScope.launch {
+            deleteTodoItem(currentList, itemToBeDeleted)
         }
     }
 

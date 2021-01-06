@@ -4,23 +4,33 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ConstraintLayout
 import androidx.compose.foundation.layout.Dimension
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.presentation.schedule.components.*
 import com.example.crossingschedule.presentation.schedule.model.ScheduleViewState
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HomePage(scheduleViewModel: ScheduleViewModel) {
+fun SchedulePage(scheduleViewModel: ScheduleViewModel) {
     scheduleViewModel.getActivitiesForDay("TEST_DAY")//TODO ACTUALLY IMPLEMENT MULTIPLE DAYS
 
     val viewState =
         scheduleViewModel.crossingDailyActivities.observeAsState(ScheduleViewState())
+    val snackBarHostState = remember { SnackbarHostState() }
 
-    Scaffold {
+    Scaffold(
+        scaffoldState = rememberScaffoldState(snackbarHostState = snackBarHostState)
+    ) {
         Box {
             BackgroundImage(resourceId = R.drawable.home_background)
             ConstraintLayout {
@@ -64,7 +74,8 @@ fun HomePage(scheduleViewModel: ScheduleViewModel) {
                         },
                     todos = viewState.value.crossingTodos,
                     onDoneClick = scheduleViewModel::onTodoItemChanged,
-                    onNewTodoCreated = scheduleViewModel::onTodoCreated
+                    onNewTodoCreated = scheduleViewModel::onTodoCreated,
+                    onTodoDeleted = scheduleViewModel::onTodoItemDeleted
                 )
                 CrossingShops(
                     modifier = Modifier
@@ -105,6 +116,19 @@ fun HomePage(scheduleViewModel: ScheduleViewModel) {
                             end.linkTo(todoList.end)
                         },
                     notes = viewState.value.notes
+                )
+            }
+            if (viewState.value.errorMessage.isNotBlank()) {
+                val localizedDismissMessage = stringResource(R.string.dismiss)
+
+                LaunchedEffect(
+                    subject = Any(),
+                    block = {
+                        snackBarHostState.showSnackbar(
+                            message = viewState.value.errorMessage,
+                            actionLabel = localizedDismissMessage
+                        )
+                    },
                 )
             }
         }

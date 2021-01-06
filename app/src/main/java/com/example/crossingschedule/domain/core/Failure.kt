@@ -1,5 +1,6 @@
 package com.example.crossingschedule.domain.core
 
-sealed class Failure {
-    data class RemoteFailure(val errorMessage: String) : Failure()
+sealed class Failure(val errorMessage: String) {
+    data class RemoteFailure(val error: String) : Failure(error)
+    data class ValidationFailure(val error: String) : Failure(error)
 }
