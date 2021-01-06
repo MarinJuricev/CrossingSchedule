@@ -9,4 +9,5 @@ import kotlinx.coroutines.flow.Flow
 interface ActivitiesRepository {
     suspend fun getCurrentActivities(): Flow<Either<Failure, CrossingDailyActivities>>
     suspend fun updateCrossingTodoItems(updatedList: List<CrossingTodo>): Either<Failure, Unit>
+    suspend fun updateNotes(updatedNotes: String): Either<Failure, Unit>
 }

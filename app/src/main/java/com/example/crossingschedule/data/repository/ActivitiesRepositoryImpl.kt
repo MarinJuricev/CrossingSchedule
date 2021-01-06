@@ -55,4 +55,22 @@ class ActivitiesRepositoryImpl(
 
         return Either.Right(Unit)
     }
+
+    override suspend fun updateNotes(updatedNotes: String): Either<Failure, Unit> {
+        val documentReference =
+            fireStore
+                .collection("users")
+                .document("IYwmWMpVP3aV4RmWEa8q") //TODO Actually get this data from some kind of user object
+                .collection("islands")
+                .document("TdWrr3sOWOzylTApiuV6") //TODO Actually get this data from some kind of user object
+
+
+        fireStore.runTransaction { transaction ->
+            transaction.update(documentReference, "notes", updatedNotes)
+        }
+            .addOnSuccessListener { Log.e("BLABLA", "success") } //TODO ADD TIMBER
+            .addOnFailureListener { Log.e("BLABLA", "failure", it) }
+
+        return Either.Right(Unit)
+    }
 }

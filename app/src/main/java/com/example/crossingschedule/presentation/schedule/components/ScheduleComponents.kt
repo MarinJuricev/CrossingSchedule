@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -41,6 +42,7 @@ import com.example.crossingschedule.presentation.core.ui.crossingTypography
 import com.example.crossingschedule.presentation.schedule.model.TodoContainerState
 import com.example.crossingschedule.presentation.schedule.model.UiShop
 import com.example.crossingschedule.presentation.schedule.model.UiTurnipPrices
+import kotlin.math.min
 
 @Composable
 fun BackgroundImage(
@@ -60,7 +62,9 @@ fun BackgroundImage(
 }
 
 @Composable
-fun DailyCheckListCard(modifier: Modifier) {
+fun DailyCheckListCard(
+    modifier: Modifier
+) {
     Card(
         modifier = modifier,
         elevation = 4.dp,
@@ -94,7 +98,9 @@ fun CurrentDateCard(
 }
 
 @Composable
-fun RawIngredientRow(modifier: Modifier = Modifier) {
+fun RawIngredientRow(
+    modifier: Modifier = Modifier
+) {
     Row(modifier = modifier) {
         //TODO: Get the ingredients from BE and just map through the list
         Image(
@@ -342,7 +348,10 @@ fun CrossingShops(
 }
 
 @Composable
-fun TurnipPriceList(modifier: Modifier = Modifier, turnipPrices: UiTurnipPrices) {
+fun TurnipPriceList(
+    modifier: Modifier = Modifier,
+    turnipPrices: UiTurnipPrices
+) {
     CrossingCard(modifier = modifier) {
         Column(
             modifier = Modifier.padding(8.dp),
@@ -426,19 +435,35 @@ fun VillagerInteractionsList(
 }
 
 @Composable
-fun Notes(modifier: Modifier = Modifier, notes: String = "") {
+fun CrossingNotes(
+    modifier: Modifier = Modifier,
+    notes: String = "",
+    onNotesUpdated: (String) -> Unit
+) {
+    val modifiedNotes = mutableStateOf(notes)
+
     CrossingCard(modifier = modifier) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .preferredHeight(150.dp)
+                .heightIn(min = 125.dp)
                 .padding(8.dp)
         ) {
             Text(
                 text = stringResource(R.string.notes),
                 style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
             )
-            Text(text = notes)
+            OutlinedTextField(
+                value = modifiedNotes.value,
+                onValueChange = { modifiedNotes.value = it },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                onImeActionPerformed = { imeAction, keyboardController ->
+                    if (imeAction == ImeAction.Done) {
+                        onNotesUpdated(modifiedNotes.value)
+                        keyboardController?.hideSoftwareKeyboard()
+                    }
+                }
+            )
         }
     }
 }

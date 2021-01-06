@@ -107,7 +107,7 @@ fun SchedulePage(scheduleViewModel: ScheduleViewModel) {
                         },
                     villagerInteractions = viewState.value.villagersInteraction
                 )
-                Notes(
+                CrossingNotes(
                     modifier = Modifier
                         .constrainAs(notes) {
                             width = Dimension.fillToConstraints
@@ -115,7 +115,8 @@ fun SchedulePage(scheduleViewModel: ScheduleViewModel) {
                             start.linkTo(todoList.start)
                             end.linkTo(todoList.end)
                         },
-                    notes = viewState.value.notes
+                    notes = viewState.value.notes,
+                    onNotesUpdated = scheduleViewModel::onNotesEdited
                 )
             }
             if (viewState.value.errorMessage.isNotBlank()) {

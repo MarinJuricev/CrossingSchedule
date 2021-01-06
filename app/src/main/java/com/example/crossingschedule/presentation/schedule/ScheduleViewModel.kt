@@ -10,10 +10,7 @@ import com.example.crossingschedule.domain.core.Either
 import com.example.crossingschedule.domain.core.Mapper
 import com.example.crossingschedule.domain.model.CrossingDailyActivities
 import com.example.crossingschedule.domain.model.CrossingTodo
-import com.example.crossingschedule.domain.usecase.CreateNewTodoItem
-import com.example.crossingschedule.domain.usecase.DeleteTodoItem
-import com.example.crossingschedule.domain.usecase.GetActivitiesForDay
-import com.example.crossingschedule.domain.usecase.TodoItemDoneClicked
+import com.example.crossingschedule.domain.usecase.*
 import com.example.crossingschedule.presentation.schedule.model.ScheduleViewState
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -23,6 +20,7 @@ class ScheduleViewModel @ViewModelInject constructor(
     private val todoItemDoneClicked: TodoItemDoneClicked,
     private val createNewTodoItem: CreateNewTodoItem,
     private val deleteTodoItem: DeleteTodoItem,
+    private val updateNotes: UpdateNotes,
     private val activitiesToScheduleViewStateMapper: Mapper<ScheduleViewState, CrossingDailyActivities>
 ) : ViewModel() {
 
@@ -67,6 +65,12 @@ class ScheduleViewModel @ViewModelInject constructor(
     fun onTodoItemDeleted(currentList: List<CrossingTodo>, itemToBeDeleted: CrossingTodo) {
         viewModelScope.launch {
             deleteTodoItem(currentList, itemToBeDeleted)
+        }
+    }
+
+    fun onNotesEdited(updatedNotes: String) {
+        viewModelScope.launch {
+            updateNotes(updatedNotes)
         }
     }
 
