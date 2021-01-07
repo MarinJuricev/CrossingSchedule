@@ -12,4 +12,5 @@
     <string name="create_todo">Create a new TODO</string>
     <string name="error_cannot_be_empty">Todo message cannot be empty!</string>
     <string name="dismiss">Dismiss</string>
+    <string name="add_new_villager">Add new Villager</string>
 </resources>

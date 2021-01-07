@@ -6,13 +6,11 @@ import androidx.compose.animation.core.FloatPropKey
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.transitionDefinition
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.transition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -22,7 +20,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.gesture.longPressGestureFilter
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.layout.ContentScale
@@ -37,12 +34,12 @@ import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.domain.model.CrossingTodo
 import com.example.crossingschedule.domain.model.VillagerInteraction
+import com.example.crossingschedule.presentation.core.components.AnimatedContainer
 import com.example.crossingschedule.presentation.core.components.CrossingCard
 import com.example.crossingschedule.presentation.core.ui.crossingTypography
-import com.example.crossingschedule.presentation.schedule.model.TodoContainerState
+import com.example.crossingschedule.presentation.schedule.model.AnimatedContainerState
 import com.example.crossingschedule.presentation.schedule.model.UiShop
 import com.example.crossingschedule.presentation.schedule.model.UiTurnipPrices
-import kotlin.math.min
 
 @Composable
 fun BackgroundImage(
@@ -151,37 +148,37 @@ fun RawIngredientRow(
     }
 }
 
-val crossingTodoHeight = DpPropKey(label = "crossingTodoHeight")
-val addTodoOpacity = FloatPropKey(label = "addTodoOpacity")
+val containerHeight = DpPropKey(label = "containerHeight")
+val alphaPropKey = FloatPropKey(label = "alphaPropKey")
 
-val transitionDefinition = transitionDefinition<TodoContainerState> {
-    state(TodoContainerState.IDLE) {
-        this[crossingTodoHeight] = 36.dp
-        this[addTodoOpacity] = 0f
+val transitionDefinition = transitionDefinition<AnimatedContainerState> {
+    state(AnimatedContainerState.IDLE) {
+        this[containerHeight] = 36.dp
+        this[alphaPropKey] = 0f
     }
 
-    state(TodoContainerState.PRESSED) {
-        this[crossingTodoHeight] = 120.dp
-        this[addTodoOpacity] = 1f
+    state(AnimatedContainerState.PRESSED) {
+        this[containerHeight] = 120.dp
+        this[alphaPropKey] = 1f
     }
 
-    state(TodoContainerState.DO_NOT_ANIMATE) {
-        this[crossingTodoHeight] = 36.dp
-        this[addTodoOpacity] = 0f
+    state(AnimatedContainerState.DO_NOT_ANIMATE) {
+        this[containerHeight] = 36.dp
+        this[alphaPropKey] = 0f
     }
 
-    transition(fromState = TodoContainerState.IDLE, toState = TodoContainerState.PRESSED) {
-        crossingTodoHeight using tween(durationMillis = 750)
-        addTodoOpacity using tween(
+    transition(fromState = AnimatedContainerState.IDLE, toState = AnimatedContainerState.PRESSED) {
+        containerHeight using tween(durationMillis = 750)
+        alphaPropKey using tween(
             durationMillis = 1000,
             delayMillis = 500,
             easing = LinearOutSlowInEasing
         )
     }
 
-    transition(fromState = TodoContainerState.PRESSED, toState = TodoContainerState.IDLE) {
-        crossingTodoHeight using tween(durationMillis = 750)
-        addTodoOpacity using tween(
+    transition(fromState = AnimatedContainerState.PRESSED, toState = AnimatedContainerState.IDLE) {
+        containerHeight using tween(durationMillis = 750)
+        alphaPropKey using tween(
             durationMillis = 1000,
             delayMillis = 500,
             easing = LinearOutSlowInEasing
@@ -242,24 +239,28 @@ fun AnimatedAddTodoContainer(
     todos: List<CrossingTodo>,
     onNewTodoCreated: (List<CrossingTodo>, String) -> Unit
 ) {
-    val containerState = remember { mutableStateOf(TodoContainerState.DO_NOT_ANIMATE) }
     val addTodoText = remember { mutableStateOf("") }
+    val animationState = remember { mutableStateOf(AnimatedContainerState.DO_NOT_ANIMATE) }
 
-    val toState = when (containerState.value) {
-        TodoContainerState.IDLE -> TodoContainerState.PRESSED
-        TodoContainerState.DO_NOT_ANIMATE -> TodoContainerState.DO_NOT_ANIMATE
-        else -> TodoContainerState.IDLE
-    }
-
-    val addTodoContainerState = transition(
-        definition = transitionDefinition,
-        initState = containerState.value,
-        toState = toState,
-    )
-
-    Column(
-        modifier = Modifier
-            .height(addTodoContainerState[crossingTodoHeight]),
+    AnimatedContainer(
+        animationState = animationState,
+        expandedContent = {
+            OutlinedTextField(
+                modifier = Modifier
+                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+                value = addTodoText.value,
+                onValueChange = { addTodoText.value = it },
+                singleLine = true,
+                label = { Text(stringResource(R.string.create_todo)) },
+                onImeActionPerformed = { imeAction, _ ->
+                    if (imeAction == ImeAction.Done) {
+                        onNewTodoCreated(todos, addTodoText.value)
+                        addTodoText.value = ""
+                        animationState.value = AnimatedContainerState.PRESSED
+                    }
+                }
+            )
+        },
     ) {
         Row(
             modifier = Modifier
@@ -273,33 +274,17 @@ fun AnimatedAddTodoContainer(
                 text = stringResource(id = R.string.add_todo),
             )
 
-            IconButton(onClick = {
-                containerState.value =
-                    when (containerState.value) {
-                        TodoContainerState.IDLE -> TodoContainerState.PRESSED
-                        TodoContainerState.DO_NOT_ANIMATE, TodoContainerState.PRESSED -> TodoContainerState.IDLE
-                    }
-            }) {
+            IconButton(
+                onClick = {
+                    animationState.value =
+                        when (animationState.value) {
+                            AnimatedContainerState.IDLE -> AnimatedContainerState.PRESSED
+                            AnimatedContainerState.DO_NOT_ANIMATE, AnimatedContainerState.PRESSED -> AnimatedContainerState.IDLE
+                        }
+                },
+            ) {
                 Icon(imageVector = Icons.Default.Add)
             }
-        }
-        if (containerState.value == TodoContainerState.IDLE) {
-            OutlinedTextField(
-                modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
-                    .alpha(addTodoContainerState[addTodoOpacity]),
-                value = addTodoText.value,
-                onValueChange = { addTodoText.value = it },
-                singleLine = true,
-                label = { Text(stringResource(R.string.create_todo)) },
-                onImeActionPerformed = { imeAction, _ ->
-                    if (imeAction == ImeAction.Done) {
-                        onNewTodoCreated(todos, addTodoText.value)
-                        addTodoText.value = ""
-                        containerState.value = TodoContainerState.PRESSED
-                    }
-                }
-            )
         }
     }
 }
@@ -412,11 +397,8 @@ fun VillagerInteractionsList(
 ) {
     CrossingCard(modifier = modifier) {
         Column(modifier = Modifier.padding(8.dp)) {
-            Text(
-                text = stringResource(R.string.villagers),
-                style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+            AnimatedAddVillagerContainer()
+            Divider()
             LazyColumn(
                 content = {
                     itemsIndexed(villagerInteractions) { index, villagerInteraction ->
@@ -430,6 +412,58 @@ fun VillagerInteractionsList(
                     }
                 },
             )
+        }
+    }
+}
+
+@Composable
+fun AnimatedAddVillagerContainer() {
+    val animationState = remember { mutableStateOf(AnimatedContainerState.DO_NOT_ANIMATE) }
+    val addVillagerText = remember { mutableStateOf("") }
+
+    AnimatedContainer(
+        animationState = animationState,
+        expandedContent = {
+            OutlinedTextField(
+                modifier = Modifier
+                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+                value = addVillagerText.value,
+                onValueChange = { addVillagerText.value = it },
+                singleLine = true,
+                label = { Text("TEST") },
+                onImeActionPerformed = { imeAction, _ ->
+                    if (imeAction == ImeAction.Done) {
+//                    onNewTodoCreated(todos, addTodoText.value)
+                        addVillagerText.value = ""
+                        animationState.value = AnimatedContainerState.PRESSED
+                    }
+                }
+            )
+        }
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                modifier = Modifier.padding(start = 8.dp),
+                textAlign = TextAlign.Center,
+                text = stringResource(id = R.string.villagers),
+            )
+
+            IconButton(
+                onClick = {
+                    animationState.value =
+                        when (animationState.value) {
+                            AnimatedContainerState.IDLE -> AnimatedContainerState.PRESSED
+                            AnimatedContainerState.DO_NOT_ANIMATE, AnimatedContainerState.PRESSED -> AnimatedContainerState.IDLE
+                        }
+                },
+            ) {
+                Icon(imageVector = Icons.Default.Add)
+            }
         }
     }
 }
