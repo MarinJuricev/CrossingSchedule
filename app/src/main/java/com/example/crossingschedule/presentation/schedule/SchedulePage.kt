@@ -85,7 +85,8 @@ fun SchedulePage(scheduleViewModel: ScheduleViewModel) {
                             start.linkTo(dateSelector.start)
                             end.linkTo(dateSelector.end)
                         },
-                    shops = viewState.value.shops
+                    shops = viewState.value.shops,
+                    onShopClick = scheduleViewModel::onShopChanged
                 )
                 TurnipPriceList(
                     modifier = Modifier

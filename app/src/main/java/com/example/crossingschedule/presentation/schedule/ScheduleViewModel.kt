@@ -12,6 +12,7 @@ import com.example.crossingschedule.domain.model.CrossingDailyActivities
 import com.example.crossingschedule.domain.model.CrossingTodo
 import com.example.crossingschedule.domain.usecase.*
 import com.example.crossingschedule.presentation.schedule.model.ScheduleViewState
+import com.example.crossingschedule.presentation.schedule.model.UiShop
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -21,6 +22,7 @@ class ScheduleViewModel @ViewModelInject constructor(
     private val createNewTodoItem: CreateNewTodoItem,
     private val deleteTodoItem: DeleteTodoItem,
     private val updateNotes: UpdateNotes,
+    private val shopItemDoneClicked: ShopItemDoneClicked,
     private val activitiesToScheduleViewStateMapper: Mapper<ScheduleViewState, CrossingDailyActivities>
 ) : ViewModel() {
 
@@ -71,6 +73,12 @@ class ScheduleViewModel @ViewModelInject constructor(
     fun onNotesEdited(updatedNotes: String) {
         viewModelScope.launch {
             updateNotes(updatedNotes)
+        }
+    }
+
+    fun onShopChanged(currentList: List<UiShop>, updatedShop: UiShop) {
+        viewModelScope.launch {
+            shopItemDoneClicked(currentList, updatedShop)
         }
     }
 

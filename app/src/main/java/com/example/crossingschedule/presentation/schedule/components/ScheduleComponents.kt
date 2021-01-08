@@ -292,8 +292,9 @@ fun AnimatedAddTodoContainer(
 
 @Composable
 fun CrossingShops(
+    modifier: Modifier = Modifier,
     shops: List<UiShop>,
-    modifier: Modifier = Modifier
+    onShopClick: (List<UiShop>, UiShop) -> Unit
 ) {
     CrossingCard(modifier = modifier) {
         Column {
@@ -324,7 +325,7 @@ fun CrossingShops(
                             )
                             Checkbox(
                                 checked = shop.isVisited,
-                                onCheckedChange = { })
+                                onCheckedChange = { onShopClick(shops, shop) })
                         }
                     }
                 }
