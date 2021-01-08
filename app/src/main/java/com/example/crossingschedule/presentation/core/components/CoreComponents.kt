@@ -70,8 +70,8 @@ val transitionDefinition = transitionDefinition<AnimatedContainerState> {
 @Composable
 fun AnimatedContainer(
     animationState: State<AnimatedContainerState>,
-    expandedContent: @Composable () -> Unit,
-    nonExpandedContent: @Composable () -> Unit
+    nonExpandedContent: @Composable () -> Unit,
+    expandedContent: @Composable () -> Unit
 ) {
     val toState = when (animationState.value) {
         AnimatedContainerState.IDLE -> AnimatedContainerState.PRESSED

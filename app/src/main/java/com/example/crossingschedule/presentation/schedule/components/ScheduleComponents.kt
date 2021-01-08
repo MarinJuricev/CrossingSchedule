@@ -244,48 +244,48 @@ fun AnimatedAddTodoContainer(
 
     AnimatedContainer(
         animationState = animationState,
-        expandedContent = {
-            OutlinedTextField(
+        nonExpandedContent = {
+            Row(
                 modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
-                value = addTodoText.value,
-                onValueChange = { addTodoText.value = it },
-                singleLine = true,
-                label = { Text(stringResource(R.string.create_todo)) },
-                onImeActionPerformed = { imeAction, _ ->
-                    if (imeAction == ImeAction.Done) {
-                        onNewTodoCreated(todos, addTodoText.value)
-                        addTodoText.value = ""
-                        animationState.value = AnimatedContainerState.PRESSED
-                    }
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    modifier = Modifier.padding(start = 16.dp),
+                    textAlign = TextAlign.Center,
+                    text = stringResource(id = R.string.add_todo),
+                )
+
+                IconButton(
+                    onClick = {
+                        animationState.value =
+                            when (animationState.value) {
+                                AnimatedContainerState.IDLE -> AnimatedContainerState.PRESSED
+                                AnimatedContainerState.DO_NOT_ANIMATE, AnimatedContainerState.PRESSED -> AnimatedContainerState.IDLE
+                            }
+                    },
+                ) {
+                    Icon(imageVector = Icons.Default.Add)
                 }
-            )
+            }
         },
     ) {
-        Row(
+        OutlinedTextField(
             modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                modifier = Modifier.padding(start = 16.dp),
-                textAlign = TextAlign.Center,
-                text = stringResource(id = R.string.add_todo),
-            )
-
-            IconButton(
-                onClick = {
-                    animationState.value =
-                        when (animationState.value) {
-                            AnimatedContainerState.IDLE -> AnimatedContainerState.PRESSED
-                            AnimatedContainerState.DO_NOT_ANIMATE, AnimatedContainerState.PRESSED -> AnimatedContainerState.IDLE
-                        }
-                },
-            ) {
-                Icon(imageVector = Icons.Default.Add)
+                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+            value = addTodoText.value,
+            onValueChange = { addTodoText.value = it },
+            singleLine = true,
+            label = { Text(stringResource(R.string.create_todo)) },
+            onImeActionPerformed = { imeAction, _ ->
+                if (imeAction == ImeAction.Done) {
+                    onNewTodoCreated(todos, addTodoText.value)
+                    addTodoText.value = ""
+                    animationState.value = AnimatedContainerState.PRESSED
+                }
             }
-        }
+        )
     }
 }
 
@@ -423,48 +423,48 @@ fun AnimatedAddVillagerContainer() {
 
     AnimatedContainer(
         animationState = animationState,
-        expandedContent = {
-            OutlinedTextField(
+        nonExpandedContent = {
+            Row(
                 modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
-                value = addVillagerText.value,
-                onValueChange = { addVillagerText.value = it },
-                singleLine = true,
-                label = { Text("TEST") },
-                onImeActionPerformed = { imeAction, _ ->
-                    if (imeAction == ImeAction.Done) {
-//                    onNewTodoCreated(todos, addTodoText.value)
-                        addVillagerText.value = ""
-                        animationState.value = AnimatedContainerState.PRESSED
-                    }
-                }
-            )
-        }
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                modifier = Modifier.padding(start = 8.dp),
-                textAlign = TextAlign.Center,
-                text = stringResource(id = R.string.villagers),
-            )
-
-            IconButton(
-                onClick = {
-                    animationState.value =
-                        when (animationState.value) {
-                            AnimatedContainerState.IDLE -> AnimatedContainerState.PRESSED
-                            AnimatedContainerState.DO_NOT_ANIMATE, AnimatedContainerState.PRESSED -> AnimatedContainerState.IDLE
-                        }
-                },
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Icon(imageVector = Icons.Default.Add)
+                Text(
+                    modifier = Modifier.padding(start = 8.dp),
+                    textAlign = TextAlign.Center,
+                    text = stringResource(id = R.string.villagers),
+                )
+
+                IconButton(
+                    onClick = {
+                        animationState.value =
+                            when (animationState.value) {
+                                AnimatedContainerState.IDLE -> AnimatedContainerState.PRESSED
+                                AnimatedContainerState.DO_NOT_ANIMATE, AnimatedContainerState.PRESSED -> AnimatedContainerState.IDLE
+                            }
+                    },
+                ) {
+                    Icon(imageVector = Icons.Default.Add)
+                }
             }
         }
+    ) {
+        OutlinedTextField(
+            modifier = Modifier
+                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+            value = addVillagerText.value,
+            onValueChange = { addVillagerText.value = it },
+            singleLine = true,
+            label = { Text("TEST") },
+            onImeActionPerformed = { imeAction, _ ->
+                if (imeAction == ImeAction.Done) {
+//                    onNewTodoCreated(todos, addTodoText.value)
+                    addVillagerText.value = ""
+                    animationState.value = AnimatedContainerState.PRESSED
+                }
+            }
+        )
     }
 }
 
