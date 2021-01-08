@@ -255,6 +255,7 @@ fun AnimatedAddTodoContainer(
                     modifier = Modifier.padding(start = 16.dp),
                     textAlign = TextAlign.Center,
                     text = stringResource(id = R.string.add_todo),
+                    style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold)
                 )
 
                 IconButton(
@@ -396,13 +397,15 @@ fun VillagerInteractionsList(
     modifier: Modifier = Modifier
 ) {
     CrossingCard(modifier = modifier) {
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column {
             AnimatedAddVillagerContainer()
             Divider()
             LazyColumn(
                 content = {
                     itemsIndexed(villagerInteractions) { index, villagerInteraction ->
-                        Row {
+                        Row(
+                            modifier = Modifier.padding(8.dp)
+                        ) {
                             Text(text = (index + 1).toString())
                             Text(
                                 modifier = Modifier.padding(start = 8.dp),
@@ -434,6 +437,7 @@ fun AnimatedAddVillagerContainer() {
                     modifier = Modifier.padding(start = 8.dp),
                     textAlign = TextAlign.Center,
                     text = stringResource(id = R.string.villagers),
+                    style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold)
                 )
 
                 IconButton(

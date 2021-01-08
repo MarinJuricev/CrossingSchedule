@@ -9,8 +9,8 @@ import androidx.compose.animation.transition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
@@ -19,11 +19,14 @@ import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.presentation.schedule.model.AnimatedContainerState
 
 @Composable
-fun CrossingCard(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+fun CrossingCard(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
     Card(
         modifier = modifier,
         elevation = 4.dp,
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.shapes.large,
     ) {
         content()
     }
