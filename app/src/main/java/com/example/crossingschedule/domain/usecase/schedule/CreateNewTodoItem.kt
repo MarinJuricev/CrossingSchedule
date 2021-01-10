@@ -1,4 +1,4 @@
-package com.example.crossingschedule.domain.usecase
+package com.example.crossingschedule.domain.usecase.schedule
 
 import com.example.crossingschedule.R
 import com.example.crossingschedule.domain.core.Either

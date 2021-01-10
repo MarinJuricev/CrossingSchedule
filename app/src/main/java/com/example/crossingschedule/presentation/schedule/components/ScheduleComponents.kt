@@ -190,9 +190,9 @@ val transitionDefinition = transitionDefinition<AnimatedContainerState> {
 fun CrossingTodoList(
     modifier: Modifier = Modifier,
     todos: List<CrossingTodo>,
-    onDoneClick: (List<CrossingTodo>, CrossingTodo) -> Unit,
-    onNewTodoCreated: (List<CrossingTodo>, String) -> Unit,
-    onTodoDeleted: (List<CrossingTodo>, CrossingTodo) -> Unit
+    onDoneClick: (CrossingTodo) -> Unit,
+    onNewTodoCreated: (String) -> Unit,
+    onTodoDeleted: (CrossingTodo) -> Unit
 ) {
     CrossingCard(
         modifier = modifier
@@ -212,14 +212,14 @@ fun CrossingTodoList(
                             modifier = Modifier
                                 .padding(4.dp)
                                 .longPressGestureFilter {
-                                    onTodoDeleted(todos, todo)
+                                    onTodoDeleted(todo)
                                 },
                             verticalAlignment = Alignment.CenterVertically,
 
                             ) {
                             Checkbox(
                                 checked = todo.isDone,
-                                onCheckedChange = { onDoneClick(todos, todo) },
+                                onCheckedChange = { onDoneClick(todo) },
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
@@ -237,7 +237,7 @@ fun CrossingTodoList(
 @Composable
 fun AnimatedAddTodoContainer(
     todos: List<CrossingTodo>,
-    onNewTodoCreated: (List<CrossingTodo>, String) -> Unit
+    onNewTodoCreated: (String) -> Unit
 ) {
     val addTodoText = remember { mutableStateOf("") }
     val animationState = remember { mutableStateOf(AnimatedContainerState.DO_NOT_ANIMATE) }
@@ -281,7 +281,7 @@ fun AnimatedAddTodoContainer(
             label = { Text(stringResource(R.string.create_todo)) },
             onImeActionPerformed = { imeAction, _ ->
                 if (imeAction == ImeAction.Done) {
-                    onNewTodoCreated(todos, addTodoText.value)
+                    onNewTodoCreated(addTodoText.value)
                     addTodoText.value = ""
                     animationState.value = AnimatedContainerState.PRESSED
                 }
@@ -294,7 +294,7 @@ fun AnimatedAddTodoContainer(
 fun CrossingShops(
     modifier: Modifier = Modifier,
     shops: List<UiShop>,
-    onShopClick: (List<UiShop>, UiShop) -> Unit
+    onShopClick: (UiShop) -> Unit
 ) {
     CrossingCard(modifier = modifier) {
         Column {
@@ -325,7 +325,7 @@ fun CrossingShops(
                             )
                             Checkbox(
                                 checked = shop.isVisited,
-                                onCheckedChange = { onShopClick(shops, shop) })
+                                onCheckedChange = { onShopClick(shop) })
                         }
                     }
                 }
@@ -394,12 +394,13 @@ fun TurnipPriceList(
 
 @Composable
 fun VillagerInteractionsList(
+    modifier: Modifier = Modifier,
     villagerInteractions: List<VillagerInteraction>,
-    modifier: Modifier = Modifier
+    onAddVillagerClicked: (String) -> Unit
 ) {
     CrossingCard(modifier = modifier) {
         Column {
-            AnimatedAddVillagerContainer()
+            AnimatedAddVillagerContainer(onAddVillagerClicked)
             Divider()
             LazyColumn(
                 content = {
@@ -421,7 +422,9 @@ fun VillagerInteractionsList(
 }
 
 @Composable
-fun AnimatedAddVillagerContainer() {
+fun AnimatedAddVillagerContainer(
+    onAddVillagerClicked: (String) -> Unit
+) {
     val animationState = remember { mutableStateOf(AnimatedContainerState.DO_NOT_ANIMATE) }
     val addVillagerText = remember { mutableStateOf("") }
 
@@ -440,7 +443,6 @@ fun AnimatedAddVillagerContainer() {
                     text = stringResource(id = R.string.villagers),
                     style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold)
                 )
-
                 IconButton(
                     onClick = {
                         animationState.value =
@@ -464,7 +466,7 @@ fun AnimatedAddVillagerContainer() {
             label = { Text("TEST") },
             onImeActionPerformed = { imeAction, _ ->
                 if (imeAction == ImeAction.Done) {
-//                    onNewTodoCreated(todos, addTodoText.value)
+                    onAddVillagerClicked(addVillagerText.value)
                     addVillagerText.value = ""
                     animationState.value = AnimatedContainerState.PRESSED
                 }

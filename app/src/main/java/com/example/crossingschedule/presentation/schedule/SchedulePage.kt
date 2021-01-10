@@ -106,7 +106,8 @@ fun SchedulePage(scheduleViewModel: ScheduleViewModel) {
                             start.linkTo(turnipPriceList.start)
                             end.linkTo(turnipPriceList.end)
                         },
-                    villagerInteractions = viewState.value.villagersInteraction
+                    villagerInteractions = viewState.value.villagersInteraction,
+                    onAddVillagerClicked = scheduleViewModel::onNewVillagerClicked
                 )
                 CrossingNotes(
                     modifier = Modifier

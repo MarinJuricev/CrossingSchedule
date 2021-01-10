@@ -10,7 +10,7 @@ import com.example.crossingschedule.domain.core.Either
 import com.example.crossingschedule.domain.core.Mapper
 import com.example.crossingschedule.domain.model.CrossingDailyActivities
 import com.example.crossingschedule.domain.model.CrossingTodo
-import com.example.crossingschedule.domain.usecase.*
+import com.example.crossingschedule.domain.usecase.schedule.*
 import com.example.crossingschedule.presentation.schedule.model.ScheduleViewState
 import com.example.crossingschedule.presentation.schedule.model.UiShop
 import kotlinx.coroutines.flow.collect
@@ -23,6 +23,7 @@ class ScheduleViewModel @ViewModelInject constructor(
     private val deleteTodoItem: DeleteTodoItem,
     private val updateNotes: UpdateNotes,
     private val shopItemDoneClicked: ShopItemDoneClicked,
+    private val createVillager: CreateVillager,
     private val activitiesToScheduleViewStateMapper: Mapper<ScheduleViewState, CrossingDailyActivities>
 ) : ViewModel() {
 
@@ -45,15 +46,22 @@ class ScheduleViewModel @ViewModelInject constructor(
         }
     }
 
-    fun onTodoItemChanged(currentList: List<CrossingTodo>, updatedItem: CrossingTodo) {
+    fun onTodoItemChanged(updatedItem: CrossingTodo) {
         viewModelScope.launch {
-            todoItemDoneClicked(currentList, updatedItem)
+            todoItemDoneClicked(
+                _crossingDailyActivities.value?.crossingTodos ?: emptyList(),
+                updatedItem
+            )
         }
     }
 
-    fun onTodoCreated(currentList: List<CrossingTodo>, newTodoMessage: String) {
+    fun onTodoCreated(newTodoMessage: String) {
         viewModelScope.launch {
-            when (val result = createNewTodoItem(currentList, newTodoMessage)) {
+            when (val result = createNewTodoItem(
+                _crossingDailyActivities.value?.crossingTodos ?: emptyList(),
+                newTodoMessage
+            )
+            ) {
                 is Either.Right -> _crossingDailyActivities.postValue(
                     _crossingDailyActivities.value?.copy(errorMessage = "")
                 )
@@ -64,9 +72,14 @@ class ScheduleViewModel @ViewModelInject constructor(
         }
     }
 
-    fun onTodoItemDeleted(currentList: List<CrossingTodo>, itemToBeDeleted: CrossingTodo) {
+    fun onTodoItemDeleted(
+        itemToBeDeleted: CrossingTodo
+    ) {
         viewModelScope.launch {
-            deleteTodoItem(currentList, itemToBeDeleted)
+            deleteTodoItem(
+                _crossingDailyActivities.value?.crossingTodos ?: emptyList(),
+                itemToBeDeleted
+            )
         }
     }
 
@@ -76,9 +89,23 @@ class ScheduleViewModel @ViewModelInject constructor(
         }
     }
 
-    fun onShopChanged(currentList: List<UiShop>, updatedShop: UiShop) {
+    fun onShopChanged(updatedShop: UiShop) {
         viewModelScope.launch {
-            shopItemDoneClicked(currentList, updatedShop)
+            shopItemDoneClicked(
+                _crossingDailyActivities.value?.shops ?: emptyList(),
+                updatedShop
+            )
+        }
+    }
+
+    fun onNewVillagerClicked(
+        newVillagerName: String
+    ) {
+        viewModelScope.launch {
+            createVillager(
+                _crossingDailyActivities.value?.villagersInteraction ?: emptyList(),
+                newVillagerName
+            )
         }
     }
 

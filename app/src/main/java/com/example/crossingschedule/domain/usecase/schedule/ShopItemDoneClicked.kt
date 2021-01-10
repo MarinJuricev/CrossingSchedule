@@ -1,4 +1,4 @@
-package com.example.crossingschedule.domain.usecase
+package com.example.crossingschedule.domain.usecase.schedule
 
 import com.example.crossingschedule.domain.core.Mapper
 import com.example.crossingschedule.domain.model.Shop
