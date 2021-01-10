@@ -11,12 +11,22 @@ class CreateVillager @Inject constructor(
 ) {
 
     suspend operator fun invoke(
-        currentList: List<VillagerInteraction>,
+        currentList: List<VillagerInteraction>?,
         newVillagerName: String
     ): Either<Failure, Unit> {
         val newVillagerInteraction = VillagerInteraction(villagerName = newVillagerName)
-        val updatedList = currentList.plus(newVillagerInteraction)
+        val listToBeSent = generateListToBeSent(currentList, newVillagerInteraction)
 
-        return repository.updateVillagerInteractions(updatedList)
+        return repository.updateVillagerInteractions(listToBeSent)
     }
+
+    private fun generateListToBeSent(
+        currentList: List<VillagerInteraction>?,
+        newVillagerInteraction: VillagerInteraction
+    ): List<VillagerInteraction> =
+        if (currentList.isNullOrEmpty()) {
+            listOf(newVillagerInteraction)
+        } else {
+            currentList.plus(newVillagerInteraction)
+        }
 }

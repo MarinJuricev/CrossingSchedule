@@ -49,7 +49,7 @@ class ScheduleViewModel @ViewModelInject constructor(
     fun onTodoItemChanged(updatedItem: CrossingTodo) {
         viewModelScope.launch {
             todoItemDoneClicked(
-                _crossingDailyActivities.value?.crossingTodos ?: emptyList(),
+                _crossingDailyActivities.value?.crossingTodos,
                 updatedItem
             )
         }
@@ -58,7 +58,7 @@ class ScheduleViewModel @ViewModelInject constructor(
     fun onTodoCreated(newTodoMessage: String) {
         viewModelScope.launch {
             when (val result = createNewTodoItem(
-                _crossingDailyActivities.value?.crossingTodos ?: emptyList(),
+                _crossingDailyActivities.value?.crossingTodos,
                 newTodoMessage
             )
             ) {
@@ -77,7 +77,7 @@ class ScheduleViewModel @ViewModelInject constructor(
     ) {
         viewModelScope.launch {
             deleteTodoItem(
-                _crossingDailyActivities.value?.crossingTodos ?: emptyList(),
+                _crossingDailyActivities.value?.crossingTodos,
                 itemToBeDeleted
             )
         }
@@ -92,7 +92,7 @@ class ScheduleViewModel @ViewModelInject constructor(
     fun onShopChanged(updatedShop: UiShop) {
         viewModelScope.launch {
             shopItemDoneClicked(
-                _crossingDailyActivities.value?.shops ?: emptyList(),
+                _crossingDailyActivities.value?.shops,
                 updatedShop
             )
         }
@@ -103,7 +103,7 @@ class ScheduleViewModel @ViewModelInject constructor(
     ) {
         viewModelScope.launch {
             createVillager(
-                _crossingDailyActivities.value?.villagersInteraction ?: emptyList(),
+                _crossingDailyActivities.value?.villagersInteraction,
                 newVillagerName
             )
         }

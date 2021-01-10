@@ -14,20 +14,33 @@ class CreateNewTodoItem @Inject constructor(
 ) {
 
     suspend operator fun invoke(
-        currentList: List<CrossingTodo>,
+        currentList: List<CrossingTodo>?,
         newTodoItemMessage: String
     ): Either<Failure, Unit> {
         if (newTodoItemMessage.isBlank()) {
-            return Either.Left(
-                Failure.ValidationFailure(
-                    stringProvider.getString(R.string.error_cannot_be_empty)
-                )
-            )
+            return buildError()
         }
 
         val newTodoItem = CrossingTodo(newTodoItemMessage)
-        val updatedList = currentList.plus(newTodoItem)
+        val listToBeSent = generateListToBeSent(currentList, newTodoItem)
 
-        return repository.updateCrossingTodoItems(updatedList)
+        return repository.updateCrossingTodoItems(listToBeSent)
     }
+
+    private fun generateListToBeSent(
+        currentList: List<CrossingTodo>?,
+        newTodoItem: CrossingTodo
+    ): List<CrossingTodo> =
+        if (currentList.isNullOrEmpty()) {
+            listOf(newTodoItem)
+        } else {
+            currentList.plus(newTodoItem)
+        }
+
+    private fun buildError(): Either<Failure, Unit> =
+        Either.Left(
+            Failure.ValidationFailure(
+                stringProvider.getString(R.string.error_cannot_be_empty)
+            )
+        )
 }
