@@ -10,6 +10,7 @@ import com.example.crossingschedule.domain.core.Either
 import com.example.crossingschedule.domain.core.Mapper
 import com.example.crossingschedule.domain.model.CrossingDailyActivities
 import com.example.crossingschedule.domain.model.CrossingTodo
+import com.example.crossingschedule.domain.model.VillagerInteraction
 import com.example.crossingschedule.domain.usecase.schedule.*
 import com.example.crossingschedule.presentation.schedule.model.ScheduleViewState
 import com.example.crossingschedule.presentation.schedule.model.UiShop
@@ -24,6 +25,7 @@ class ScheduleViewModel @ViewModelInject constructor(
     private val updateNotes: UpdateNotes,
     private val shopItemDoneClicked: ShopItemDoneClicked,
     private val createVillager: CreateVillager,
+    private val deleteVillagerInteraction: DeleteVillagerInteraction,
     private val activitiesToScheduleViewStateMapper: Mapper<ScheduleViewState, CrossingDailyActivities>
 ) : ViewModel() {
 
@@ -108,6 +110,18 @@ class ScheduleViewModel @ViewModelInject constructor(
             )
         }
     }
+
+    fun onVillagerInteractionsDeleted(
+        villagerInteractionToBeDeleted: VillagerInteraction
+    ) {
+        viewModelScope.launch {
+            deleteVillagerInteraction(
+                _crossingDailyActivities.value?.villagersInteraction,
+                villagerInteractionToBeDeleted
+            )
+        }
+    }
+
 
     private fun triggerViewStateLoading() {
         _crossingDailyActivities.value?.copy(isLoading = true)

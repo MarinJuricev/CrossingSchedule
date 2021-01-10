@@ -396,7 +396,8 @@ fun TurnipPriceList(
 fun VillagerInteractionsList(
     modifier: Modifier = Modifier,
     villagerInteractions: List<VillagerInteraction>,
-    onAddVillagerClicked: (String) -> Unit
+    onAddVillagerClicked: (String) -> Unit,
+    onVillagerInteractionDeleted: (VillagerInteraction) -> Unit
 ) {
     CrossingCard(modifier = modifier) {
         Column {
@@ -406,7 +407,11 @@ fun VillagerInteractionsList(
                 content = {
                     itemsIndexed(villagerInteractions) { index, villagerInteraction ->
                         Row(
-                            modifier = Modifier.padding(8.dp)
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .longPressGestureFilter {
+                                    onVillagerInteractionDeleted(villagerInteraction)
+                                },
                         ) {
                             Text(text = (index + 1).toString())
                             Text(
