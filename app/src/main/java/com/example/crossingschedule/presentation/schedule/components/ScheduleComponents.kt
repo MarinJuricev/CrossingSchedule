@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.domain.model.CrossingTodo
+import com.example.crossingschedule.domain.model.TurnipPriceType
 import com.example.crossingschedule.domain.model.VillagerInteraction
 import com.example.crossingschedule.presentation.core.components.AnimatedContainer
 import com.example.crossingschedule.presentation.core.components.CrossingCard
@@ -199,7 +200,6 @@ fun CrossingTodoList(
     ) {
         Column {
             AnimatedAddTodoContainer(
-                todos = todos,
                 onNewTodoCreated = onNewTodoCreated
             )
             Divider()
@@ -236,7 +236,6 @@ fun CrossingTodoList(
 
 @Composable
 fun AnimatedAddTodoContainer(
-    todos: List<CrossingTodo>,
     onNewTodoCreated: (String) -> Unit
 ) {
     val addTodoText = remember { mutableStateOf("") }
@@ -337,8 +336,12 @@ fun CrossingShops(
 @Composable
 fun TurnipPriceList(
     modifier: Modifier = Modifier,
-    turnipPrices: UiTurnipPrices
+    turnipPrices: UiTurnipPrices,
+    onTurnipPriceUpdate: (TurnipPriceType, String) -> Unit
 ) {
+    val currentAmPrice = remember { mutableStateOf("") }
+    val currentPmPrice = remember { mutableStateOf("") }
+
     CrossingCard(modifier = modifier) {
         Column(
             modifier = Modifier.padding(8.dp),
@@ -371,8 +374,14 @@ fun TurnipPriceList(
                         fontSize = TextUnit.Sp(10)
                     )
                 },
-                onValueChange = { },
+                onValueChange = { currentAmPrice.value = it },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                onImeActionPerformed = { imeAction, _ ->
+                    if (imeAction == ImeAction.Done) {
+                        onTurnipPriceUpdate(TurnipPriceType.AM, currentAmPrice.value)
+                        currentAmPrice.value = ""
+                    }
+                }
             )
             OutlinedTextField(
                 modifier = Modifier.padding(horizontal = 8.dp),
@@ -385,8 +394,14 @@ fun TurnipPriceList(
                         fontSize = TextUnit.Sp(10)
                     )
                 },
-                onValueChange = { },
+                onValueChange = { currentPmPrice.value = it },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                onImeActionPerformed = { imeAction, _ ->
+                    if (imeAction == ImeAction.Done) {
+                        onTurnipPriceUpdate(TurnipPriceType.PM, currentPmPrice.value)
+                        currentPmPrice.value = ""
+                    }
+                }
             )
         }
     }
@@ -468,7 +483,7 @@ fun AnimatedAddVillagerContainer(
             value = addVillagerText.value,
             onValueChange = { addVillagerText.value = it },
             singleLine = true,
-            label = { Text("TEST") },
+            label = { Text(stringResource(R.string.villager_name)) },
             onImeActionPerformed = { imeAction, _ ->
                 if (imeAction == ImeAction.Done) {
                     onAddVillagerClicked(addVillagerText.value)

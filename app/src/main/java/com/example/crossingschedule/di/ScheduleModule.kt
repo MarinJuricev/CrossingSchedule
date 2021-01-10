@@ -3,10 +3,13 @@ package com.example.crossingschedule.di
 import com.example.crossingschedule.domain.core.Mapper
 import com.example.crossingschedule.domain.model.CrossingDailyActivities
 import com.example.crossingschedule.domain.model.Shop
+import com.example.crossingschedule.domain.model.TurnipPrices
 import com.example.crossingschedule.presentation.schedule.mapper.ActivitiesToScheduleViewStateMapper
 import com.example.crossingschedule.presentation.schedule.mapper.UiShopsToShopsMapper
+import com.example.crossingschedule.presentation.schedule.mapper.UiTurnipPricesToTurnipPricesMapper
 import com.example.crossingschedule.presentation.schedule.model.ScheduleViewState
 import com.example.crossingschedule.presentation.schedule.model.UiShop
+import com.example.crossingschedule.presentation.schedule.model.UiTurnipPrices
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,5 +29,11 @@ object ScheduleModule {
     fun providesUiShopsToShopsMapper(
         uiShopsToShopsMapper: UiShopsToShopsMapper
     ): Mapper<List<Shop>, List<UiShop>> = uiShopsToShopsMapper
+
+    @Provides
+    fun providesUiTurnipPricesToTurnipPricesMapper(
+        uiTurnipPricesToTurnipPricesMapper: UiTurnipPricesToTurnipPricesMapper
+    ): Mapper<TurnipPrices, UiTurnipPrices> = uiTurnipPricesToTurnipPricesMapper
+
 
 }

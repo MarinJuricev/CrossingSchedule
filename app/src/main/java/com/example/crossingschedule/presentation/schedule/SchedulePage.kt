@@ -96,7 +96,8 @@ fun SchedulePage(scheduleViewModel: ScheduleViewModel) {
                             start.linkTo(shopContainer.start)
                             end.linkTo(parent.end, margin = 8.dp)
                         },
-                    turnipPrices = viewState.value.turnipPrices
+                    turnipPrices = viewState.value.turnipPrices,
+                    onTurnipPriceUpdate = scheduleViewModel::onTurnipPriceChange
                 )
                 VillagerInteractionsList(
                     modifier = Modifier
