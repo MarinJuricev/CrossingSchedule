@@ -22,7 +22,7 @@ import com.example.crossingschedule.presentation.schedule.model.ScheduleViewStat
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SchedulePage(scheduleViewModel: ScheduleViewModel) {
-    scheduleViewModel.getActivitiesForDay("TEST_DAY")//TODO ACTUALLY IMPLEMENT MULTIPLE DAYS
+    scheduleViewModel.getActivitiesForDay(0, 0, 0)//TODO ACTUALLY IMPLEMENT MULTIPLE DAYS
 
     val viewState =
         scheduleViewModel.crossingDailyActivities.observeAsState(ScheduleViewState())
@@ -61,7 +61,8 @@ fun SchedulePage(scheduleViewModel: ScheduleViewModel) {
                                     start.linkTo(checkListText.end, margin = 24.dp)
                                     end.linkTo(parent.end)
                                 },
-                            dateToDisplay = viewState.value.currentDate
+                            dateOptions = viewState.value.dateOptions,
+                            onDateChanged = scheduleViewModel::getActivitiesForDay
                         )
                         RawIngredientRow(
                             modifier = Modifier

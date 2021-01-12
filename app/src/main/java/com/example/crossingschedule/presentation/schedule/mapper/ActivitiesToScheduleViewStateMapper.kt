@@ -5,10 +5,7 @@ import com.example.crossingschedule.domain.core.Mapper
 import com.example.crossingschedule.domain.model.CrossingDailyActivities
 import com.example.crossingschedule.domain.model.Shop
 import com.example.crossingschedule.domain.model.TurnipPrices
-import com.example.crossingschedule.presentation.schedule.model.KnownShops
-import com.example.crossingschedule.presentation.schedule.model.ScheduleViewState
-import com.example.crossingschedule.presentation.schedule.model.UiShop
-import com.example.crossingschedule.presentation.schedule.model.UiTurnipPrices
+import com.example.crossingschedule.presentation.schedule.model.*
 import java.util.*
 import javax.inject.Inject
 
@@ -23,7 +20,7 @@ class ActivitiesToScheduleViewStateMapper @Inject constructor(
             ScheduleViewState(
                 isLoading = false,
                 errorMessage = "",
-                currentDate = mapDateToDesiredUIFormat(currentDate),
+                dateOptions = mapDateToDateOptions(currentDate),
                 shops = mapToUIShops(shops),
                 crossingTodos = crossingTodos,
                 notes = notes,
@@ -53,11 +50,16 @@ class ActivitiesToScheduleViewStateMapper @Inject constructor(
         }
     }
 
-    private fun mapDateToDesiredUIFormat(date: Date): String {
+    private fun mapDateToDateOptions(date: Date): DateOptions {
         val calendar: Calendar = Calendar.getInstance()
         calendar.time = date
 
-        return DateFormat.format(DESIRED_UI_FORMAT, calendar).toString()
+        return DateOptions(
+            year = calendar.get(Calendar.YEAR),
+            month = calendar.get(Calendar.MONTH),
+            day = calendar.get(Calendar.DAY_OF_MONTH),
+            formattedDate = DateFormat.format(DESIRED_UI_FORMAT, calendar).toString()
+        )
     }
 
     private fun mapToUiTurnipPrices(turnipPrices: TurnipPrices): UiTurnipPrices =

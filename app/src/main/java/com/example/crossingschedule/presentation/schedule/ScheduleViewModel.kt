@@ -35,10 +35,10 @@ class ScheduleViewModel @ViewModelInject constructor(
     val crossingDailyActivities: LiveData<ScheduleViewState>
         get() = _crossingDailyActivities
 
-    fun getActivitiesForDay(selectedDay: String) {
+    fun getActivitiesForDay(selectedYear: Int, selectedMonth: Int, selectedDay: Int) {
         triggerViewStateLoading()
         viewModelScope.launch {
-            getActivitiesForDay.invoke(selectedDay).collect {
+            getActivitiesForDay.invoke(selectedYear, selectedMonth, selectedDay).collect {
                 when (it) {
                     is Either.Right -> _crossingDailyActivities.postValue(
                         activitiesToScheduleViewStateMapper.map(it.value)

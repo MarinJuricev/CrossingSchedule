@@ -6,7 +6,7 @@ import com.example.crossingschedule.domain.model.VillagerInteraction
 data class ScheduleViewState(
     val isLoading: Boolean = false,
     val errorMessage: String = "",
-    val currentDate: String = "",
+    val dateOptions: DateOptions = DateOptions(),
     val shops: List<UiShop> = emptyList(),
     val crossingTodos: List<CrossingTodo> = emptyList(),
     val notes: String = "",

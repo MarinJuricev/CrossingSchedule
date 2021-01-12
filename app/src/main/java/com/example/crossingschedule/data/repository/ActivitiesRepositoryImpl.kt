@@ -19,14 +19,15 @@ class ActivitiesRepositoryImpl(
     override suspend fun getCurrentActivities(): Flow<Either<Failure, CrossingDailyActivities>> =
         callbackFlow {
             val listener = fireStore
-                .collection("/users/IYwmWMpVP3aV4RmWEa8q/islands/")
+                .collection("/users/IYwmWMpVP3aV4RmWEa8q/islands/TdWrr3sOWOzylTApiuV6/date/")
+                .document("12.01.2021")
                 .addSnapshotListener { value, error ->
                     if (error != null && error.localizedMessage != null) {
                         offer(Either.Left(Failure.RemoteFailure(error.localizedMessage!!)))
                     } else if (value != null) {
                         offer(
                             Either.Right(
-                                value.toObjects(CrossingDailyActivities::class.java).firstOrNull()
+                                value.toObject(CrossingDailyActivities::class.java)
                                     ?: CrossingDailyActivities()
                             )
                         )
@@ -39,7 +40,7 @@ class ActivitiesRepositoryImpl(
         }
 
     override suspend fun updateCrossingTodoItems(updatedList: List<CrossingTodo>): Either<Failure, Unit> {
-        val islandReference = fireStore.getIslandDocument("TEST", "TEST")
+        val islandReference = fireStore.getIslandDocument("TEST", "TEST", "TEST")
 
         fireStore.runTransaction { transaction ->
             transaction.update(islandReference, "crossingTodos", updatedList)
@@ -51,7 +52,7 @@ class ActivitiesRepositoryImpl(
     }
 
     override suspend fun updateShopItems(updatedList: List<Shop>): Either<Failure, Unit> {
-        val islandReference = fireStore.getIslandDocument("TEST", "TEST")
+        val islandReference = fireStore.getIslandDocument("TEST", "TEST", "TEST")
 
         fireStore.runTransaction { transaction ->
             transaction.update(islandReference, "shops", updatedList)
@@ -63,7 +64,7 @@ class ActivitiesRepositoryImpl(
     }
 
     override suspend fun updateNotes(updatedNotes: String): Either<Failure, Unit> {
-        val islandReference = fireStore.getIslandDocument("TEST", "TEST")
+        val islandReference = fireStore.getIslandDocument("TEST", "TEST", "TEST")
 
         fireStore.runTransaction { transaction ->
             transaction.update(islandReference, "notes", updatedNotes)
@@ -75,7 +76,7 @@ class ActivitiesRepositoryImpl(
     }
 
     override suspend fun updateVillagerInteractions(updatedList: List<VillagerInteraction>): Either<Failure, Unit> {
-        val islandReference = fireStore.getIslandDocument("TEST", "TEST")
+        val islandReference = fireStore.getIslandDocument("TEST", "TEST", "TEST")
 
         fireStore.runTransaction { transaction ->
             transaction.update(islandReference, "villagerInteractions", updatedList)
@@ -87,7 +88,7 @@ class ActivitiesRepositoryImpl(
     }
 
     override suspend fun updateTurnipPrices(updatedTurnipPrices: TurnipPrices): Either<Failure, Unit> {
-        val islandReference = fireStore.getIslandDocument("TEST", "TEST")
+        val islandReference = fireStore.getIslandDocument("TEST", "TEST", "TEST")
 
         fireStore.runTransaction { transaction ->
             transaction.update(islandReference, "turnipPrices", updatedTurnipPrices)

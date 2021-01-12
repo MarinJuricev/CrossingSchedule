@@ -1,5 +1,7 @@
 package com.example.crossingschedule.presentation.schedule.components
 
+import android.app.DatePickerDialog
+import android.widget.DatePicker
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.DpPropKey
 import androidx.compose.animation.core.FloatPropKey
@@ -7,6 +9,7 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.transitionDefinition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -39,6 +42,7 @@ import com.example.crossingschedule.presentation.core.components.AnimatedContain
 import com.example.crossingschedule.presentation.core.components.CrossingCard
 import com.example.crossingschedule.presentation.core.ui.crossingTypography
 import com.example.crossingschedule.presentation.schedule.model.AnimatedContainerState
+import com.example.crossingschedule.presentation.schedule.model.DateOptions
 import com.example.crossingschedule.presentation.schedule.model.UiShop
 import com.example.crossingschedule.presentation.schedule.model.UiTurnipPrices
 
@@ -80,14 +84,30 @@ fun DailyCheckListCard(
 @Composable
 fun CurrentDateCard(
     modifier: Modifier,
-    dateToDisplay: String
+    dateOptions: DateOptions,
+    onDateChanged: (Int, Int, Int) -> Unit
 ) {
-    CrossingCard(modifier = modifier) {
+    val context = AmbientContext.current
+
+    CrossingCard(
+        modifier = modifier
+            .clickable(
+                onClick = {
+                    DatePickerDialog(
+                        context,
+                        { _: DatePicker, pickedYear: Int, pickedMonth: Int, pickedDay: Int ->
+                            onDateChanged(pickedYear, pickedMonth, pickedDay)
+                        }, dateOptions.year, dateOptions.month, dateOptions.day
+                    ).show()
+                },
+            )
+    ) {
         Text(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 4.dp),
             text = stringResource(
                 id = R.string.current_date,
-                dateToDisplay
+                dateOptions.formattedDate
             ),
             textAlign = TextAlign.Center,
             style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
