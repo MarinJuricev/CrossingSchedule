@@ -35,5 +35,4 @@ object ScheduleModule {
         uiTurnipPricesToTurnipPricesMapper: UiTurnipPricesToTurnipPricesMapper
     ): Mapper<TurnipPrices, UiTurnipPrices> = uiTurnipPricesToTurnipPricesMapper
 
-
 }
