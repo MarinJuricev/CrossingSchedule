@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.platform.setContent
-import com.example.crossingschedule.presentation.schedule.SchedulePage
-import com.example.crossingschedule.presentation.schedule.ScheduleViewModel
-import com.example.crossingschedule.presentation.core.ui.CrossingScheduleTheme
+import com.example.crossingschedule.feature.schedule.presentation.SchedulePage
+import com.example.crossingschedule.feature.schedule.presentation.ScheduleViewModel
+import com.example.crossingschedule.core.ui.CrossingScheduleTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
