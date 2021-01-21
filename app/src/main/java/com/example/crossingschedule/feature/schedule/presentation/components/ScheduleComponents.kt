@@ -18,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,16 +36,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
+import com.example.crossingschedule.core.ui.crossingTypography
 import com.example.crossingschedule.feature.schedule.domain.model.CrossingTodo
 import com.example.crossingschedule.feature.schedule.domain.model.TurnipPriceType
 import com.example.crossingschedule.feature.schedule.domain.model.VillagerInteraction
-import com.example.crossingschedule.presentation.core.components.AnimatedContainer
-import com.example.crossingschedule.presentation.core.components.CrossingCard
-import com.example.crossingschedule.core.ui.crossingTypography
 import com.example.crossingschedule.feature.schedule.presentation.model.AnimatedContainerState
 import com.example.crossingschedule.feature.schedule.presentation.model.DateOptions
 import com.example.crossingschedule.feature.schedule.presentation.model.UiShop
 import com.example.crossingschedule.feature.schedule.presentation.model.UiTurnipPrices
+import com.example.crossingschedule.presentation.core.components.AnimatedContainer
+import com.example.crossingschedule.presentation.core.components.CrossingCard
 
 @Composable
 fun BackgroundImage(
@@ -359,8 +360,8 @@ fun TurnipPriceList(
     turnipPrices: UiTurnipPrices,
     onTurnipPriceUpdate: (TurnipPriceType, String) -> Unit
 ) {
-    val currentAmPrice = remember { mutableStateOf("") }
-    val currentPmPrice = remember { mutableStateOf("") }
+    val turnipAmPrice = remember { mutableStateOf(turnipPrices.amPrice) }
+    val turnipPmPrice = remember { mutableStateOf(turnipPrices.pmPrice) }
 
     CrossingCard(modifier = modifier) {
         Column(
@@ -385,7 +386,7 @@ fun TurnipPriceList(
             }
             OutlinedTextField(
                 modifier = Modifier.padding(horizontal = 8.dp),
-                value = turnipPrices.amPrice,
+                value = turnipAmPrice.value,
                 singleLine = true,
                 maxLines = 1,
                 label = {
@@ -394,18 +395,18 @@ fun TurnipPriceList(
                         fontSize = TextUnit.Sp(10)
                     )
                 },
-                onValueChange = { currentAmPrice.value = it },
+                onValueChange = { turnipAmPrice.value = it },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onImeActionPerformed = { imeAction, _ ->
+                onImeActionPerformed = { imeAction, softKeyboardController ->
                     if (imeAction == ImeAction.Done) {
-                        onTurnipPriceUpdate(TurnipPriceType.AM, currentAmPrice.value)
-                        currentAmPrice.value = ""
+                        onTurnipPriceUpdate(TurnipPriceType.AM, turnipAmPrice.value)
+                        softKeyboardController?.hideSoftwareKeyboard()
                     }
                 }
             )
             OutlinedTextField(
                 modifier = Modifier.padding(horizontal = 8.dp),
-                value = turnipPrices.pmPrice,
+                value = turnipPmPrice.value,
                 singleLine = true,
                 maxLines = 1,
                 label = {
@@ -414,12 +415,12 @@ fun TurnipPriceList(
                         fontSize = TextUnit.Sp(10)
                     )
                 },
-                onValueChange = { currentPmPrice.value = it },
+                onValueChange = { turnipPmPrice.value = it },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onImeActionPerformed = { imeAction, _ ->
+                onImeActionPerformed = { imeAction, softKeyboardController ->
                     if (imeAction == ImeAction.Done) {
-                        onTurnipPriceUpdate(TurnipPriceType.PM, currentPmPrice.value)
-                        currentPmPrice.value = ""
+                        onTurnipPriceUpdate(TurnipPriceType.PM, turnipPmPrice.value)
+                        softKeyboardController?.hideSoftwareKeyboard()
                     }
                 }
             )
@@ -452,6 +453,30 @@ fun VillagerInteractionsList(
                             Text(
                                 modifier = Modifier.padding(start = 8.dp),
                                 text = villagerInteraction.villagerName,
+                            )
+                            Image(
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .clickable(
+                                        onClick = { /*TODO*/ },
+                                        indication = rememberRipple(bounded = false, radius = 18.dp)
+                                    ),
+                                bitmap = imageFromResource(
+                                    AmbientContext.current.resources,
+                                    R.drawable.present
+                                )
+                            )
+                            Image(
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .clickable(
+                                        onClick = { /*TODO*/ },
+                                        indication = rememberRipple(bounded = false, radius = 18.dp)
+                                    ),
+                                bitmap = imageFromResource(
+                                    AmbientContext.current.resources,
+                                    R.drawable.speech_bubble
+                                )
                             )
                         }
                     }
