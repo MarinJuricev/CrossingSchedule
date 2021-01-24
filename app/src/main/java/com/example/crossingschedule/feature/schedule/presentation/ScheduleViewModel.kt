@@ -28,12 +28,13 @@ class ScheduleViewModel @ViewModelInject constructor(
     private val createVillager: CreateVillager,
     private val deleteVillagerInteraction: DeleteVillagerInteraction,
     private val updateTurnipPrices: UpdateTurnipPrices,
+    private val villagerInteractionGiftClicked: VillagerInteractionGiftClicked,
+    private val villagerInteractionTalkedToClicked: VillagerInteractionTalkedToClicked,
     private val activitiesToScheduleViewStateMapper: Mapper<ScheduleViewState, CrossingDailyActivities>
 ) : ViewModel() {
 
     private val _crossingDailyActivities = MutableLiveData(ScheduleViewState())
-    val crossingDailyActivities: LiveData<ScheduleViewState>
-        get() = _crossingDailyActivities
+    val crossingDailyActivities: LiveData<ScheduleViewState> = _crossingDailyActivities
 
     fun getActivitiesForDay(selectedYear: Int, selectedMonth: Int, selectedDay: Int) {
         triggerViewStateLoading()
@@ -132,6 +133,30 @@ class ScheduleViewModel @ViewModelInject constructor(
                 _crossingDailyActivities.value?.turnipPrices,
                 turnipPriceType,
                 updatedPrice
+            )
+        }
+    }
+
+    fun onVillagerInteractionGiftClicked(
+        villagerInteractionToChange: VillagerInteraction,
+        currentVillagerInteraction: List<VillagerInteraction>
+    ) {
+        viewModelScope.launch {
+            villagerInteractionGiftClicked(
+                villagerInteractionToChange,
+                currentVillagerInteraction
+            )
+        }
+    }
+
+    fun onVillagerInteractionTalkedToClicked(
+        villagerInteractionToChange: VillagerInteraction,
+        currentVillagerInteraction: List<VillagerInteraction>
+    ) {
+        viewModelScope.launch {
+            villagerInteractionTalkedToClicked(
+                villagerInteractionToChange,
+                currentVillagerInteraction
             )
         }
     }

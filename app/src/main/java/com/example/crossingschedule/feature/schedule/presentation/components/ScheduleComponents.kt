@@ -24,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.gesture.longPressGestureFilter
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.layout.ContentScale
@@ -433,7 +434,9 @@ fun VillagerInteractionsList(
     modifier: Modifier = Modifier,
     villagerInteractions: List<VillagerInteraction>,
     onAddVillagerClicked: (String) -> Unit,
-    onVillagerInteractionDeleted: (VillagerInteraction) -> Unit
+    onVillagerInteractionDeleted: (VillagerInteraction) -> Unit,
+    onVillagerGiftClicked: (VillagerInteraction, List<VillagerInteraction>) -> Unit,
+    onVillagerTalkedToClicked: (VillagerInteraction, List<VillagerInteraction>) -> Unit,
 ) {
     CrossingCard(modifier = modifier) {
         Column {
@@ -451,14 +454,22 @@ fun VillagerInteractionsList(
                         ) {
                             Text(text = (index + 1).toString())
                             Text(
-                                modifier = Modifier.padding(start = 8.dp),
+                                modifier = Modifier
+                                    .padding(start = 8.dp)
+                                    .weight(3f),
                                 text = villagerInteraction.villagerName,
                             )
                             Image(
                                 modifier = Modifier
+                                    .alpha(if (villagerInteraction.receivedGift) 1f else 0.3f)
                                     .size(24.dp)
                                     .clickable(
-                                        onClick = { /*TODO*/ },
+                                        onClick = {
+                                            onVillagerGiftClicked(
+                                                villagerInteraction,
+                                                villagerInteractions
+                                            )
+                                        },
                                         indication = rememberRipple(bounded = false, radius = 18.dp)
                                     ),
                                 bitmap = imageFromResource(
@@ -466,11 +477,18 @@ fun VillagerInteractionsList(
                                     R.drawable.present
                                 )
                             )
+                            Spacer(modifier = Modifier.width(8.dp))
                             Image(
                                 modifier = Modifier
+                                    .alpha(if (villagerInteraction.talkedTo) 1f else 0.3f)
                                     .size(24.dp)
                                     .clickable(
-                                        onClick = { /*TODO*/ },
+                                        onClick = {
+                                            onVillagerTalkedToClicked(
+                                                villagerInteraction,
+                                                villagerInteractions
+                                            )
+                                        },
                                         indication = rememberRipple(bounded = false, radius = 18.dp)
                                     ),
                                 bitmap = imageFromResource(

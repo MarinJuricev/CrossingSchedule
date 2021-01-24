@@ -117,7 +117,9 @@ fun SchedulePage(scheduleViewModel: ScheduleViewModel) {
                                 },
                             villagerInteractions = viewState.value.villagersInteraction,
                             onAddVillagerClicked = scheduleViewModel::onNewVillagerClicked,
-                            onVillagerInteractionDeleted = scheduleViewModel::onVillagerInteractionsDeleted
+                            onVillagerInteractionDeleted = scheduleViewModel::onVillagerInteractionsDeleted,
+                            onVillagerGiftClicked = scheduleViewModel::onVillagerInteractionGiftClicked,
+                            onVillagerTalkedToClicked = scheduleViewModel::onVillagerInteractionTalkedToClicked
                         )
                         CrossingNotes(
                             modifier = Modifier
