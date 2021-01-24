@@ -1,8 +1,8 @@
 package com.example.crossingschedule.feature.schedule.data.repository
 
 import android.util.Log
-import com.example.crossingschedule.data.ext.getIslandActivitiesDocument
-import com.example.crossingschedule.data.ext.getIslandActivitiesForSpecifiedDateDocument
+import com.example.crossingschedule.feature.schedule.ext.getIslandActivitiesDocument
+import com.example.crossingschedule.feature.schedule.ext.getIslandActivitiesForSpecifiedDateDocument
 import com.example.crossingschedule.core.util.Either
 import com.example.crossingschedule.core.util.Failure
 import com.example.crossingschedule.core.util.Mapper

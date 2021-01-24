@@ -1,4 +1,4 @@
-package com.example.crossingschedule.data.ext
+package com.example.crossingschedule.feature.schedule.ext
 
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
