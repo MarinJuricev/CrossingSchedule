@@ -1,5 +1,7 @@
 package com.example.crossingschedule.feature.schedule.domain.usecase
 
+import com.example.crossingschedule.core.util.Either
+import com.example.crossingschedule.core.util.Failure
 import com.example.crossingschedule.feature.schedule.domain.model.CrossingTodo
 import com.example.crossingschedule.feature.schedule.domain.repository.ActivitiesRepository
 import javax.inject.Inject
@@ -11,10 +13,10 @@ class DeleteTodoItem @Inject constructor(
     suspend operator fun invoke(
         currentList: List<CrossingTodo>?,
         todoToBeDeleted: CrossingTodo
-    ) {
+    ): Either<Failure, Unit> {
         val listToBeSent = generateListToBeSent(currentList, todoToBeDeleted)
 
-        repository.updateCrossingTodoItems(listToBeSent)
+        return repository.updateCrossingTodoItems(listToBeSent)
     }
 
     private fun generateListToBeSent(

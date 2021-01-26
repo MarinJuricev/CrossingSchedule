@@ -4,7 +4,9 @@ import com.example.crossingschedule.R
 import com.example.crossingschedule.core.util.Either
 import com.example.crossingschedule.core.util.Failure
 import com.example.crossingschedule.core.util.IStringProvider
+import com.example.crossingschedule.feature.schedule.domain.model.CrossingTodo
 import com.example.crossingschedule.feature.schedule.domain.repository.ActivitiesRepository
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,12 +15,14 @@ import org.junit.Before
 import org.junit.Test
 
 private const val ERROR_CANNOT_BE_EMPTY = "ERROR_CANNOT_BE_EMPTY"
+private const val NEW_TODO = "NEW_TODO"
+private const val NEW_TODO_2 = "NEW_TODO_2"
 
 @ExperimentalCoroutinesApi
 class CreateNewTodoItemTest {
 
-    val activitiesRepository: ActivitiesRepository = mockk()
-    val stringProvider: IStringProvider = mockk()
+    private val activitiesRepository: ActivitiesRepository = mockk()
+    private val stringProvider: IStringProvider = mockk()
 
     lateinit var sut: CreateNewTodoItem
 
@@ -43,6 +47,55 @@ class CreateNewTodoItemTest {
                     ERROR_CANNOT_BE_EMPTY
                 )
             )
+
+            assert(actualResult == expectedResult)
+        }
+
+    @Test
+    fun `createNewTodoItem should trigger repository updateCrossingTodoItems with newly generatedList when the provided list is null`() =
+        runBlockingTest {
+            val expectedList = listOf(CrossingTodo(NEW_TODO))
+            coEvery { activitiesRepository.updateCrossingTodoItems(expectedList) } coAnswers {
+                Either.Right(Unit)
+            }
+
+            val actualResult = sut(null, NEW_TODO)
+            val expectedResult = Either.Right(Unit)
+
+            assert(actualResult == expectedResult)
+        }
+
+    @Test
+    fun `createNewTodoItem should trigger repository updateCrossingTodoItems with newly generatedList when the provided list is empty`() =
+        runBlockingTest {
+            val expectedList = listOf(CrossingTodo(NEW_TODO))
+            coEvery { activitiesRepository.updateCrossingTodoItems(expectedList) } coAnswers {
+                Either.Right(Unit)
+            }
+
+            val actualResult = sut(listOf(), NEW_TODO)
+            val expectedResult = Either.Right(Unit)
+
+            assert(actualResult == expectedResult)
+        }
+
+    @Test
+    fun `createNewTodoItem should trigger repository updateCrossingTodoItems with newly generatedList when the provided list is is not empty`() =
+        runBlockingTest {
+            val expectedList = listOf(
+                CrossingTodo(NEW_TODO),
+                CrossingTodo(NEW_TODO_2)
+            )
+            coEvery { activitiesRepository.updateCrossingTodoItems(expectedList) } coAnswers {
+                Either.Right(Unit)
+            }
+
+            val actualResult = sut(
+                listOf(
+                    CrossingTodo(NEW_TODO)
+                ), NEW_TODO_2
+            )
+            val expectedResult = Either.Right(Unit)
 
             assert(actualResult == expectedResult)
         }
