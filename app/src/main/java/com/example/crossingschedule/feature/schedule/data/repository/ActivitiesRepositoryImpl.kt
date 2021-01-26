@@ -1,13 +1,14 @@
 package com.example.crossingschedule.feature.schedule.data.repository
 
 import android.util.Log
-import com.example.crossingschedule.feature.schedule.ext.getIslandActivitiesDocument
-import com.example.crossingschedule.feature.schedule.ext.getIslandActivitiesForSpecifiedDateDocument
 import com.example.crossingschedule.core.util.Either
 import com.example.crossingschedule.core.util.Failure
 import com.example.crossingschedule.core.util.Mapper
+import com.example.crossingschedule.feature.schedule.data.factory.DefaultShopFactory
 import com.example.crossingschedule.feature.schedule.domain.model.*
 import com.example.crossingschedule.feature.schedule.domain.repository.ActivitiesRepository
+import com.example.crossingschedule.feature.schedule.ext.getIslandActivitiesDocument
+import com.example.crossingschedule.feature.schedule.ext.getIslandActivitiesForSpecifiedDateDocument
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
@@ -17,8 +18,12 @@ import kotlinx.coroutines.flow.callbackFlow
 @ExperimentalCoroutinesApi
 class ActivitiesRepositoryImpl(
     private val fireStore: FirebaseFirestore,
-    private val crossingTodosToDefaultCrossingTodosMapper: Mapper<List<CrossingTodo>, List<CrossingTodo>>
+    private val crossingTodosToDefaultCrossingTodosMapper: Mapper<List<CrossingTodo>, List<CrossingTodo>>,
+    private val defaultShopFactory: DefaultShopFactory
 ) : ActivitiesRepository {
+
+    //TODO CLEANUP THIS MESSY IMPLEMENTATION!!!!!
+
     override suspend fun getActivitiesFoSpecifiedDay(): Flow<Either<Failure, CrossingDailyActivities>> =
         callbackFlow {
             val defaultActivitiesJob = Job()
@@ -61,7 +66,20 @@ class ActivitiesRepositoryImpl(
                     if (document != null) {
                         val activities = document.toObject(CrossingDailyActivities::class.java)
                             ?: CrossingDailyActivities()
-                        continuation.resume(Either.Right(activities)) {}
+
+                        if (activities.shops.isNullOrEmpty()) {
+                            val activitiesWithDefaultShops =
+                                activities.copy(shops = defaultShopFactory.generate())
+
+                            continuation.resume(Either.Right(activitiesWithDefaultShops)) {
+                                Log.d("TEST", "CANCELLED", it)
+                            }
+                        } else {
+                            continuation.resume(Either.Right(activities)) {
+                                Log.d("TEST", "CANCELLED", it)
+                            }
+                        }
+
                     } else {
                         continuation.resume(Either.Left(Failure.RemoteFailure("TEST"))) {}
                     }

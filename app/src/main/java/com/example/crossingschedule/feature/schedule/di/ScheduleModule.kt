@@ -1,6 +1,8 @@
 package com.example.crossingschedule.feature.schedule.di
 
 import com.example.crossingschedule.core.util.Mapper
+import com.example.crossingschedule.feature.schedule.data.factory.DefaultShopFactory
+import com.example.crossingschedule.feature.schedule.data.factory.DefaultShopFactoryImpl
 import com.example.crossingschedule.feature.schedule.data.mapper.CrossingTodosToDefaultCrossingTodosMapper
 import com.example.crossingschedule.feature.schedule.data.repository.ActivitiesRepositoryImpl
 import com.example.crossingschedule.feature.schedule.domain.model.CrossingDailyActivities
@@ -19,8 +21,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
-import javax.inject.Singleton
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @Module
 @InstallIn(ActivityComponent::class)
 object ScheduleModule {
@@ -44,15 +47,22 @@ object ScheduleModule {
     @Provides
     fun provideActivitiesRepository(
         firebaseFireStore: FirebaseFirestore,
-        crossingTodosToDefaultCrossingTodosMapper: Mapper<List<CrossingTodo>, List<CrossingTodo>>
+        crossingTodosToDefaultCrossingTodosMapper: Mapper<List<CrossingTodo>, List<CrossingTodo>>,
+        defaultShopFactory: DefaultShopFactory
     ): ActivitiesRepository =
         ActivitiesRepositoryImpl(
             firebaseFireStore,
-            crossingTodosToDefaultCrossingTodosMapper
+            crossingTodosToDefaultCrossingTodosMapper,
+            defaultShopFactory
         )
 
     @Provides
     fun providesCrossingTodosToDefaultCrossingTodosMapper(
         crossingTodosToDefaultCrossingTodosMapper: CrossingTodosToDefaultCrossingTodosMapper
     ): Mapper<List<CrossingTodo>, List<CrossingTodo>> = crossingTodosToDefaultCrossingTodosMapper
+
+    @Provides
+    fun provideDefaultShopFactory(
+        defaultShopFactory: DefaultShopFactoryImpl
+    ): DefaultShopFactory = defaultShopFactory
 }
