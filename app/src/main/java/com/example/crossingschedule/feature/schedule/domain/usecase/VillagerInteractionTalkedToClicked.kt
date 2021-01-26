@@ -1,5 +1,7 @@
 package com.example.crossingschedule.feature.schedule.domain.usecase
 
+import com.example.crossingschedule.core.util.Either
+import com.example.crossingschedule.core.util.Failure
 import com.example.crossingschedule.feature.schedule.domain.model.VillagerInteraction
 import com.example.crossingschedule.feature.schedule.domain.repository.ActivitiesRepository
 import javax.inject.Inject
@@ -11,7 +13,7 @@ class VillagerInteractionTalkedToClicked @Inject constructor(
     suspend operator fun invoke(
         villagerInteractionToChange: VillagerInteraction,
         currentVillagerInteraction: List<VillagerInteraction>
-    ) {
+    ): Either<Failure, Unit> {
         val updatedList = currentVillagerInteraction.map {
             if (villagerInteractionToChange.villagerName == it.villagerName) {
                 villagerInteractionToChange.copy(talkedTo = !villagerInteractionToChange.talkedTo)
@@ -20,6 +22,6 @@ class VillagerInteractionTalkedToClicked @Inject constructor(
             }
         }
 
-        repository.updateVillagerInteractions(updatedList)
+        return repository.updateVillagerInteractions(updatedList)
     }
 }

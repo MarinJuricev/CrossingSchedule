@@ -1,5 +1,7 @@
 package com.example.crossingschedule.feature.schedule.domain.usecase
 
+import com.example.crossingschedule.core.util.Either
+import com.example.crossingschedule.core.util.Failure
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.schedule.domain.model.Shop
 import com.example.crossingschedule.feature.schedule.domain.repository.ActivitiesRepository
@@ -14,11 +16,11 @@ class ShopItemDoneClicked @Inject constructor(
     suspend operator fun invoke(
         currentList: List<UiShop>?,
         clickedItem: UiShop
-    ) {
+    ): Either<Failure, Unit> {
         //TODO add a ID field, don't just compare with the message
         val listToBeSent = generateListToBeSent(currentList, clickedItem)
 
-        repository.updateShopItems(uiShopListToShopListMapper.map(listToBeSent))
+        return repository.updateShopItems(uiShopListToShopListMapper.map(listToBeSent))
     }
 
     private fun generateListToBeSent(
