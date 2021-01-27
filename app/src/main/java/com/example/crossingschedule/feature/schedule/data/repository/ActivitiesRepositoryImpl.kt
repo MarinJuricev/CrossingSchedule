@@ -7,6 +7,8 @@ import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.schedule.data.factory.DefaultShopFactory
 import com.example.crossingschedule.feature.schedule.domain.model.*
 import com.example.crossingschedule.feature.schedule.domain.repository.ActivitiesRepository
+import com.example.crossingschedule.feature.schedule.ext.createEmptyDocument
+import com.example.crossingschedule.feature.schedule.ext.documentExist
 import com.example.crossingschedule.feature.schedule.ext.getIslandActivitiesDocument
 import com.example.crossingschedule.feature.schedule.ext.getIslandActivitiesForSpecifiedDateDocument
 import com.google.firebase.firestore.FirebaseFirestore
@@ -14,6 +16,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlin.coroutines.resume
 
 @ExperimentalCoroutinesApi
 class ActivitiesRepositoryImpl(
@@ -26,7 +29,16 @@ class ActivitiesRepositoryImpl(
 
     override suspend fun getActivitiesFoSpecifiedDay(): Flow<Either<Failure, CrossingDailyActivities>> =
         callbackFlow {
+            if (!fireStore.documentExist("TEST", "TEST")) {
+                fireStore.createEmptyDocument("TEST", "TEST")
+            }
+
             val defaultActivitiesJob = Job()
+
+            fireStore.collection("/users/IYwmWMpVP3aV4RmWEa8q/islands/TdWrr3sOWOzylTApiuV6/date/")
+                .document("12.01.2021")
+                .set(CrossingTodo())
+
 
             val listener = fireStore
                 .collection("/users/IYwmWMpVP3aV4RmWEa8q/islands/TdWrr3sOWOzylTApiuV6/date/")//TODO Actually get the user/island id from somewhere
@@ -71,21 +83,23 @@ class ActivitiesRepositoryImpl(
                             val activitiesWithDefaultShops =
                                 activities.copy(shops = defaultShopFactory.generate())
 
-                            continuation.resume(Either.Right(activitiesWithDefaultShops)) {
-                                Log.d("TEST", "CANCELLED", it)
-                            }
+                            continuation.resume(Either.Right(activitiesWithDefaultShops))
                         } else {
-                            continuation.resume(Either.Right(activities)) {
-                                Log.d("TEST", "CANCELLED", it)
-                            }
+                            continuation.resume(Either.Right(activities))
                         }
 
                     } else {
-                        continuation.resume(Either.Left(Failure.RemoteFailure("TEST"))) {}
+                        continuation.resume(Either.Left(Failure.RemoteFailure("TEST")))
                     }
                 }.addOnFailureListener { exception ->
-                    continuation.resume(Either.Left(Failure.RemoteFailure("TEST"))) {}
-                    Log.d("TEST", "get failed with ", exception)
+                    continuation.resume(
+                        Either.Left(
+                            Failure.RemoteFailure(
+                                exception.message
+                                    ?: "Unknown error occurred" //TODO provide localized value with StringProvider
+                            )
+                        )
+                    )
                 }
         }
     }
