@@ -27,11 +27,10 @@ class ActivitiesRepositoryImpl(
 
     //TODO CLEANUP THIS MESSY IMPLEMENTATION!!!!!
 
-    override suspend fun getActivitiesFoSpecifiedDay(): Flow<Either<Failure, CrossingDailyActivities>> =
-        callbackFlow {
-            if (!fireStore.documentExist("TEST", "TEST")) {
-                fireStore.createEmptyDocument("TEST", "TEST")
-            }
+    override suspend fun getActivitiesFoSpecifiedDay(selectedDate: String): Flow<Either<Failure, CrossingDailyActivities>> {
+        handleEmptyDocumentCase()
+
+        return callbackFlow {
 
             val defaultActivitiesJob = Job()
 
@@ -66,6 +65,13 @@ class ActivitiesRepositoryImpl(
                 Log.d("Cleanup", "Removed listener $listener")
             }
         }
+    }
+
+    private suspend fun handleEmptyDocumentCase() {
+        if (!fireStore.documentExist("TEST", "TEST")) {
+            fireStore.createEmptyDocument("TEST", "TEST")
+        }
+    }
 
     override suspend fun getDefaultIslandActivities(): Either<Failure, CrossingDailyActivities> {
         val activitiesReference = fireStore

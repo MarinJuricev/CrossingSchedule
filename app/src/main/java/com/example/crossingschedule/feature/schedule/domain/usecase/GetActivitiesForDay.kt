@@ -16,5 +16,5 @@ class GetActivitiesForDay @Inject constructor(
         month: Int,
         day: Int
     ): Flow<Either<Failure, CrossingDailyActivities>> =
-        repository.getActivitiesFoSpecifiedDay()
+        repository.getActivitiesFoSpecifiedDay("12.01.2021")
 }
