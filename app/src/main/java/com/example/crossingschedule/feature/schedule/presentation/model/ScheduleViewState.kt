@@ -4,7 +4,7 @@ import com.example.crossingschedule.feature.schedule.domain.model.CrossingTodo
 import com.example.crossingschedule.feature.schedule.domain.model.VillagerInteraction
 
 data class ScheduleViewState(
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val errorMessage: String = "",
     val dateOptions: DateOptions = DateOptions(),
     val shops: List<UiShop> = emptyList(),

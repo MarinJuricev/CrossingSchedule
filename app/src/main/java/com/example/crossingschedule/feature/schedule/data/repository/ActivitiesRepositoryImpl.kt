@@ -31,17 +31,11 @@ class ActivitiesRepositoryImpl(
         handleEmptyDocumentCase()
 
         return callbackFlow {
-
             val defaultActivitiesJob = Job()
-
-            fireStore.collection("/users/IYwmWMpVP3aV4RmWEa8q/islands/TdWrr3sOWOzylTApiuV6/date/")
-                .document("12.01.2021")
-                .set(CrossingTodo())
-
 
             val listener = fireStore
                 .collection("/users/IYwmWMpVP3aV4RmWEa8q/islands/TdWrr3sOWOzylTApiuV6/date/")//TODO Actually get the user/island id from somewhere
-                .document("12.01.2021") //TODO Actually implement the date change
+                .document(selectedDate)
                 .addSnapshotListener { value, error ->
                     if (error != null && error.localizedMessage != null) {
                         offer(Either.Left(Failure.RemoteFailure(error.localizedMessage!!)))

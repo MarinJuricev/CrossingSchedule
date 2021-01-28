@@ -22,8 +22,6 @@ import com.example.crossingschedule.feature.schedule.presentation.model.Schedule
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SchedulePage(scheduleViewModel: ScheduleViewModel) {
-    scheduleViewModel.getActivitiesForDay(0, 0, 0)//TODO ACTUALLY IMPLEMENT MULTIPLE DAYS
-
     val viewState =
         scheduleViewModel.crossingDailyActivities.observeAsState(ScheduleViewState())
     val snackBarHostState = remember { SnackbarHostState() }
@@ -34,6 +32,7 @@ fun SchedulePage(scheduleViewModel: ScheduleViewModel) {
         Box {
             BackgroundImage(resourceId = R.drawable.home_background)
             if (viewState.value.isLoading) {
+                scheduleViewModel.getActivitiesForToday()
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             } else {
                 Crossfade(

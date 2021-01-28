@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.crossingschedule.core.util.Either
+import com.example.crossingschedule.core.util.IDateHandler
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.schedule.domain.model.CrossingDailyActivities
 import com.example.crossingschedule.feature.schedule.domain.model.CrossingTodo
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 
 class ScheduleViewModel @ViewModelInject constructor(
     private val getActivitiesForDay: GetActivitiesForDay,
+    private val dateHandler: IDateHandler,
     private val todoItemDoneClicked: TodoItemDoneClicked,
     private val createNewTodoItem: CreateNewTodoItem,
     private val deleteTodoItem: DeleteTodoItem,
@@ -49,6 +51,28 @@ class ScheduleViewModel @ViewModelInject constructor(
             }
         }
     }
+
+    // Only gets called on the app launch, isLoading should already be set from the viewStateMapper,
+    // there is no need set it here again
+    fun getActivitiesForToday() {
+        viewModelScope.launch {
+            val currentCrossingDay = dateHandler.provideCurrentCrossingDay()
+
+            getActivitiesForDay.invoke(
+                currentCrossingDay.year,
+                currentCrossingDay.month,
+                currentCrossingDay.day
+            ).collect {
+                when (it) {
+                    is Either.Right -> _crossingDailyActivities.postValue(
+                        activitiesToScheduleViewStateMapper.map(it.value)
+                    )
+                    is Either.Left -> Log.d("FAIL SILENTLY FOR NOW", it.error.toString())
+                }
+            }
+        }
+    }
+
 
     fun onTodoItemChanged(updatedItem: CrossingTodo) {
         viewModelScope.launch {
