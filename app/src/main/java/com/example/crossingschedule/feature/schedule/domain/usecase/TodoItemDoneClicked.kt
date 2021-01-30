@@ -11,20 +11,21 @@ class TodoItemDoneClicked @Inject constructor(
 ) {
 
     suspend operator fun invoke(
-        currentList: List<CrossingTodo>?,
+        currentList: List<CrossingTodo>,
+        currentDate: String,
         clickedItem: CrossingTodo
     ): Either<Failure, Unit> {
         //TODO add a ID field, don't just compare with the message
         val listToBeSent = generateListToBeSent(currentList, clickedItem)
 
-        return repository.updateCrossingTodoItems(listToBeSent)
+        return repository.updateCrossingTodoItems(listToBeSent, currentDate)
     }
 
     private fun generateListToBeSent(
-        currentList: List<CrossingTodo>?,
+        currentList: List<CrossingTodo>,
         clickedItem: CrossingTodo
     ): List<CrossingTodo> =
-        if (currentList.isNullOrEmpty()) {
+        if (currentList.isEmpty()) {
             listOf(clickedItem)
         } else {
             currentList.map { currentTodo ->
@@ -34,6 +35,4 @@ class TodoItemDoneClicked @Inject constructor(
                     currentTodo
             }
         }
-
-
 }

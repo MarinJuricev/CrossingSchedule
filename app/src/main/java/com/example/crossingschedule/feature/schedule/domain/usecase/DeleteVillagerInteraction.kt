@@ -11,7 +11,8 @@ class DeleteVillagerInteraction @Inject constructor(
 ) {
 
     suspend operator fun invoke(
-        currentList: List<VillagerInteraction>?,
+        currentList: List<VillagerInteraction>,
+        currentDate: String,
         villagerInteractionToBeDeleted: VillagerInteraction
     ): Either<Failure, Unit> {
         val listToBeSent = generateListToBeSent(
@@ -19,14 +20,14 @@ class DeleteVillagerInteraction @Inject constructor(
             villagerInteractionToBeDeleted
         )
 
-        return repository.updateVillagerInteractions(listToBeSent)
+        return repository.updateVillagerInteractions(listToBeSent, currentDate)
     }
 
     private fun generateListToBeSent(
-        currentList: List<VillagerInteraction>?,
+        currentList: List<VillagerInteraction>,
         villagerInteractionToBeDeleted: VillagerInteraction
     ): List<VillagerInteraction> =
-        if (currentList.isNullOrEmpty()) {
+        if (currentList.isEmpty()) {
             listOf(villagerInteractionToBeDeleted)
         } else {
             currentList.minus(villagerInteractionToBeDeleted)

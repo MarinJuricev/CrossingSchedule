@@ -14,7 +14,8 @@ class CreateNewTodoItem @Inject constructor(
 ) {
 
     suspend operator fun invoke(
-        currentList: List<CrossingTodo>?,
+        currentList: List<CrossingTodo>,
+        currentDate: String,
         newTodoItemMessage: String
     ): Either<Failure, Unit> {
         if (newTodoItemMessage.isBlank()) {
@@ -24,14 +25,14 @@ class CreateNewTodoItem @Inject constructor(
         val newTodoItem = CrossingTodo(newTodoItemMessage)
         val listToBeSent = generateListToBeSent(currentList, newTodoItem)
 
-        return repository.updateCrossingTodoItems(listToBeSent)
+        return repository.updateCrossingTodoItems(listToBeSent, currentDate)
     }
 
     private fun generateListToBeSent(
-        currentList: List<CrossingTodo>?,
+        currentList: List<CrossingTodo>,
         newTodoItem: CrossingTodo
     ): List<CrossingTodo> =
-        if (currentList.isNullOrEmpty()) {
+        if (currentList.isEmpty()) {
             listOf(newTodoItem)
         } else {
             currentList.plus(newTodoItem)

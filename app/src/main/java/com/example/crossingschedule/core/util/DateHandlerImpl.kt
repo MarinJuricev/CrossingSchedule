@@ -25,7 +25,7 @@ class DateHandlerImpl @Inject constructor() : IDateHandler {
             set(Calendar.MONTH, month)
             set(Calendar.DAY_OF_MONTH, day)
         }
-        val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val format = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
 
         return format.format(formattedDate.time)
     }

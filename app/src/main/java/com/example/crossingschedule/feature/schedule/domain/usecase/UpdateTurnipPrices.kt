@@ -15,51 +15,25 @@ class UpdateTurnipPrices @Inject constructor(
 ) {
 
     suspend operator fun invoke(
-        currentPrices: UiTurnipPrices?,
+        currentPrices: UiTurnipPrices,
+        currentDate: String,
         turnipPriceType: TurnipPriceType,
         updatedPrice: String,
     ): Either<Failure, Unit> {
-        val turnipPrices = nullableMapToTurnipPrices(currentPrices)
         val updatesTurnipPrices = generateTurnipPrices(
-            turnipPrices,
+            uiTurnipPricesToTurnipPricesMapper.map(currentPrices),
             turnipPriceType,
             updatedPrice
         )
 
-        return repository.updateTurnipPrices(updatesTurnipPrices)
+        return repository.updateTurnipPrices(updatesTurnipPrices, currentDate)
     }
 
-    private fun nullableMapToTurnipPrices(currentPrices: UiTurnipPrices?) =
-        if (currentPrices != null) {
-            uiTurnipPricesToTurnipPricesMapper.map(currentPrices)
-        } else {
-            null
-        }
-
     private fun generateTurnipPrices(
-        currentPrices: TurnipPrices?,
-        turnipPriceType: TurnipPriceType,
-        updatedPrice: String
-    ): TurnipPrices =
-        if (currentPrices == null) {
-            buildFromNullablePrice(turnipPriceType, updatedPrice)
-        } else {
-            buildNonNullablePrice(currentPrices, turnipPriceType, updatedPrice)
-        }
-
-    private fun buildFromNullablePrice(
-        turnipPriceType: TurnipPriceType,
-        updatedPrice: String
-    ) = if (turnipPriceType == TurnipPriceType.AM)
-        TurnipPrices(amPrice = updatedPrice.toInt())
-    else
-        TurnipPrices(pmPrice = updatedPrice.toInt())
-
-    private fun buildNonNullablePrice(
         currentPrices: TurnipPrices,
         turnipPriceType: TurnipPriceType,
         updatedPrice: String
-    ) =
+    ): TurnipPrices =
         if (turnipPriceType == TurnipPriceType.AM)
             TurnipPrices(
                 amPrice = updatedPrice.toInt(),
@@ -70,5 +44,4 @@ class UpdateTurnipPrices @Inject constructor(
                 amPrice = currentPrices.amPrice,
                 pmPrice = updatedPrice.toInt()
             )
-
 }

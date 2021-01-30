@@ -2,8 +2,6 @@ package com.example.crossingschedule.feature.schedule.presentation
 
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.crossingschedule.core.util.Either
@@ -16,6 +14,8 @@ import com.example.crossingschedule.feature.schedule.domain.model.VillagerIntera
 import com.example.crossingschedule.feature.schedule.domain.usecase.*
 import com.example.crossingschedule.feature.schedule.presentation.model.ScheduleViewState
 import com.example.crossingschedule.feature.schedule.presentation.model.UiShop
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -35,17 +35,20 @@ class ScheduleViewModel @ViewModelInject constructor(
     private val activitiesToScheduleViewStateMapper: Mapper<ScheduleViewState, CrossingDailyActivities>
 ) : ViewModel() {
 
-    private val _crossingDailyActivities = MutableLiveData(ScheduleViewState())
-    val crossingDailyActivities: LiveData<ScheduleViewState> = _crossingDailyActivities
+    private val _crossingDailyActivities = MutableStateFlow(ScheduleViewState())
+    val crossingDailyActivities: StateFlow<ScheduleViewState> = _crossingDailyActivities
 
-    fun getActivitiesForDay(selectedYear: Int, selectedMonth: Int, selectedDay: Int) {
+    fun getActivitiesForDay(
+        selectedYear: Int,
+        selectedMonth: Int,
+        selectedDay: Int
+    ) {
         triggerViewStateLoading()
         viewModelScope.launch {
             getActivitiesForDay.invoke(selectedYear, selectedMonth, selectedDay).collect {
                 when (it) {
-                    is Either.Right -> _crossingDailyActivities.postValue(
+                    is Either.Right -> _crossingDailyActivities.value =
                         activitiesToScheduleViewStateMapper.map(it.value)
-                    )
                     is Either.Left -> Log.d("FAIL SILENTLY FOR NOW", it.error.toString())
                 }
             }
@@ -55,30 +58,22 @@ class ScheduleViewModel @ViewModelInject constructor(
     // Only gets called on the app launch, isLoading should already be set from the viewStateMapper,
     // there is no need set it here again
     fun getActivitiesForToday() {
-        viewModelScope.launch {
-            val currentCrossingDay = dateHandler.provideCurrentCrossingDay()
+        val currentCrossingDay = dateHandler.provideCurrentCrossingDay()
 
-            getActivitiesForDay.invoke(
-                currentCrossingDay.year,
-                currentCrossingDay.month,
-                currentCrossingDay.day
-            ).collect {
-                when (it) {
-                    is Either.Right -> _crossingDailyActivities.postValue(
-                        activitiesToScheduleViewStateMapper.map(it.value)
-                    )
-                    is Either.Left -> Log.d("FAIL SILENTLY FOR NOW", it.error.toString())
-                }
-            }
-        }
+        getActivitiesForDay(
+            currentCrossingDay.year,
+            currentCrossingDay.month,
+            currentCrossingDay.day
+        )
     }
 
 
     fun onTodoItemChanged(updatedItem: CrossingTodo) {
         viewModelScope.launch {
             todoItemDoneClicked(
-                _crossingDailyActivities.value?.crossingTodos,
-                updatedItem
+                _crossingDailyActivities.value.crossingTodos,
+                _crossingDailyActivities.value.dateOptions.formattedDate,
+                updatedItem,
             )
         }
     }
@@ -86,16 +81,15 @@ class ScheduleViewModel @ViewModelInject constructor(
     fun onTodoCreated(newTodoMessage: String) {
         viewModelScope.launch {
             when (val result = createNewTodoItem(
-                _crossingDailyActivities.value?.crossingTodos,
+                _crossingDailyActivities.value.crossingTodos,
+                _crossingDailyActivities.value.dateOptions.formattedDate,
                 newTodoMessage
             )
             ) {
-                is Either.Right -> _crossingDailyActivities.postValue(
-                    _crossingDailyActivities.value?.copy(errorMessage = "")
-                )
-                is Either.Left -> _crossingDailyActivities.postValue(
-                    _crossingDailyActivities.value?.copy(errorMessage = result.error.errorMessage)
-                )
+                is Either.Right -> _crossingDailyActivities.value =
+                    _crossingDailyActivities.value.copy(errorMessage = "")
+                is Either.Left -> _crossingDailyActivities.value =
+                    _crossingDailyActivities.value.copy(errorMessage = result.error.errorMessage)
             }
         }
     }
@@ -105,7 +99,8 @@ class ScheduleViewModel @ViewModelInject constructor(
     ) {
         viewModelScope.launch {
             deleteTodoItem(
-                _crossingDailyActivities.value?.crossingTodos,
+                _crossingDailyActivities.value.crossingTodos,
+                _crossingDailyActivities.value.dateOptions.formattedDate,
                 itemToBeDeleted
             )
         }
@@ -113,14 +108,18 @@ class ScheduleViewModel @ViewModelInject constructor(
 
     fun onNotesEdited(updatedNotes: String) {
         viewModelScope.launch {
-            updateNotes(updatedNotes)
+            updateNotes(
+                updatedNotes = updatedNotes,
+                currentDate = _crossingDailyActivities.value.dateOptions.formattedDate
+            )
         }
     }
 
     fun onShopChanged(updatedShop: UiShop) {
         viewModelScope.launch {
             shopItemDoneClicked(
-                _crossingDailyActivities.value?.shops,
+                _crossingDailyActivities.value.shops,
+                _crossingDailyActivities.value.dateOptions.formattedDate,
                 updatedShop
             )
         }
@@ -131,7 +130,8 @@ class ScheduleViewModel @ViewModelInject constructor(
     ) {
         viewModelScope.launch {
             createVillager(
-                _crossingDailyActivities.value?.villagersInteraction,
+                _crossingDailyActivities.value.villagersInteraction,
+                _crossingDailyActivities.value.dateOptions.formattedDate,
                 newVillagerName
             )
         }
@@ -142,7 +142,8 @@ class ScheduleViewModel @ViewModelInject constructor(
     ) {
         viewModelScope.launch {
             deleteVillagerInteraction(
-                _crossingDailyActivities.value?.villagersInteraction,
+                _crossingDailyActivities.value.villagersInteraction,
+                _crossingDailyActivities.value.dateOptions.formattedDate,
                 villagerInteractionToBeDeleted
             )
         }
@@ -154,7 +155,8 @@ class ScheduleViewModel @ViewModelInject constructor(
     ) {
         viewModelScope.launch {
             updateTurnipPrices(
-                _crossingDailyActivities.value?.turnipPrices,
+                _crossingDailyActivities.value.turnipPrices,
+                _crossingDailyActivities.value.dateOptions.formattedDate,
                 turnipPriceType,
                 updatedPrice
             )
@@ -167,6 +169,7 @@ class ScheduleViewModel @ViewModelInject constructor(
     ) {
         viewModelScope.launch {
             villagerInteractionGiftClicked(
+                _crossingDailyActivities.value.dateOptions.formattedDate,
                 villagerInteractionToChange,
                 currentVillagerInteraction
             )
@@ -179,6 +182,7 @@ class ScheduleViewModel @ViewModelInject constructor(
     ) {
         viewModelScope.launch {
             villagerInteractionTalkedToClicked(
+                _crossingDailyActivities.value.dateOptions.formattedDate,
                 villagerInteractionToChange,
                 currentVillagerInteraction
             )
@@ -186,6 +190,6 @@ class ScheduleViewModel @ViewModelInject constructor(
     }
 
     private fun triggerViewStateLoading() {
-        _crossingDailyActivities.value = _crossingDailyActivities.value?.copy(isLoading = true)
+        _crossingDailyActivities.value = _crossingDailyActivities.value.copy(isLoading = true)
     }
 }

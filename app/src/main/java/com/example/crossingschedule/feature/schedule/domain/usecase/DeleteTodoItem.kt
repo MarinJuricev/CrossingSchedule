@@ -11,19 +11,20 @@ class DeleteTodoItem @Inject constructor(
 ) {
 
     suspend operator fun invoke(
-        currentList: List<CrossingTodo>?,
+        currentList: List<CrossingTodo>,
+        currentDate: String,
         todoToBeDeleted: CrossingTodo
     ): Either<Failure, Unit> {
         val listToBeSent = generateListToBeSent(currentList, todoToBeDeleted)
 
-        return repository.updateCrossingTodoItems(listToBeSent)
+        return repository.updateCrossingTodoItems(listToBeSent, currentDate)
     }
 
     private fun generateListToBeSent(
-        currentList: List<CrossingTodo>?,
+        currentList: List<CrossingTodo>,
         todoToBeDeleted: CrossingTodo
     ): List<CrossingTodo> =
-        if (currentList.isNullOrEmpty()) {
+        if (currentList.isEmpty()) {
             listOf(todoToBeDeleted)
         } else {
             currentList.minus(todoToBeDeleted)

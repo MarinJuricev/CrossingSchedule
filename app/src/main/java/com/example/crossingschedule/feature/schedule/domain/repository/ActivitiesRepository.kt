@@ -8,10 +8,29 @@ import kotlinx.coroutines.flow.Flow
 interface ActivitiesRepository {
     suspend fun getActivitiesFoSpecifiedDay(selectedDate: String): Flow<Either<Failure, CrossingDailyActivities>>
     suspend fun getDefaultIslandActivities(): Either<Failure, CrossingDailyActivities>
-    suspend fun updateCrossingTodoItems(updatedList: List<CrossingTodo>): Either<Failure, Unit>
-    suspend fun updateShopItems(updatedList: List<Shop>): Either<Failure, Unit>
-    suspend fun updateNotes(updatedNotes: String): Either<Failure, Unit>
-    suspend fun updateVillagerInteractions(updatedList: List<VillagerInteraction>): Either<Failure, Unit>
-    suspend fun updateTurnipPrices(updatedTurnipPrices: TurnipPrices): Either<Failure, Unit>
+    suspend fun updateCrossingTodoItems(
+        updatedList: List<CrossingTodo>,
+        currentDate: String
+    ): Either<Failure, Unit>
+
+    suspend fun updateShopItems(
+        updatedList: List<Shop>,
+        currentDate: String
+    ): Either<Failure, Unit>
+
+    suspend fun updateNotes(
+        updatedNotes: String,
+        currentDate: String
+    ): Either<Failure, Unit>
+
+    suspend fun updateVillagerInteractions(
+        updatedList: List<VillagerInteraction>,
+        currentDate: String
+    ): Either<Failure, Unit>
+
+    suspend fun updateTurnipPrices(
+        updatedTurnipPrices: TurnipPrices,
+        currentDate: String
+    ): Either<Failure, Unit>
 
 }

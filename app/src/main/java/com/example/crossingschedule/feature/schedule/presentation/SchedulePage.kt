@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -23,7 +24,7 @@ import com.example.crossingschedule.feature.schedule.presentation.model.Schedule
 @Composable
 fun SchedulePage(scheduleViewModel: ScheduleViewModel) {
     val viewState =
-        scheduleViewModel.crossingDailyActivities.observeAsState(ScheduleViewState())
+        scheduleViewModel.crossingDailyActivities.collectAsState(ScheduleViewState())
     val snackBarHostState = remember { SnackbarHostState() }
 
     Scaffold(

@@ -28,7 +28,7 @@ class ActivitiesRepositoryImpl(
     //TODO CLEANUP THIS MESSY IMPLEMENTATION!!!!!
 
     override suspend fun getActivitiesFoSpecifiedDay(selectedDate: String): Flow<Either<Failure, CrossingDailyActivities>> {
-        handleEmptyDocumentCase()
+        handleEmptyDocumentCase(selectedDate)
 
         return callbackFlow {
             val defaultActivitiesJob = Job()
@@ -61,9 +61,9 @@ class ActivitiesRepositoryImpl(
         }
     }
 
-    private suspend fun handleEmptyDocumentCase() {
-        if (!fireStore.documentExist("TEST", "TEST")) {
-            fireStore.createEmptyDocument("TEST", "TEST")
+    private suspend fun handleEmptyDocumentCase(selectedDate: String) {
+        if (!fireStore.documentExist("TEST", selectedDate)) {
+            fireStore.createEmptyDocument("TEST", selectedDate)
         }
     }
 
@@ -104,11 +104,17 @@ class ActivitiesRepositoryImpl(
         }
     }
 
-    override suspend fun updateCrossingTodoItems(updatedList: List<CrossingTodo>): Either<Failure, Unit> {
+    override suspend fun updateCrossingTodoItems(
+        updatedList: List<CrossingTodo>,
+        currentDate: String
+    ): Either<Failure, Unit> {
         updateDefaultTodosWithDefaultValues(updatedList)
 
-        val islandReference =
-            fireStore.getIslandActivitiesForSpecifiedDateDocument("TEST", "TEST", "TEST")
+        val islandReference = fireStore.getIslandActivitiesForSpecifiedDateDocument(
+            "TEST",
+            "TEST",
+            currentDate
+        )
 
         fireStore.runTransaction { transaction ->
             transaction.update(islandReference, "crossingTodos", updatedList)
@@ -128,9 +134,15 @@ class ActivitiesRepositoryImpl(
         }
     }
 
-    override suspend fun updateShopItems(updatedList: List<Shop>): Either<Failure, Unit> {
-        val islandReference =
-            fireStore.getIslandActivitiesForSpecifiedDateDocument("TEST", "TEST", "TEST")
+    override suspend fun updateShopItems(
+        updatedList: List<Shop>,
+        currentDate: String
+    ): Either<Failure, Unit> {
+        val islandReference = fireStore.getIslandActivitiesForSpecifiedDateDocument(
+            "TEST",
+            "TEST",
+            currentDate
+        )
 
         fireStore.runTransaction { transaction ->
             transaction.update(islandReference, "shops", updatedList)
@@ -141,9 +153,15 @@ class ActivitiesRepositoryImpl(
         return Either.Right(Unit)
     }
 
-    override suspend fun updateNotes(updatedNotes: String): Either<Failure, Unit> {
-        val islandReference =
-            fireStore.getIslandActivitiesForSpecifiedDateDocument("TEST", "TEST", "TEST")
+    override suspend fun updateNotes(
+        updatedNotes: String,
+        currentDate: String
+    ): Either<Failure, Unit> {
+        val islandReference = fireStore.getIslandActivitiesForSpecifiedDateDocument(
+            "TEST",
+            "TEST",
+            currentDate
+        )
 
         fireStore.runTransaction { transaction ->
             transaction.update(islandReference, "notes", updatedNotes)
@@ -154,9 +172,15 @@ class ActivitiesRepositoryImpl(
         return Either.Right(Unit)
     }
 
-    override suspend fun updateVillagerInteractions(updatedList: List<VillagerInteraction>): Either<Failure, Unit> {
-        val islandReference =
-            fireStore.getIslandActivitiesForSpecifiedDateDocument("TEST", "TEST", "TEST")
+    override suspend fun updateVillagerInteractions(
+        updatedList: List<VillagerInteraction>,
+        currentDate: String
+    ): Either<Failure, Unit> {
+        val islandReference = fireStore.getIslandActivitiesForSpecifiedDateDocument(
+            "TEST",
+            "TEST",
+            currentDate
+        )
         val activitiesReference = fireStore.getIslandActivitiesDocument("TEST", "TEST")
 
         fireStore.runTransaction { transaction ->
@@ -172,9 +196,15 @@ class ActivitiesRepositoryImpl(
         return Either.Right(Unit)
     }
 
-    override suspend fun updateTurnipPrices(updatedTurnipPrices: TurnipPrices): Either<Failure, Unit> {
-        val islandReference =
-            fireStore.getIslandActivitiesForSpecifiedDateDocument("TEST", "TEST", "TEST")
+    override suspend fun updateTurnipPrices(
+        updatedTurnipPrices: TurnipPrices,
+        currentDate: String
+    ): Either<Failure, Unit> {
+        val islandReference = fireStore.getIslandActivitiesForSpecifiedDateDocument(
+            "TEST",
+            "TEST",
+            currentDate
+        )
 
         fireStore.runTransaction { transaction ->
             transaction.update(islandReference, "turnipPrices", updatedTurnipPrices)

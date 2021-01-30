@@ -14,20 +14,24 @@ class ShopItemDoneClicked @Inject constructor(
 ) {
 
     suspend operator fun invoke(
-        currentList: List<UiShop>?,
+        currentList: List<UiShop>,
+        currentDate: String,
         clickedItem: UiShop
     ): Either<Failure, Unit> {
         //TODO add a ID field, don't just compare with the message
         val listToBeSent = generateListToBeSent(currentList, clickedItem)
 
-        return repository.updateShopItems(uiShopListToShopListMapper.map(listToBeSent))
+        return repository.updateShopItems(
+            uiShopListToShopListMapper.map(listToBeSent),
+            currentDate
+        )
     }
 
     private fun generateListToBeSent(
-        currentList: List<UiShop>?,
+        currentList: List<UiShop>,
         clickedItem: UiShop
     ): List<UiShop> =
-        if (currentList.isNullOrEmpty()) {
+        if (currentList.isEmpty()) {
             listOf(clickedItem.copy(isVisited = !clickedItem.isVisited))
         } else {
             currentList.map { currentTodo ->

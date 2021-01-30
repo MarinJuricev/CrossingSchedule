@@ -11,6 +11,7 @@ class VillagerInteractionTalkedToClicked @Inject constructor(
 ) {
 
     suspend operator fun invoke(
+        currentDate: String,
         villagerInteractionToChange: VillagerInteraction,
         currentVillagerInteraction: List<VillagerInteraction>
     ): Either<Failure, Unit> {
@@ -22,6 +23,6 @@ class VillagerInteractionTalkedToClicked @Inject constructor(
             }
         }
 
-        return repository.updateVillagerInteractions(updatedList)
+        return repository.updateVillagerInteractions(updatedList, currentDate)
     }
 }
