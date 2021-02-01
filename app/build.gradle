@@ -83,6 +83,10 @@ dependencies {
     implementation "com.google.firebase:firebase-auth-ktx"
     implementation "com.google.firebase:firebase-firestore-ktx"
 
+    // Compose Navigation
+    def nav_compose_version = "1.0.0-alpha06"
+    implementation "androidx.navigation:navigation-compose:$nav_compose_version"
+
     def hilt = '2.30.1-alpha'
     implementation "com.google.dagger:hilt-android:$hilt"
     kapt "com.google.dagger:hilt-android-compiler:$hilt"
