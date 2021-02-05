@@ -13,12 +13,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,6 +54,7 @@ fun BackgroundImage(
     modifier: Modifier = Modifier,
 ) {
     Image(
+        contentDescription = null,
         modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight(),
@@ -124,6 +125,7 @@ fun RawIngredientRow(
     Row(modifier = modifier) {
         //TODO: Get the ingredients from BE and just map through the list
         Image(
+            contentDescription = null,
             modifier = Modifier
                 .size(42.dp)
                 .padding(top = 4.dp),
@@ -133,6 +135,7 @@ fun RawIngredientRow(
             )
         )
         Image(
+            contentDescription = null,
             modifier = Modifier
                 .size(42.dp)
                 .padding(bottom = 4.dp),
@@ -142,6 +145,7 @@ fun RawIngredientRow(
             )
         )
         Image(
+            contentDescription = null,
             modifier = Modifier
                 .size(42.dp)
                 .padding(top = 4.dp),
@@ -151,6 +155,7 @@ fun RawIngredientRow(
             )
         )
         Image(
+            contentDescription = null,
             modifier = Modifier
                 .size(42.dp)
                 .padding(bottom = 4.dp),
@@ -160,6 +165,7 @@ fun RawIngredientRow(
             )
         )
         Image(
+            contentDescription = null,
             modifier = Modifier
                 .size(42.dp)
                 .padding(top = 4.dp),
@@ -229,23 +235,23 @@ fun CrossingTodoList(
                 modifier = Modifier
                     .padding(bottom = 8.dp, top = 8.dp),
                 content = {
-                    items(todos) { todo ->
+                    items(todos.size) { index ->
                         Row(
                             modifier = Modifier
                                 .padding(4.dp)
                                 .longPressGestureFilter {
-                                    onTodoDeleted(todo)
+                                    onTodoDeleted(todos[index])
                                 },
                             verticalAlignment = Alignment.CenterVertically,
 
                             ) {
                             Checkbox(
-                                checked = todo.isDone,
-                                onCheckedChange = { onDoneClick(todo) },
+                                checked = todos[index].isDone,
+                                onCheckedChange = { onDoneClick(todos[index]) },
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = todo.message,
+                                text = todos[index].message,
                                 style = crossingTypography.h4,
                             )
                         }
@@ -288,7 +294,10 @@ fun AnimatedAddTodoContainer(
                             }
                     },
                 ) {
-                    Icon(imageVector = Icons.Default.Add)
+                    Icon(
+                        contentDescription = null,
+                        imageVector = Icons.Default.Add
+                    )
                 }
             }
         },
@@ -331,22 +340,23 @@ fun CrossingShops(
                     .padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceAround,
                 content = {
-                    items(shops) { shop ->
+                    items(shops.size) { index ->
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Image(
+                                contentDescription = null,
                                 modifier = Modifier
                                     .size(42.dp)
                                     .padding(vertical = 8.dp),
                                 bitmap = imageFromResource(
                                     AmbientContext.current.resources,
-                                    shop.resourceImageId
+                                    shops[index].resourceImageId
                                 )
                             )
                             Checkbox(
-                                checked = shop.isVisited,
-                                onCheckedChange = { onShopClick(shop) })
+                                checked = shops[index].isVisited,
+                                onCheckedChange = { onShopClick(shops[index]) })
                         }
                     }
                 }
@@ -376,6 +386,7 @@ fun TurnipPriceList(
                     style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
                 )
                 Image(
+                    contentDescription = null,
                     modifier = Modifier
                         .padding(start = 8.dp)
                         .size(36.dp),
@@ -460,6 +471,7 @@ fun VillagerInteractionsList(
                                 text = villagerInteraction.villagerName,
                             )
                             Image(
+                                contentDescription = null,
                                 modifier = Modifier
                                     .alpha(if (villagerInteraction.receivedGift) 1f else 0.3f)
                                     .size(24.dp)
@@ -470,7 +482,7 @@ fun VillagerInteractionsList(
                                                 villagerInteractions
                                             )
                                         },
-                                        indication = rememberRipple(bounded = false, radius = 18.dp)
+//                                        indication = rememberRipple(bounded = false, radius = 18.dp)
                                     ),
                                 bitmap = imageFromResource(
                                     AmbientContext.current.resources,
@@ -479,6 +491,7 @@ fun VillagerInteractionsList(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Image(
+                                contentDescription = null,
                                 modifier = Modifier
                                     .alpha(if (villagerInteraction.talkedTo) 1f else 0.3f)
                                     .size(24.dp)
@@ -489,7 +502,7 @@ fun VillagerInteractionsList(
                                                 villagerInteractions
                                             )
                                         },
-                                        indication = rememberRipple(bounded = false, radius = 18.dp)
+//                                        indication = rememberRipple(bounded = false, radius = 18.dp)
                                     ),
                                 bitmap = imageFromResource(
                                     AmbientContext.current.resources,
@@ -535,7 +548,10 @@ fun AnimatedAddVillagerContainer(
                             }
                     },
                 ) {
-                    Icon(imageVector = Icons.Default.Add)
+                    Icon(
+                        contentDescription = null,
+                        imageVector = Icons.Default.Add
+                    )
                 }
             }
         }
