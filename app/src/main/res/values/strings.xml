@@ -14,4 +14,6 @@
     <string name="dismiss">Dismiss</string>
     <string name="add_new_villager">Add new Villager</string>
     <string name="villager_name">Villager Name</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
 </resources>
