@@ -37,7 +37,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
-import com.example.crossingschedule.core.ui.crossingTypography
 import com.example.crossingschedule.feature.schedule.domain.model.CrossingTodo
 import com.example.crossingschedule.feature.schedule.domain.model.TurnipPriceType
 import com.example.crossingschedule.feature.schedule.domain.model.VillagerInteraction
@@ -79,7 +78,7 @@ fun DailyCheckListCard(
             modifier = Modifier
                 .padding(start = 24.dp, top = 8.dp, bottom = 8.dp, end = 16.dp),
             text = stringResource(R.string.daily_checklist),
-            style = crossingTypography.h2,
+            style = MaterialTheme.typography.h2,
         )
     }
 }
@@ -113,7 +112,7 @@ fun CurrentDateCard(
                 dateOptions.formattedDate
             ),
             textAlign = TextAlign.Center,
-            style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
+            style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
         )
     }
 }
@@ -252,7 +251,7 @@ fun CrossingTodoList(
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = todos[index].message,
-                                style = crossingTypography.h4,
+                                style = MaterialTheme.typography.h4,
                             )
                         }
                     }
@@ -282,7 +281,7 @@ fun AnimatedAddTodoContainer(
                     modifier = Modifier.padding(start = 16.dp),
                     textAlign = TextAlign.Center,
                     text = stringResource(id = R.string.add_todo),
-                    style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
                 )
 
                 IconButton(
@@ -332,7 +331,7 @@ fun CrossingShops(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
                 text = stringResource(R.string.check_each_shop),
                 textAlign = TextAlign.Center,
-                style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
+                style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
             )
             LazyRow(
                 modifier = Modifier
@@ -383,7 +382,7 @@ fun TurnipPriceList(
             ) {
                 Text(
                     text = stringResource(R.string.turnip_prices),
-                    style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
+                    style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
                 )
                 Image(
                     contentDescription = null,
@@ -537,7 +536,7 @@ fun AnimatedAddVillagerContainer(
                     modifier = Modifier.padding(start = 8.dp),
                     textAlign = TextAlign.Center,
                     text = stringResource(id = R.string.villagers),
-                    style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
                 )
                 IconButton(
                     onClick = {
@@ -591,7 +590,7 @@ fun CrossingNotes(
         ) {
             Text(
                 text = stringResource(R.string.notes),
-                style = crossingTypography.h6.copy(fontWeight = FontWeight.Bold),
+                style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
             )
             OutlinedTextField(
                 value = modifiedNotes.value,

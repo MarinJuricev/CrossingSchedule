@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.loadVectorResource
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
+import com.example.crossingschedule.feature.login.presentation.components.LoginComponent
 import com.example.crossingschedule.feature.login.presentation.components.LoginTab
 
 const val LOGIN_PAGE_ROUTE = "LOGIN_PAGE"
@@ -65,7 +66,7 @@ fun LoginPage(
                 }
             }
             when (selectedTabPosition.value) {
-                LOGIN_TAB_POSITION -> Text("RENDER THE ACTUAL LOGIN FLOW")
+                LOGIN_TAB_POSITION -> LoginComponent()
                 SIGN_UP_TAB_POSITION -> Text("RENDER THE SIGN UP")
                 else -> Text("Render some kind of error container")//TODO Add a Crossing Error container
             }

@@ -16,4 +16,5 @@
     <string name="villager_name">Villager Name</string>
     <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>
+    <string name="login_sales_pitch">Managing your islands has never been so easy!</string>
 </resources>
