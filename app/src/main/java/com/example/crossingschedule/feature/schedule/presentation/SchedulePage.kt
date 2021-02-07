@@ -21,7 +21,6 @@ import com.example.crossingschedule.feature.schedule.presentation.model.Schedule
 
 const val SCHEDULE_PAGE_ROUTE = "SCHEDULE_PAGE"
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SchedulePage(scheduleViewModel: ScheduleViewModel) {
     val viewState =

@@ -19,6 +19,7 @@ private val LightColorPalette = lightColors(
     secondary = teal200,
     background = Color.White,
 
+
     /* Other default colors to override
     background = Color.White,
     surface = Color.White,

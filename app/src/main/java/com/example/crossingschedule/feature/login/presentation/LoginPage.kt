@@ -30,7 +30,7 @@ fun LoginPage(
 ) {
     val selectedTabPosition = mutableStateOf(LOGIN_TAB_POSITION)
 
-    Scaffold() {
+    Scaffold {
         Column {
             Row(
                 modifier = Modifier.fillMaxWidth(),

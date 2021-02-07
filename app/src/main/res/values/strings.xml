@@ -14,7 +14,9 @@
     <string name="dismiss">Dismiss</string>
     <string name="add_new_villager">Add new Villager</string>
     <string name="villager_name">Villager Name</string>
-    <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>
     <string name="login_sales_pitch">Managing your islands has never been so easy!</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
 </resources>

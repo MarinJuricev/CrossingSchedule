@@ -2,14 +2,15 @@ package com.example.crossingschedule.feature.login.presentation.components
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
@@ -60,23 +61,100 @@ fun LoginComponent() {
         current = Any(),
         animation = tween(durationMillis = 500)
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
+        val emailText = mutableStateOf("")
+        val passwordText = mutableStateOf("")
+
+        ConstraintLayout(
+            modifier = Modifier.fillMaxHeight()
         ) {
-            Spacer(Modifier.height(64.dp))
+            val (appTitle, salesPitch,
+                emailTextField, passwordTextField,
+                bottomDecor, loginButton) = createRefs()
             Text(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(appTitle) {
+                        top.linkTo(parent.top, margin = 64.dp)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    },
                 text = stringResource(id = R.string.app_name),
                 style = MaterialTheme.typography.h1,
                 color = MaterialTheme.colors.primary,
                 textAlign = TextAlign.Center
             )
             Text(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .constrainAs(salesPitch) {
+                        top.linkTo(appTitle.bottom)
+                        start.linkTo(appTitle.start)
+                        end.linkTo(appTitle.end)
+                    },
                 text = stringResource(R.string.login_sales_pitch),
                 style = MaterialTheme.typography.h2,
                 color = MaterialTheme.colors.primary,
                 textAlign = TextAlign.Center
             )
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .constrainAs(emailTextField) {
+                        top.linkTo(salesPitch.bottom, margin = 64.dp)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    },
+                value = emailText.value,
+                onValueChange = { emailText.value = it },
+                singleLine = true,
+                label = { Text(stringResource(R.string.email)) },
+                onImeActionPerformed = { imeAction, _ ->
+                    if (imeAction == ImeAction.Done) {
+//                        onNewTodoCreated(addTodoText.value)
+//                        addTodoText.value = ""
+//                        animationState.value = AnimatedContainerState.PRESSED
+                    }
+                }
+            )
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .constrainAs(passwordTextField) {
+                        top.linkTo(emailTextField.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    },
+                value = passwordText.value,
+                onValueChange = { passwordText.value = it },
+                singleLine = true,
+                label = { Text(stringResource(R.string.password)) },
+                onImeActionPerformed = { imeAction, _ ->
+                    if (imeAction == ImeAction.Done) {
+//                        onNewTodoCreated(addTodoText.value)
+//                        addTodoText.value = ""
+//                        animationState.value = AnimatedContainerState.PRESSED
+                    }
+                }
+            )
+            Box(
+                modifier = Modifier
+                    .background(MaterialTheme.colors.primaryVariant)
+                    .height(64.dp)
+                    .fillMaxWidth()
+                    .constrainAs(bottomDecor) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom)
+                    },
+            )
+            OutlinedButton(onClick = { /*TODO*/ }) {
+                Text(
+                    text = stringResource(R.string.login),
+                    style = TextStyle(color = MaterialTheme.colors.surface),
+                )
+            }
         }
     }
 }
