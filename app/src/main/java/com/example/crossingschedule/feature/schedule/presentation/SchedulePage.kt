@@ -20,7 +20,8 @@ import com.example.crossingschedule.R
 import com.example.crossingschedule.feature.schedule.presentation.components.*
 import com.example.crossingschedule.feature.schedule.presentation.model.ScheduleViewState
 
-@OptIn(ExperimentalMaterialApi::class)
+const val SCHEDULE_PAGE_ROUTE = "SCHEDULE_PAGE"
+
 @Composable
 fun SchedulePage(scheduleViewModel: ScheduleViewModel) {
     val viewState =
@@ -141,7 +142,7 @@ fun SchedulePage(scheduleViewModel: ScheduleViewModel) {
                 val localizedDismissMessage = stringResource(R.string.dismiss)
 
                 LaunchedEffect(
-                    subject = Any(),
+                    key1 = Any(),
                     block = {
                         snackBarHostState.showSnackbar(
                             message = viewState.value.errorMessage,
