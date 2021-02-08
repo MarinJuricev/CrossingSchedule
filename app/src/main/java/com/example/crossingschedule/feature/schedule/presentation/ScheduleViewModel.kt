@@ -14,12 +14,15 @@ import com.example.crossingschedule.feature.schedule.domain.model.VillagerIntera
 import com.example.crossingschedule.feature.schedule.domain.usecase.*
 import com.example.crossingschedule.feature.schedule.presentation.model.ScheduleViewState
 import com.example.crossingschedule.feature.schedule.presentation.model.UiShop
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ScheduleViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ScheduleViewModel @Inject constructor(
     private val getActivitiesForDay: GetActivitiesForDay,
     private val dateHandler: IDateHandler,
     private val todoItemDoneClicked: TodoItemDoneClicked,

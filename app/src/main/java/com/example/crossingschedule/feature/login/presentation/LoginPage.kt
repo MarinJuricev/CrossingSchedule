@@ -26,7 +26,8 @@ internal const val SIGN_UP_TAB_POSITION = 1
 
 @Composable
 fun LoginPage(
-    navigateToSchedule: () -> Unit
+    navigateToSchedule: () -> Unit,
+    loginViewModel: LoginViewModel,
 ) {
     val selectedTabPosition = mutableStateOf(LOGIN_TAB_POSITION)
 
@@ -66,7 +67,7 @@ fun LoginPage(
                 }
             }
             when (selectedTabPosition.value) {
-                LOGIN_TAB_POSITION -> LoginComponent()
+                LOGIN_TAB_POSITION -> LoginComponent(loginViewModel::onLoginClick)
                 SIGN_UP_TAB_POSITION -> Text("RENDER THE SIGN UP")
                 else -> Text("Render some kind of error container")//TODO Add a Crossing Error container
             }

@@ -2,12 +2,15 @@ package com.example.crossingschedule.feature.login.presentation.components
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.imageFromResource
+import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -56,7 +59,9 @@ fun LoginTab(
 }
 
 @Composable
-fun LoginComponent() {
+fun LoginComponent(
+    onLoginClick: (String, String) -> Unit
+) {
     Crossfade(
         current = Any(),
         animation = tween(durationMillis = 500)
@@ -67,14 +72,14 @@ fun LoginComponent() {
         ConstraintLayout(
             modifier = Modifier.fillMaxHeight()
         ) {
-            val (appTitle, salesPitch,
+            val (loginImage, appTitle, salesPitch,
                 emailTextField, passwordTextField,
                 bottomDecor, loginButton) = createRefs()
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
                     .constrainAs(appTitle) {
-                        top.linkTo(parent.top, margin = 64.dp)
+                        top.linkTo(parent.top, margin = 32.dp)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                     },
@@ -96,12 +101,26 @@ fun LoginComponent() {
                 color = MaterialTheme.colors.primary,
                 textAlign = TextAlign.Center
             )
+            Image(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .constrainAs(loginImage) {
+                        top.linkTo(salesPitch.bottom)
+                        start.linkTo(salesPitch.start)
+                        end.linkTo(salesPitch.end)
+                    },
+                bitmap = imageFromResource(
+                    AmbientContext.current.resources,
+                    R.drawable.login_icon
+                ),
+                contentDescription = null
+            )
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
                     .constrainAs(emailTextField) {
-                        top.linkTo(salesPitch.bottom, margin = 64.dp)
+                        top.linkTo(loginImage.bottom, margin = 16.dp)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                     },
@@ -138,9 +157,10 @@ fun LoginComponent() {
                     }
                 }
             )
+            //TODO Add a sign in with Google ?
             Box(
                 modifier = Modifier
-                    .background(MaterialTheme.colors.primaryVariant)
+                    .background(MaterialTheme.colors.secondary)
                     .height(64.dp)
                     .fillMaxWidth()
                     .constrainAs(bottomDecor) {
@@ -149,10 +169,19 @@ fun LoginComponent() {
                         bottom.linkTo(parent.bottom)
                     },
             )
-            OutlinedButton(onClick = { /*TODO*/ }) {
+            OutlinedButton(
+                modifier = Modifier
+                    .constrainAs(loginButton) {
+                        end.linkTo(parent.end, margin = 16.dp)
+                        top.linkTo(bottomDecor.top)
+                        bottom.linkTo(bottomDecor.top)
+                    },
+                onClick = { onLoginClick(emailText.value, passwordText.value) }) {
                 Text(
+                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
                     text = stringResource(R.string.login),
                     style = TextStyle(color = MaterialTheme.colors.surface),
+                    color = MaterialTheme.colors.primary
                 )
             }
         }
