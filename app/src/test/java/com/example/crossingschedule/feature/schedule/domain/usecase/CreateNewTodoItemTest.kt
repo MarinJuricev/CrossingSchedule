@@ -41,7 +41,7 @@ class CreateNewTodoItemTest {
                 ERROR_CANNOT_BE_EMPTY
             }
 
-            val actualResult = sut(null, "")
+            val actualResult = sut(listOf(), "", "")
             val expectedResult = Either.Left(
                 Failure.ValidationFailure(
                     ERROR_CANNOT_BE_EMPTY
@@ -52,28 +52,14 @@ class CreateNewTodoItemTest {
         }
 
     @Test
-    fun `createNewTodoItem should trigger repository updateCrossingTodoItems with newly generatedList when the provided list is null`() =
-        runBlockingTest {
-            val expectedList = listOf(CrossingTodo(NEW_TODO))
-            coEvery { activitiesRepository.updateCrossingTodoItems(expectedList) } coAnswers {
-                Either.Right(Unit)
-            }
-
-            val actualResult = sut(null, NEW_TODO)
-            val expectedResult = Either.Right(Unit)
-
-            assert(actualResult == expectedResult)
-        }
-
-    @Test
     fun `createNewTodoItem should trigger repository updateCrossingTodoItems with newly generatedList when the provided list is empty`() =
         runBlockingTest {
             val expectedList = listOf(CrossingTodo(NEW_TODO))
-            coEvery { activitiesRepository.updateCrossingTodoItems(expectedList) } coAnswers {
+            coEvery { activitiesRepository.updateCrossingTodoItems(expectedList, "") } coAnswers {
                 Either.Right(Unit)
             }
 
-            val actualResult = sut(listOf(), NEW_TODO)
+            val actualResult = sut(listOf(), "", NEW_TODO)
             val expectedResult = Either.Right(Unit)
 
             assert(actualResult == expectedResult)
@@ -86,14 +72,14 @@ class CreateNewTodoItemTest {
                 CrossingTodo(NEW_TODO),
                 CrossingTodo(NEW_TODO_2)
             )
-            coEvery { activitiesRepository.updateCrossingTodoItems(expectedList) } coAnswers {
+            coEvery { activitiesRepository.updateCrossingTodoItems(expectedList, "") } coAnswers {
                 Either.Right(Unit)
             }
 
             val actualResult = sut(
-                listOf(
-                    CrossingTodo(NEW_TODO)
-                ), NEW_TODO_2
+                listOf(CrossingTodo(NEW_TODO)),
+                currentDate = "",
+                NEW_TODO_2
             )
             val expectedResult = Either.Right(Unit)
 

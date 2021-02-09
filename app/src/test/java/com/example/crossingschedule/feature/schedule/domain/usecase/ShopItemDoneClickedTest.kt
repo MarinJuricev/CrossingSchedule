@@ -30,40 +30,20 @@ class ShopItemDoneClickedTest {
     }
 
     @Test
-    fun `shopItemDoneClicked should trigger repository updateShopItems with newly generatedList when the provided list is null`() =
-        runBlockingTest {
-            val shop = Shop()
-            val uiShop = UiShop(isVisited = true)
-
-            val generatedList = listOf(shop)
-            coEvery { activitiesRepository.updateShopItems(generatedList) } coAnswers {
-                Either.Right(Unit)
-            }
-            coEvery { uiShopListToShopListMapper.map(listOf(uiShop)) } coAnswers {
-                generatedList
-            }
-
-            val actualResult = sut(null, UiShop())
-            val expectedResult = Either.Right(Unit)
-
-            assert(actualResult == expectedResult)
-        }
-
-    @Test
     fun `shopItemDoneClicked should trigger repository updateShopItems with newly generatedList when the provided list is empty`() =
         runBlockingTest {
             val shop = Shop()
             val uiShop = UiShop(isVisited = true)
 
             val generatedList = listOf(shop)
-            coEvery { activitiesRepository.updateShopItems(generatedList) } coAnswers {
+            coEvery { activitiesRepository.updateShopItems(generatedList, "") } coAnswers {
                 Either.Right(Unit)
             }
             coEvery { uiShopListToShopListMapper.map(listOf(uiShop)) } coAnswers {
                 generatedList
             }
 
-            val actualResult = sut(listOf(), UiShop())
+            val actualResult = sut(listOf(), "", UiShop())
             val expectedResult = Either.Right(Unit)
 
             assert(actualResult == expectedResult)
@@ -80,14 +60,14 @@ class ShopItemDoneClickedTest {
 
             val generatedList = listOf(museumShop, shop)
 
-            coEvery { activitiesRepository.updateShopItems(generatedList) } coAnswers {
+            coEvery { activitiesRepository.updateShopItems(generatedList, "") } coAnswers {
                 Either.Right(Unit)
             }
             coEvery { uiShopListToShopListMapper.map(listOf(uiMuseumShop, uiShop)) } coAnswers {
                 generatedList
             }
 
-            val actualResult = sut(listOf(uiMuseumShop, uiShop), UiShop())
+            val actualResult = sut(listOf(uiMuseumShop, uiShop), "", UiShop())
             val expectedResult = Either.Right(Unit)
 
             assert(actualResult == expectedResult)

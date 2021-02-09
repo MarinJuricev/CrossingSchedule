@@ -1,6 +1,7 @@
 package com.example.crossingschedule.feature.schedule.domain.usecase
 
 import app.cash.turbine.test
+import com.example.crossingschedule.core.util.DateHandler
 import com.example.crossingschedule.core.util.Either
 import com.example.crossingschedule.core.util.Failure
 import com.example.crossingschedule.feature.schedule.domain.repository.ActivitiesRepository
@@ -18,6 +19,7 @@ private const val ERROR_MESSAGE = "ERROR_MESSAGE"
 private const val YEAR = 2021
 private const val MONTH = 1
 private const val DAY = 1
+private const val FORMATTED_DATE = "FORMATTED_DATE"
 
 @ExperimentalCoroutinesApi
 @ExperimentalTime
@@ -25,12 +27,15 @@ class GetActivitiesForDayTest {
 
     private val activitiesRepository: ActivitiesRepository = mockk()
 
+    private val dateHandler: DateHandler = mockk()
+
     private lateinit var sut: GetActivitiesForDay
 
     @Before
     fun setUp() {
         sut = GetActivitiesForDay(
-            activitiesRepository
+            dateHandler,
+            activitiesRepository,
         )
     }
 
@@ -42,7 +47,17 @@ class GetActivitiesForDayTest {
         }
 
         coEvery {
-            activitiesRepository.getActivitiesFoSpecifiedDay()
+            dateHandler.formatYearDayMonthToDesiredFormat(
+                YEAR,
+                MONTH,
+                DAY
+            )
+        } coAnswers {
+            FORMATTED_DATE
+        }
+
+        coEvery {
+            activitiesRepository.getActivitiesFoSpecifiedDay(FORMATTED_DATE)
         } coAnswers {
             repositoryResult
         }
@@ -53,6 +68,6 @@ class GetActivitiesForDayTest {
             expectComplete()
         }
 
-        coVerify { activitiesRepository.getActivitiesFoSpecifiedDay() }
+        coVerify { activitiesRepository.getActivitiesFoSpecifiedDay(FORMATTED_DATE) }
     }
 }

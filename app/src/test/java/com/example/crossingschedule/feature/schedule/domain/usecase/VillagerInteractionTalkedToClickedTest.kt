@@ -8,8 +8,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
-
-import org.junit.Assert.*
 import org.junit.Test
 
 private const val FIRST_VILLAGER_NAME = "Sterling"
@@ -41,17 +39,18 @@ class VillagerInteractionTalkedToClickedTest {
                 listOf(villagerInteractionToChange.copy(talkedTo = true), secondVillager)
 
             coEvery {
-                activitiesRepository.updateVillagerInteractions(updatedList)
+                activitiesRepository.updateVillagerInteractions(updatedList, "")
             } coAnswers {
                 repositoryResult
             }
 
             val actualResult = sut(
+                "",
                 villagerInteractionToChange,
                 currentList
             )
 
             assert(actualResult == repositoryResult)
-            coEvery { activitiesRepository.updateVillagerInteractions(updatedList) }
+            coEvery { activitiesRepository.updateVillagerInteractions(updatedList, "") }
         }
 }

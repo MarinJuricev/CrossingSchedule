@@ -2,7 +2,7 @@ package com.example.crossingschedule.core.di
 
 import android.content.Context
 import com.example.crossingschedule.core.util.DateHandlerImpl
-import com.example.crossingschedule.core.util.IDateHandler
+import com.example.crossingschedule.core.util.DateHandler
 import com.example.crossingschedule.core.util.IStringProvider
 import com.example.crossingschedule.core.util.StringProviderImpl
 import dagger.Module
@@ -23,7 +23,7 @@ object UtilityModule {
 
     @Singleton
     @Provides
-    fun provideDateHandler(dateHandler: DateHandlerImpl): IDateHandler =
+    fun provideDateHandler(dateHandler: DateHandlerImpl): DateHandler =
         dateHandler
 
 }

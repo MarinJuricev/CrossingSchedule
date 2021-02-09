@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-interface IDateHandler {
+interface DateHandler {
     fun formatYearDayMonthToDesiredFormat(
         year: Int,
         month: Int,
@@ -14,7 +14,7 @@ interface IDateHandler {
     fun provideCurrentCrossingDay(): CrossingDay
 }
 
-class DateHandlerImpl @Inject constructor() : IDateHandler {
+class DateHandlerImpl @Inject constructor() : DateHandler {
     override fun formatYearDayMonthToDesiredFormat(
         year: Int,
         month: Int,

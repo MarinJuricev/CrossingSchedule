@@ -39,17 +39,19 @@ class VillagerInteractionGiftClickedTest {
                 listOf(villagerInteractionToChange.copy(receivedGift = true), secondVillager)
 
             coEvery {
-                activitiesRepository.updateVillagerInteractions(updatedList)
+                activitiesRepository.updateVillagerInteractions(updatedList, "")
             } coAnswers {
                 repositoryResult
             }
 
             val actualResult = sut(
+                "",
                 villagerInteractionToChange,
+
                 currentList
             )
 
             assert(actualResult == repositoryResult)
-            coEvery { activitiesRepository.updateVillagerInteractions(updatedList) }
+            coEvery { activitiesRepository.updateVillagerInteractions(updatedList, "") }
         }
 }

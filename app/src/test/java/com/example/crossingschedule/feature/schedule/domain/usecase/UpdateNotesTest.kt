@@ -31,14 +31,14 @@ class UpdateNotesTest {
             val repositoryResult = Either.Right(Unit)
 
             coEvery {
-                activitiesRepository.updateNotes(updatedNotes)
+                activitiesRepository.updateNotes(updatedNotes, "")
             } coAnswers {
                 repositoryResult
             }
 
-            val actualResult = sut(updatedNotes)
+            val actualResult = sut(updatedNotes, "")
 
             assert(actualResult == repositoryResult)
-            coVerify { activitiesRepository.updateNotes(updatedNotes) }
+            coVerify { activitiesRepository.updateNotes(updatedNotes, "") }
         }
 }

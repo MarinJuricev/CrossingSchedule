@@ -29,28 +29,14 @@ class DeleteTodoItemTest {
     }
 
     @Test
-    fun `deleteTodoItem should trigger repository updateCrossingTodoItems with newly generatedList when the provided list is null`() =
-        runBlockingTest {
-            val generatedList = listOf(CrossingTodo(TODO_ITEM))
-            coEvery { activitiesRepository.updateCrossingTodoItems(generatedList) } coAnswers {
-                Either.Right(Unit)
-            }
-
-            val actualResult = sut(null, CrossingTodo(TODO_ITEM))
-            val expectedResult = Either.Right(Unit)
-
-            assert(actualResult == expectedResult)
-        }
-
-    @Test
     fun `deleteTodoItem should trigger repository updateCrossingTodoItems with newly generatedList when the provided list is empty`() =
         runBlockingTest {
             val generatedList = listOf(CrossingTodo(TODO_ITEM))
-            coEvery { activitiesRepository.updateCrossingTodoItems(generatedList) } coAnswers {
+            coEvery { activitiesRepository.updateCrossingTodoItems(generatedList, "") } coAnswers {
                 Either.Right(Unit)
             }
 
-            val actualResult = sut(listOf(), CrossingTodo(TODO_ITEM))
+            val actualResult = sut(listOf(), "",CrossingTodo(TODO_ITEM))
             val expectedResult = Either.Right(Unit)
 
             assert(actualResult == expectedResult)
@@ -60,11 +46,11 @@ class DeleteTodoItemTest {
     fun `deleteTodoItem should trigger repository updateCrossingTodoItems with newly generatedList with a empty list when the provided list contains only one item`() =
         runBlockingTest {
             val generatedList = listOf<CrossingTodo>()
-            coEvery { activitiesRepository.updateCrossingTodoItems(generatedList) } coAnswers {
+            coEvery { activitiesRepository.updateCrossingTodoItems(generatedList, "") } coAnswers {
                 Either.Right(Unit)
             }
 
-            val actualResult = sut(listOf(CrossingTodo(TODO_ITEM)), CrossingTodo(TODO_ITEM))
+            val actualResult = sut(listOf(CrossingTodo(TODO_ITEM)), "",CrossingTodo(TODO_ITEM))
             val expectedResult = Either.Right(Unit)
 
             assert(actualResult == expectedResult)

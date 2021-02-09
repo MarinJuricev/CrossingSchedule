@@ -1,11 +1,10 @@
 package com.example.crossingschedule.feature.schedule.presentation
 
 import android.util.Log
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.crossingschedule.core.util.Either
-import com.example.crossingschedule.core.util.IDateHandler
+import com.example.crossingschedule.core.util.DateHandler
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.schedule.domain.model.CrossingDailyActivities
 import com.example.crossingschedule.feature.schedule.domain.model.CrossingTodo
@@ -24,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ScheduleViewModel @Inject constructor(
     private val getActivitiesForDay: GetActivitiesForDay,
-    private val dateHandler: IDateHandler,
+    private val dateHandler: DateHandler,
     private val todoItemDoneClicked: TodoItemDoneClicked,
     private val createNewTodoItem: CreateNewTodoItem,
     private val deleteTodoItem: DeleteTodoItem,

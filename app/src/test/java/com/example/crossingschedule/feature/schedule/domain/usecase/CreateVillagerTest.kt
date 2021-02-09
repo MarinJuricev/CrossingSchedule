@@ -26,28 +26,19 @@ class CreateVillagerTest {
     }
 
     @Test
-    fun `createVillager should trigger repository updateVillagerInteractions with newly generatedList when the provided list is null`() =
-        runBlockingTest {
-            val generatedList = listOf(VillagerInteraction(NEW_VILLAGER_NAME))
-            coEvery { activitiesRepository.updateVillagerInteractions(generatedList) } coAnswers {
-                Either.Right(Unit)
-            }
-
-            val actualResult = sut(null, NEW_VILLAGER_NAME)
-            val expectedResult = Either.Right(Unit)
-
-            assert(actualResult == expectedResult)
-        }
-
-    @Test
     fun `createVillager should trigger repository updateVillagerInteractions with newly generatedList when the provided list is empty`() =
         runBlockingTest {
             val generatedList = listOf(VillagerInteraction(NEW_VILLAGER_NAME))
-            coEvery { activitiesRepository.updateVillagerInteractions(generatedList) } coAnswers {
+            coEvery {
+                activitiesRepository.updateVillagerInteractions(
+                    generatedList,
+                    ""
+                )
+            } coAnswers {
                 Either.Right(Unit)
             }
 
-            val actualResult = sut(listOf(), NEW_VILLAGER_NAME)
+            val actualResult = sut(listOf(), "", NEW_VILLAGER_NAME)
             val expectedResult = Either.Right(Unit)
 
             assert(actualResult == expectedResult)
@@ -57,12 +48,20 @@ class CreateVillagerTest {
     fun `createVillager should trigger repository updateVillagerInteractions with newly updatedList when the provided list is not empty`() =
         runBlockingTest {
             val currentList = listOf(VillagerInteraction(NEW_VILLAGER_NAME))
-            val generatedList = listOf(VillagerInteraction(NEW_VILLAGER_NAME), VillagerInteraction(NEW_VILLAGER_NAME_2))
-            coEvery { activitiesRepository.updateVillagerInteractions(generatedList) } coAnswers {
+            val generatedList = listOf(
+                VillagerInteraction(NEW_VILLAGER_NAME),
+                VillagerInteraction(NEW_VILLAGER_NAME_2)
+            )
+            coEvery {
+                activitiesRepository.updateVillagerInteractions(
+                    generatedList,
+                    ""
+                )
+            } coAnswers {
                 Either.Right(Unit)
             }
 
-            val actualResult = sut(currentList, NEW_VILLAGER_NAME_2)
+            val actualResult = sut(currentList, "", NEW_VILLAGER_NAME_2)
             val expectedResult = Either.Right(Unit)
 
             assert(actualResult == expectedResult)

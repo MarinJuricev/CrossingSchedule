@@ -38,54 +38,7 @@ class UpdateTurnipPricesTest {
     }
 
     @Test
-    fun `updateTurnipPrices should generate TurnipPrices when the provided currentPrices is null - AM`() =
-        runBlockingTest {
-            val turnipPriceType = TurnipPriceType.AM
-            val expectedTurnipPrices = TurnipPrices(
-                amPrice = 150,
-                pmPrice = 0
-            )
-            val repositoryResult = Either.Right(Unit)
-
-
-            coEvery {
-                activitiesRepository.updateTurnipPrices(expectedTurnipPrices)
-            } coAnswers {
-                repositoryResult
-            }
-
-            val actualResult = sut(null, turnipPriceType, UPDATED_AM_PRICE)
-
-            assert(actualResult == repositoryResult)
-            coVerify { activitiesRepository.updateTurnipPrices(expectedTurnipPrices) }
-        }
-
-
-    @Test
-    fun `updateTurnipPrices should generate TurnipPrices when the provided currentPrices is null - PM`() =
-        runBlockingTest {
-            val turnipPriceType = TurnipPriceType.PM
-            val expectedTurnipPrices = TurnipPrices(
-                amPrice = 0,
-                pmPrice = 100
-            )
-            val repositoryResult = Either.Right(Unit)
-
-
-            coEvery {
-                activitiesRepository.updateTurnipPrices(expectedTurnipPrices)
-            } coAnswers {
-                repositoryResult
-            }
-
-            val actualResult = sut(null, turnipPriceType, UPDATED_PM_PRICE)
-
-            assert(actualResult == repositoryResult)
-            coVerify { activitiesRepository.updateTurnipPrices(expectedTurnipPrices) }
-        }
-
-    @Test
-    fun `updateTurnipPrices should update TurnipPrices when the provided currentPrices is not null - AM`() =
+    fun `updateTurnipPrices should update TurnipPrices when the provided currentPrices is AM`() =
         runBlockingTest {
             val turnipPriceType = TurnipPriceType.AM
             val currentTurnipPrices = UiTurnipPrices(
@@ -99,7 +52,7 @@ class UpdateTurnipPricesTest {
 
 
             coEvery {
-                activitiesRepository.updateTurnipPrices(expectedTurnipPrices)
+                activitiesRepository.updateTurnipPrices(expectedTurnipPrices, "")
             } coAnswers {
                 repositoryResult
             }
@@ -109,14 +62,14 @@ class UpdateTurnipPricesTest {
                 expectedTurnipPrices
             }
 
-            val actualResult = sut(currentTurnipPrices, turnipPriceType, UPDATED_AM_PRICE)
+            val actualResult = sut(currentTurnipPrices, "", turnipPriceType, UPDATED_AM_PRICE)
 
             assert(actualResult == repositoryResult)
-            coVerify { activitiesRepository.updateTurnipPrices(expectedTurnipPrices) }
+            coVerify { activitiesRepository.updateTurnipPrices(expectedTurnipPrices, "") }
         }
 
     @Test
-    fun `updateTurnipPrices should update TurnipPrices when the provided currentPrices is not null - PM`() =
+    fun `updateTurnipPrices should update TurnipPrices when the provided currentPrices is PM`() =
         runBlockingTest {
             val turnipPriceType = TurnipPriceType.PM
             val currentTurnipPrices = UiTurnipPrices(
@@ -130,7 +83,7 @@ class UpdateTurnipPricesTest {
 
 
             coEvery {
-                activitiesRepository.updateTurnipPrices(expectedTurnipPrices)
+                activitiesRepository.updateTurnipPrices(expectedTurnipPrices, "")
             } coAnswers {
                 repositoryResult
             }
@@ -140,10 +93,10 @@ class UpdateTurnipPricesTest {
                 expectedTurnipPrices
             }
 
-            val actualResult = sut(currentTurnipPrices, turnipPriceType, UPDATED_PM_PRICE)
+            val actualResult = sut(currentTurnipPrices, "", turnipPriceType, UPDATED_PM_PRICE)
 
             assert(actualResult == repositoryResult)
-            coVerify { activitiesRepository.updateTurnipPrices(expectedTurnipPrices) }
+            coVerify { activitiesRepository.updateTurnipPrices(expectedTurnipPrices, "") }
         }
 
 
