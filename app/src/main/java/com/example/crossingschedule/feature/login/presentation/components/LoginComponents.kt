@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
@@ -128,13 +127,6 @@ fun LoginComponent(
                 onValueChange = { emailText.value = it },
                 singleLine = true,
                 label = { Text(stringResource(R.string.email)) },
-                onImeActionPerformed = { imeAction, _ ->
-                    if (imeAction == ImeAction.Done) {
-//                        onNewTodoCreated(addTodoText.value)
-//                        addTodoText.value = ""
-//                        animationState.value = AnimatedContainerState.PRESSED
-                    }
-                }
             )
             OutlinedTextField(
                 modifier = Modifier
@@ -149,13 +141,6 @@ fun LoginComponent(
                 onValueChange = { passwordText.value = it },
                 singleLine = true,
                 label = { Text(stringResource(R.string.password)) },
-                onImeActionPerformed = { imeAction, _ ->
-                    if (imeAction == ImeAction.Done) {
-//                        onNewTodoCreated(addTodoText.value)
-//                        addTodoText.value = ""
-//                        animationState.value = AnimatedContainerState.PRESSED
-                    }
-                }
             )
             //TODO Add a sign in with Google ?
             Box(
