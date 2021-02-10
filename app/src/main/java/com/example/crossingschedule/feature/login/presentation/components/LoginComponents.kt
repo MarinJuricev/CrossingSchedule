@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.platform.AmbientContext
@@ -18,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.feature.login.presentation.LOGIN_TAB_POSITION
 import com.example.crossingschedule.feature.login.presentation.SIGN_UP_TAB_POSITION
+import com.example.crossingschedule.feature.login.presentation.model.LoginError
+import com.example.crossingschedule.feature.login.presentation.model.LoginViewState
 
 @Composable
 fun LoginTab(
@@ -59,14 +62,15 @@ fun LoginTab(
 
 @Composable
 fun LoginComponent(
+    loginViewState: LoginViewState,
     onLoginClick: (String, String) -> Unit
 ) {
     Crossfade(
         current = Any(),
         animation = tween(durationMillis = 500)
     ) {
-        val emailText = mutableStateOf("")
-        val passwordText = mutableStateOf("")
+        val emailText = remember { mutableStateOf(loginViewState.email) }
+        val passwordText = remember { mutableStateOf(loginViewState.password) }
 
         ConstraintLayout(
             modifier = Modifier.fillMaxHeight()
@@ -123,6 +127,7 @@ fun LoginComponent(
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                     },
+                isErrorValue = loginViewState.loginError is LoginError.EmailError,
                 value = emailText.value,
                 onValueChange = { emailText.value = it },
                 singleLine = true,
@@ -138,6 +143,7 @@ fun LoginComponent(
                         end.linkTo(parent.end)
                     },
                 value = passwordText.value,
+                isErrorValue = loginViewState.loginError is LoginError.PasswordError,
                 onValueChange = { passwordText.value = it },
                 singleLine = true,
                 label = { Text(stringResource(R.string.password)) },

@@ -2,6 +2,7 @@ package com.example.crossingschedule.feature.login.presentation.model
 
 data class LoginViewState(
     val isLoading: Boolean = false,
+    val navigateToSchedule: Boolean = false,
     val loginError: LoginError? = null,//TODO double check if this is really the API I want to expose
     val email: String = "",
     val password: String = "",

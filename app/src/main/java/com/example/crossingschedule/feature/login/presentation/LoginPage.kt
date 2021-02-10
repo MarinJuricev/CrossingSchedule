@@ -8,6 +8,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.feature.login.presentation.components.LoginComponent
 import com.example.crossingschedule.feature.login.presentation.components.LoginTab
+import com.example.crossingschedule.feature.login.presentation.model.LoginViewState
 
 const val LOGIN_PAGE_ROUTE = "LOGIN_PAGE"
 
@@ -29,7 +31,13 @@ fun LoginPage(
     navigateToSchedule: () -> Unit,
     loginViewModel: LoginViewModel,
 ) {
+    val viewState = loginViewModel.loginViewState.collectAsState(LoginViewState())
     val selectedTabPosition = mutableStateOf(LOGIN_TAB_POSITION)
+
+    //TODO Make a better API for this...
+    if (viewState.value.navigateToSchedule) {
+        navigateToSchedule()
+    }
 
     Scaffold {
         Column {
@@ -67,7 +75,7 @@ fun LoginPage(
                 }
             }
             when (selectedTabPosition.value) {
-                LOGIN_TAB_POSITION -> LoginComponent(loginViewModel::onLoginClick)
+                LOGIN_TAB_POSITION -> LoginComponent(viewState.value, loginViewModel::onLoginClick)
                 SIGN_UP_TAB_POSITION -> Text("RENDER THE SIGN UP")
                 else -> Text("Render some kind of error container")//TODO Add a Crossing Error container
             }
