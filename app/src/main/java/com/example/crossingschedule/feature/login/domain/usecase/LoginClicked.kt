@@ -14,6 +14,11 @@ class LoginClicked @Inject constructor(
         email: String,
         password: String
     ): Either<Failure, Unit> {
-        return loginValidator.validate(email, password)
+        val validationResult = loginValidator.validate(email, password)
+        if(validationResult is Either.Left){
+            return validationResult
+        }
+
+        return repository.createAccount(email, password)
     }
 }
