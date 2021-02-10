@@ -6,10 +6,13 @@ import com.example.crossingschedule.feature.login.domain.repository.LoginReposit
 import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(
-
+    private val authApi: AuthApi
 ) : LoginRepository {
 
-    override suspend fun createAccount(email: String, password: String): Either<Failure, Unit> {
+    override suspend fun createAccount(
+        email: String,
+        password: String
+    ): Either<Failure, Unit> {
         TODO("Not yet implemented")
     }
 }
