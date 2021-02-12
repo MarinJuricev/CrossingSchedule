@@ -9,10 +9,8 @@ class LoginRepositoryImpl @Inject constructor(
     private val authApi: AuthApi
 ) : LoginRepository {
 
-    override suspend fun createAccount(
+    override suspend fun login(
         email: String,
         password: String
-    ): Either<Failure, Unit> {
-        TODO("Not yet implemented")
-    }
+    ): Either<Failure, Unit> = authApi.login(email, password)
 }

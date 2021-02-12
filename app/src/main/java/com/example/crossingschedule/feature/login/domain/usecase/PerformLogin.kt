@@ -6,7 +6,7 @@ import com.example.crossingschedule.feature.login.domain.repository.LoginReposit
 import javax.inject.Inject
 
 
-class LoginClicked @Inject constructor(
+class PerformLogin @Inject constructor(
     private val repository: LoginRepository,
     private val loginValidator: LoginValidator
 ) {
@@ -19,6 +19,6 @@ class LoginClicked @Inject constructor(
             return validationResult
         }
 
-        return repository.createAccount(email, password)
+        return repository.login(email, password)
     }
 }

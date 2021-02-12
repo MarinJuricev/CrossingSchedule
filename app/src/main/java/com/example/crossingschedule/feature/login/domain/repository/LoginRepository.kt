@@ -4,5 +4,5 @@ import com.example.crossingschedule.core.util.Either
 import com.example.crossingschedule.core.util.Failure
 
 interface LoginRepository {
-    suspend fun createAccount(email: String, password: String): Either<Failure, Unit>
+    suspend fun login(email: String, password: String): Either<Failure, Unit>
 }

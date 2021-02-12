@@ -13,16 +13,16 @@ import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class LoginClickedTest {
+class PerformLoginTest {
 
     private val loginRepository: LoginRepository = mockk()
     private val loginValidator: LoginValidator = mockk()
 
-    lateinit var sut: LoginClicked
+    lateinit var sut: PerformLogin
 
     @Before
     fun setUp() {
-        sut = LoginClicked(
+        sut = PerformLogin(
             loginRepository,
             loginValidator
         )
@@ -39,13 +39,13 @@ class LoginClickedTest {
                 loginValidator.validate(email, password)
             } answers { failure }
             coEvery {
-                loginRepository.createAccount(email, password)
+                loginRepository.login(email, password)
             } coAnswers { failure }
 
             val actualResult = sut(email, password)
 
             assert(actualResult == failure)
-            coVerify(exactly = 0) { loginRepository.createAccount(email, password) }
+            coVerify(exactly = 0) { loginRepository.login(email, password) }
         }
 
     @Test
@@ -59,13 +59,13 @@ class LoginClickedTest {
                 loginValidator.validate(email, password)
             } answers { success }
             coEvery {
-                loginRepository.createAccount(email, password)
+                loginRepository.login(email, password)
             } coAnswers { success }
 
             val actualResult = sut(email, password)
 
             assert(actualResult == success)
 
-            coVerify(exactly = 1) { loginRepository.createAccount(email, password) }
+            coVerify(exactly = 1) { loginRepository.login(email, password) }
         }
 }
