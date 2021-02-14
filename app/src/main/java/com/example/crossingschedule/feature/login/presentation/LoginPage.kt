@@ -4,12 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,13 +29,16 @@ fun LoginPage(
 ) {
     val viewState = loginViewModel.loginViewState.collectAsState(LoginViewState())
     val selectedTabPosition = mutableStateOf(LOGIN_TAB_POSITION)
+    val snackBarHostState = remember { SnackbarHostState() }
 
     //TODO Make a better API for this...
     if (viewState.value.navigateToSchedule) {
         navigateToSchedule()
     }
 
-    Scaffold {
+    Scaffold(
+        scaffoldState = rememberScaffoldState(snackbarHostState = snackBarHostState)
+    ) {
         Column {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -78,6 +77,20 @@ fun LoginPage(
                 LOGIN_TAB_POSITION -> LoginComponent(viewState.value, loginViewModel::onLoginClick)
                 SIGN_UP_TAB_POSITION -> Text("RENDER THE SIGN UP")
                 else -> Text("Render some kind of error container")//TODO Add a Crossing Error container
+            }
+            if (viewState.value.isLoading)
+                CircularProgressIndicator(modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .size(128.dp))
+            if (viewState.value.loginError != null) {
+                LaunchedEffect(
+                    key1 = Any(),
+                    block = {
+                        snackBarHostState.showSnackbar(
+                            message = viewState.value.loginError!!.error,
+                        )
+                    },
+                )
             }
         }
     }

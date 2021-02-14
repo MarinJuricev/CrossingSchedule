@@ -26,14 +26,26 @@ class LoginViewModel @Inject constructor(
         email: String,
         password: String
     ) {
-        loginViewState.value = loginViewState.value.copy(email = email, password = password)
+        loginViewState.value =
+            loginViewState.value.copy(
+                email = email,
+                password = password,
+                isLoading = true
+            )
 
         viewModelScope.launch {
             when (val result = performLogin(email, password)) {
                 is Either.Right -> loginViewState.value =
-                    loginViewState.value.copy(navigateToSchedule = true)
+                    loginViewState.value.copy(
+                        navigateToSchedule = true,
+                        loginError = null,
+                        isLoading = false
+                    )
                 is Either.Left -> loginViewState.value =
-                    loginViewState.value.copy(loginError = failureToLoginErrorMapper.map(result.error))
+                    loginViewState.value.copy(
+                        loginError = failureToLoginErrorMapper.map(result.error),
+                        isLoading = false
+                    )
             }
         }
     }

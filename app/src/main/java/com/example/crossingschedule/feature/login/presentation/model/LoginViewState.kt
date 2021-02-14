@@ -8,7 +8,7 @@ data class LoginViewState(
     val password: String = "",
 )
 
-sealed class LoginError(error: String) {
+sealed class LoginError(val error: String) {
     data class PasswordError(val passwordError: String) : LoginError(passwordError)
     data class EmailError(val emailError: String) : LoginError(emailError)
     data class GeneralError(val errorMessage: String) : LoginError(errorMessage)
