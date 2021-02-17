@@ -27,7 +27,7 @@ object DataModule {
     @Provides
     fun provideRetrofit(): Retrofit =
         Retrofit.Builder()
-            .baseUrl("http://192.168.0.30:8080/") //TODO: Add a class that provides the baseUrl depending on Debug/Release later on
+            .baseUrl("https://crossing-schedule.herokuapp.com/") //TODO: Add a class that provides the baseUrl depending on Debug/Release later on
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
 
