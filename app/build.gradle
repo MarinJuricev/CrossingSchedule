@@ -76,7 +76,6 @@ dependencies {
     implementation "androidx.compose.material:material-icons-extended:$compose"
     implementation "androidx.compose.compiler:compiler:$compose"
 
-
     def firebase = "26.4.0"
     // Import the Firebase BoM
     implementation platform("com.google.firebase:firebase-bom:$firebase")

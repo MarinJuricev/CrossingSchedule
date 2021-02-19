@@ -1,11 +1,9 @@
 package com.example.crossingschedule.presentation.core.components
 
 import androidx.compose.animation.DpPropKey
-import androidx.compose.animation.core.FloatPropKey
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.transitionDefinition
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.animation.transition
+import androidx.compose.compiler.plugins.kotlin.ComposeFqNames.remember
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -13,6 +11,8 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
@@ -34,6 +34,9 @@ fun CrossingCard(
 
 val containerHeight = DpPropKey(label = "containerHeight")
 val alphaPropKey = FloatPropKey(label = "alphaPropKey")
+
+//@Deprecated("Please use updateTransition or rememberInfiniteTransition instead.")
+
 
 val transitionDefinition = transitionDefinition<AnimatedContainerState> {
     state(AnimatedContainerState.IDLE) {
@@ -76,6 +79,18 @@ fun AnimatedContainer(
     nonExpandedContent: @Composable () -> Unit,
     expandedContent: @Composable () -> Unit
 ) {
+    val containerAnimationState = remember { MutableTransitionState(AnimatedContainerState.DO_NOT_ANIMATE) }
+
+//    val transitionState = MutableTransitionState(animationState)
+    val transition = updateTransition(targetState = animationState.value)
+    val containerHeight by transition.animateDp(
+        transitionSpec = {
+            if()
+        }
+    ) {
+
+    }
+
     val toState = when (animationState.value) {
         AnimatedContainerState.IDLE -> AnimatedContainerState.PRESSED
         AnimatedContainerState.DO_NOT_ANIMATE -> AnimatedContainerState.DO_NOT_ANIMATE
