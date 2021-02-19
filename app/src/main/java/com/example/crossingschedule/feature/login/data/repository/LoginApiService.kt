@@ -9,5 +9,5 @@ import retrofit2.http.POST
 interface LoginApiService {
 
     @GET("authenticated")
-    suspend fun authenticateUser(@Header("Authorization: Bearer") loginToken: String): Response<String> //TODO: Actually return something meaningful from BE
+    suspend fun authenticateUser(@Header("Authorization") loginToken: String): Response<String> //TODO: Actually return something meaningful from BE
 }
