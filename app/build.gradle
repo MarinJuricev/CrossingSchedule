@@ -93,6 +93,8 @@ dependencies {
     def view_model_compose = "1.0.0-alpha01"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$view_model_compose"
 
+    def constraint_layout_compose = "1.0.0-alpha02"
+    implementation "androidx.constraintlayout:constraintlayout-compose:$constraint_layout_compose"
 
     def hilt = '2.31.2-alpha'
     implementation "com.google.dagger:hilt-android:$hilt"

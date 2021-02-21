@@ -1,7 +1,6 @@
 package com.example.crossingschedule.feature.login.presentation.components
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -12,10 +11,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.crossingschedule.R
 import com.example.crossingschedule.feature.login.presentation.LOGIN_TAB_POSITION
 import com.example.crossingschedule.feature.login.presentation.SIGN_UP_TAB_POSITION
@@ -112,7 +113,7 @@ fun LoginComponent(
                         end.linkTo(salesPitch.end)
                     },
                 bitmap = imageFromResource(
-                    AmbientContext.current.resources,
+                    LocalContext.current.resources,
                     R.drawable.login_icon
                 ),
                 contentDescription = null

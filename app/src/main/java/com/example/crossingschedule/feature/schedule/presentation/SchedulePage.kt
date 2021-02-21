@@ -2,8 +2,6 @@ package com.example.crossingschedule.feature.schedule.presentation
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ConstraintLayout
-import androidx.compose.foundation.layout.Dimension
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
@@ -17,6 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.example.crossingschedule.R
 import com.example.crossingschedule.feature.schedule.presentation.components.*
 import com.example.crossingschedule.feature.schedule.presentation.model.ScheduleViewState

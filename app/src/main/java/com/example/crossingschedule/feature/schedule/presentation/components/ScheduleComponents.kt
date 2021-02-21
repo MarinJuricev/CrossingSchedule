@@ -3,17 +3,14 @@ package com.example.crossingschedule.feature.schedule.presentation.components
 import android.app.DatePickerDialog
 import android.widget.DatePicker
 import androidx.annotation.DrawableRes
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -24,10 +21,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.gesture.longPressGestureFilter
 import androidx.compose.ui.graphics.imageFromResource
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,6 +33,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
+import com.example.crossingschedule.core.ui.components.AnimatedContainer
+import com.example.crossingschedule.core.ui.components.CrossingCard
 import com.example.crossingschedule.feature.schedule.domain.model.CrossingTodo
 import com.example.crossingschedule.feature.schedule.domain.model.TurnipPriceType
 import com.example.crossingschedule.feature.schedule.domain.model.VillagerInteraction
@@ -44,8 +42,6 @@ import com.example.crossingschedule.feature.schedule.presentation.model.Animated
 import com.example.crossingschedule.feature.schedule.presentation.model.DateOptions
 import com.example.crossingschedule.feature.schedule.presentation.model.UiShop
 import com.example.crossingschedule.feature.schedule.presentation.model.UiTurnipPrices
-import com.example.crossingschedule.core.ui.components.AnimatedContainer
-import com.example.crossingschedule.core.ui.components.CrossingCard
 
 @Composable
 fun BackgroundImage(
@@ -59,7 +55,7 @@ fun BackgroundImage(
             .fillMaxHeight(),
         contentScale = ContentScale.FillBounds,
         bitmap = imageFromResource(
-            AmbientContext.current.resources,
+            LocalContext.current.resources,
             resourceId
         )
     )
@@ -89,7 +85,7 @@ fun CurrentDateCard(
     dateOptions: DateOptions,
     onDateChanged: (Int, Int, Int) -> Unit
 ) {
-    val context = AmbientContext.current
+    val context = LocalContext.current
 
     CrossingCard(
         modifier = modifier
@@ -129,7 +125,7 @@ fun RawIngredientRow(
                 .size(42.dp)
                 .padding(top = 4.dp),
             bitmap = imageFromResource(
-                AmbientContext.current.resources,
+                LocalContext.current.resources,
                 R.drawable.tree_branch
             )
         )
@@ -139,7 +135,7 @@ fun RawIngredientRow(
                 .size(42.dp)
                 .padding(bottom = 4.dp),
             bitmap = imageFromResource(
-                AmbientContext.current.resources,
+                LocalContext.current.resources,
                 R.drawable.stone
             )
         )
@@ -149,7 +145,7 @@ fun RawIngredientRow(
                 .size(42.dp)
                 .padding(top = 4.dp),
             bitmap = imageFromResource(
-                AmbientContext.current.resources,
+                LocalContext.current.resources,
                 R.drawable.clay
             )
         )
@@ -159,7 +155,7 @@ fun RawIngredientRow(
                 .size(42.dp)
                 .padding(bottom = 4.dp),
             bitmap = imageFromResource(
-                AmbientContext.current.resources,
+                LocalContext.current.resources,
                 R.drawable.hard_wood
             )
         )
@@ -169,7 +165,7 @@ fun RawIngredientRow(
                 .size(42.dp)
                 .padding(top = 4.dp),
             bitmap = imageFromResource(
-                AmbientContext.current.resources,
+                LocalContext.current.resources,
                 R.drawable.iron_nugget
             )
         )
@@ -200,8 +196,12 @@ fun CrossingTodoList(
                         Row(
                             modifier = Modifier
                                 .padding(4.dp)
-                                .longPressGestureFilter {
-                                    onTodoDeleted(todos[index])
+                                .pointerInput(Any()) {
+                                    detectTapGestures(onLongPress = {
+                                        onTodoDeleted(
+                                            todos[index]
+                                        )
+                                    })
                                 },
                             verticalAlignment = Alignment.CenterVertically,
 
@@ -305,7 +305,7 @@ fun CrossingShops(
                                     .size(42.dp)
                                     .padding(vertical = 8.dp),
                                 bitmap = imageFromResource(
-                                    AmbientContext.current.resources,
+                                    LocalContext.current.resources,
                                     shops[index].resourceImageId
                                 )
                             )
@@ -346,7 +346,7 @@ fun TurnipPriceList(
                         .padding(start = 8.dp)
                         .size(36.dp),
                     bitmap = imageFromResource(
-                        AmbientContext.current.resources,
+                        LocalContext.current.resources,
                         R.drawable.daisy_mae
                     )
                 )
@@ -414,8 +414,10 @@ fun VillagerInteractionsList(
                         Row(
                             modifier = Modifier
                                 .padding(8.dp)
-                                .longPressGestureFilter {
-                                    onVillagerInteractionDeleted(villagerInteraction)
+                                .pointerInput(Any()) {
+                                    detectTapGestures(onLongPress = {
+                                        onVillagerInteractionDeleted(villagerInteraction)
+                                    })
                                 },
                         ) {
                             Text(text = (index + 1).toString())
@@ -437,7 +439,6 @@ fun VillagerInteractionsList(
                                                 villagerInteractions
                                             )
                                         },
-//                                        indication = rememberRipple(bounded = false, radius = 18.dp)
                                     ),
                                 bitmap = imageFromResource(
                                     LocalContext.current.resources,
@@ -457,7 +458,6 @@ fun VillagerInteractionsList(
                                                 villagerInteractions
                                             )
                                         },
-//                                        indication = rememberRipple(bounded = false, radius = 18.dp)
                                     ),
                                 bitmap = imageFromResource(
                                     LocalContext.current.resources,

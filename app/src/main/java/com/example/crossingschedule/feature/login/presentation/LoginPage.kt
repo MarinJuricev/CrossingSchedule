@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.res.loadVectorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.feature.login.presentation.components.LoginComponent
@@ -48,50 +48,44 @@ fun LoginPage(
                     selectedTabPosition = selectedTabPosition.value,
                     onTabClick = { selectedTabPosition.value = it }
                 )
-                val image = loadVectorResource(id = R.drawable.person)
-                //loadVectorResource will load the vector image asynchronous
-                image.resource.resource?.let {
-                    Image(
-                        modifier = Modifier
-                            .padding(top = 16.dp, end = 16.dp)
-                            .clip(MaterialTheme.shapes.medium)
-                            .size(36.dp)
-                            .background(MaterialTheme.colors.primary)
-                            .border(
-                                width = 1.dp,
-                                color = MaterialTheme.colors.secondary,
-                                shape = MaterialTheme.shapes.medium
-                            )
-                            .shadow(
-                                elevation = 4.dp,
-                                shape = MaterialTheme.shapes.medium,
-                                clip = true
-                            ),
-                        imageVector = it,
-                        alignment = Alignment.BottomEnd,
-                        contentDescription = null
-                    )
-                }
-            }
-            when (selectedTabPosition.value) {
-                LOGIN_TAB_POSITION -> LoginComponent(viewState.value, loginViewModel::onLoginClick)
-                SIGN_UP_TAB_POSITION -> Text("RENDER THE SIGN UP")
-                else -> Text("Render some kind of error container")//TODO Add a Crossing Error container
-            }
-            if (viewState.value.isLoading)
-                CircularProgressIndicator(modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .size(128.dp))
-            if (viewState.value.loginError != null) {
-                LaunchedEffect(
-                    key1 = Any(),
-                    block = {
-                        snackBarHostState.showSnackbar(
-                            message = viewState.value.loginError!!.error,
+                Image(
+                    modifier = Modifier
+                        .padding(top = 16.dp, end = 16.dp)
+                        .clip(MaterialTheme.shapes.medium)
+                        .size(36.dp)
+                        .background(MaterialTheme.colors.primary)
+                        .border(
+                            width = 1.dp,
+                            color = MaterialTheme.colors.secondary,
+                            shape = MaterialTheme.shapes.medium
                         )
-                    },
+                        .shadow(
+                            elevation = 4.dp,
+                            shape = MaterialTheme.shapes.medium,
+                            clip = true
+                        ),
+                    painter = painterResource(id = R.drawable.person),
+                    alignment = Alignment.BottomEnd,
+                    contentDescription = null
                 )
             }
+        }
+        when (selectedTabPosition.value) {
+            LOGIN_TAB_POSITION -> LoginComponent(viewState.value, loginViewModel::onLoginClick)
+            SIGN_UP_TAB_POSITION -> Text("RENDER THE SIGN UP")
+            else -> Text("Render some kind of error container")//TODO Add a Crossing Error container
+        }
+        if (viewState.value.isLoading)
+            CircularProgressIndicator(modifier = Modifier.size(128.dp))//TODO Style this...
+        if (viewState.value.loginError != null) {
+            LaunchedEffect(
+                key1 = Any(),
+                block = {
+                    snackBarHostState.showSnackbar(
+                        message = viewState.value.loginError!!.error,
+                    )
+                },
+            )
         }
     }
 }
