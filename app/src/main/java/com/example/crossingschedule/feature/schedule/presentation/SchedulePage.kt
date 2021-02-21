@@ -1,16 +1,17 @@
 package com.example.crossingschedule.feature.schedule.presentation
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ConstraintLayout
 import androidx.compose.foundation.layout.Dimension
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,8 +39,7 @@ fun SchedulePage(scheduleViewModel: ScheduleViewModel) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             } else {
                 Crossfade(
-                    current = viewState.value.isLoading,
-                    animation = tween(2000)
+                    targetState = viewState.value.isLoading,
                 ) {
                     ConstraintLayout {
                         val (checkListText, dateSelector,

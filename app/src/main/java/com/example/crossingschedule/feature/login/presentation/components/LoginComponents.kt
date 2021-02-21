@@ -66,8 +66,7 @@ fun LoginComponent(
     onLoginClick: (String, String) -> Unit
 ) {
     Crossfade(
-        current = Any(),
-        animation = tween(durationMillis = 500)
+        targetState = Any(),
     ) {
         val emailText = remember { mutableStateOf(loginViewState.email) }
         val passwordText = remember { mutableStateOf(loginViewState.password) }

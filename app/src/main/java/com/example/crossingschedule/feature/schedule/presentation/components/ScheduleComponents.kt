@@ -3,10 +3,8 @@ package com.example.crossingschedule.feature.schedule.presentation.components
 import android.app.DatePickerDialog
 import android.widget.DatePicker
 import androidx.annotation.DrawableRes
-import androidx.compose.animation.DpPropKey
-import androidx.compose.animation.core.FloatPropKey
 import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.transitionDefinition
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -15,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -29,6 +28,7 @@ import androidx.compose.ui.gesture.longPressGestureFilter
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -44,8 +44,8 @@ import com.example.crossingschedule.feature.schedule.presentation.model.Animated
 import com.example.crossingschedule.feature.schedule.presentation.model.DateOptions
 import com.example.crossingschedule.feature.schedule.presentation.model.UiShop
 import com.example.crossingschedule.feature.schedule.presentation.model.UiTurnipPrices
-import com.example.crossingschedule.presentation.core.components.AnimatedContainer
-import com.example.crossingschedule.presentation.core.components.CrossingCard
+import com.example.crossingschedule.core.ui.components.AnimatedContainer
+import com.example.crossingschedule.core.ui.components.CrossingCard
 
 @Composable
 fun BackgroundImage(
@@ -72,7 +72,7 @@ fun DailyCheckListCard(
     Card(
         modifier = modifier,
         elevation = 4.dp,
-        shape = RoundedCornerShape(topRight = 16.dp, bottomRight = 16.dp),
+        shape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
     ) {
         Text(
             modifier = Modifier
@@ -176,44 +176,6 @@ fun RawIngredientRow(
     }
 }
 
-val containerHeight = DpPropKey(label = "containerHeight")
-val alphaPropKey = FloatPropKey(label = "alphaPropKey")
-
-val transitionDefinition = transitionDefinition<AnimatedContainerState> {
-    state(AnimatedContainerState.IDLE) {
-        this[containerHeight] = 36.dp
-        this[alphaPropKey] = 0f
-    }
-
-    state(AnimatedContainerState.PRESSED) {
-        this[containerHeight] = 120.dp
-        this[alphaPropKey] = 1f
-    }
-
-    state(AnimatedContainerState.DO_NOT_ANIMATE) {
-        this[containerHeight] = 36.dp
-        this[alphaPropKey] = 0f
-    }
-
-    transition(fromState = AnimatedContainerState.IDLE, toState = AnimatedContainerState.PRESSED) {
-        containerHeight using tween(durationMillis = 750)
-        alphaPropKey using tween(
-            durationMillis = 1000,
-            delayMillis = 500,
-            easing = LinearOutSlowInEasing
-        )
-    }
-
-    transition(fromState = AnimatedContainerState.PRESSED, toState = AnimatedContainerState.IDLE) {
-        containerHeight using tween(durationMillis = 750)
-        alphaPropKey using tween(
-            durationMillis = 1000,
-            delayMillis = 500,
-            easing = LinearOutSlowInEasing
-        )
-    }
-}
-
 @Composable
 fun CrossingTodoList(
     modifier: Modifier = Modifier,
@@ -266,7 +228,7 @@ fun AnimatedAddTodoContainer(
     onNewTodoCreated: (String) -> Unit
 ) {
     val addTodoText = remember { mutableStateOf("") }
-    val animationState = remember { mutableStateOf(AnimatedContainerState.DO_NOT_ANIMATE) }
+    val animationState = remember { mutableStateOf(AnimatedContainerState.IDLE) }
 
     AnimatedContainer(
         animationState = animationState,
@@ -289,7 +251,7 @@ fun AnimatedAddTodoContainer(
                         animationState.value =
                             when (animationState.value) {
                                 AnimatedContainerState.IDLE -> AnimatedContainerState.PRESSED
-                                AnimatedContainerState.DO_NOT_ANIMATE, AnimatedContainerState.PRESSED -> AnimatedContainerState.IDLE
+                                AnimatedContainerState.PRESSED -> AnimatedContainerState.IDLE
                             }
                     },
                 ) {
@@ -308,13 +270,7 @@ fun AnimatedAddTodoContainer(
             onValueChange = { addTodoText.value = it },
             singleLine = true,
             label = { Text(stringResource(R.string.create_todo)) },
-            onImeActionPerformed = { imeAction, _ ->
-                if (imeAction == ImeAction.Done) {
-                    onNewTodoCreated(addTodoText.value)
-                    addTodoText.value = ""
-                    animationState.value = AnimatedContainerState.PRESSED
-                }
-            }
+//            keyboardActions = KeyboardActions
         )
     }
 }
@@ -403,17 +359,17 @@ fun TurnipPriceList(
                 label = {
                     Text(
                         text = stringResource(id = R.string.turnip_am_price),
-                        fontSize = TextUnit.Sp(10)
+                        fontSize = TextUnit(10)
                     )
                 },
                 onValueChange = { turnipAmPrice.value = it },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onImeActionPerformed = { imeAction, softKeyboardController ->
-                    if (imeAction == ImeAction.Done) {
-                        onTurnipPriceUpdate(TurnipPriceType.AM, turnipAmPrice.value)
-                        softKeyboardController?.hideSoftwareKeyboard()
-                    }
-                }
+//                onImeActionPerformed = { imeAction, softKeyboardController ->
+//                    if (imeAction == ImeAction.Done) {
+//                        onTurnipPriceUpdate(TurnipPriceType.AM, turnipAmPrice.value)
+//                        softKeyboardController?.hideSoftwareKeyboard()
+//                    }
+//                }
             )
             OutlinedTextField(
                 modifier = Modifier.padding(horizontal = 8.dp),
@@ -423,17 +379,17 @@ fun TurnipPriceList(
                 label = {
                     Text(
                         text = stringResource(id = R.string.turnip_pm_price),
-                        fontSize = TextUnit.Sp(10)
+//                        fontSize = TextUnit.Sp(10)
                     )
                 },
                 onValueChange = { turnipPmPrice.value = it },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onImeActionPerformed = { imeAction, softKeyboardController ->
-                    if (imeAction == ImeAction.Done) {
-                        onTurnipPriceUpdate(TurnipPriceType.PM, turnipPmPrice.value)
-                        softKeyboardController?.hideSoftwareKeyboard()
-                    }
-                }
+//                onImeActionPerformed = { imeAction, softKeyboardController ->
+//                    if (imeAction == ImeAction.Done) {
+//                        onTurnipPriceUpdate(TurnipPriceType.PM, turnipPmPrice.value)
+//                        softKeyboardController?.hideSoftwareKeyboard()
+//                    }
+//                }
             )
         }
     }
@@ -484,7 +440,7 @@ fun VillagerInteractionsList(
 //                                        indication = rememberRipple(bounded = false, radius = 18.dp)
                                     ),
                                 bitmap = imageFromResource(
-                                    AmbientContext.current.resources,
+                                    LocalContext.current.resources,
                                     R.drawable.present
                                 )
                             )
@@ -504,7 +460,7 @@ fun VillagerInteractionsList(
 //                                        indication = rememberRipple(bounded = false, radius = 18.dp)
                                     ),
                                 bitmap = imageFromResource(
-                                    AmbientContext.current.resources,
+                                    LocalContext.current.resources,
                                     R.drawable.speech_bubble
                                 )
                             )
@@ -520,7 +476,7 @@ fun VillagerInteractionsList(
 fun AnimatedAddVillagerContainer(
     onAddVillagerClicked: (String) -> Unit
 ) {
-    val animationState = remember { mutableStateOf(AnimatedContainerState.DO_NOT_ANIMATE) }
+    val animationState = remember { mutableStateOf(AnimatedContainerState.IDLE) }
     val addVillagerText = remember { mutableStateOf("") }
 
     AnimatedContainer(
@@ -543,7 +499,7 @@ fun AnimatedAddVillagerContainer(
                         animationState.value =
                             when (animationState.value) {
                                 AnimatedContainerState.IDLE -> AnimatedContainerState.PRESSED
-                                AnimatedContainerState.DO_NOT_ANIMATE, AnimatedContainerState.PRESSED -> AnimatedContainerState.IDLE
+                                AnimatedContainerState.PRESSED -> AnimatedContainerState.IDLE
                             }
                     },
                 ) {
@@ -562,13 +518,13 @@ fun AnimatedAddVillagerContainer(
             onValueChange = { addVillagerText.value = it },
             singleLine = true,
             label = { Text(stringResource(R.string.villager_name)) },
-            onImeActionPerformed = { imeAction, _ ->
-                if (imeAction == ImeAction.Done) {
-                    onAddVillagerClicked(addVillagerText.value)
-                    addVillagerText.value = ""
-                    animationState.value = AnimatedContainerState.PRESSED
-                }
-            }
+//            onImeActionPerformed = { imeAction, _ ->
+//                if (imeAction == ImeAction.Done) {
+//                    onAddVillagerClicked(addVillagerText.value)
+//                    addVillagerText.value = ""
+//                    animationState.value = AnimatedContainerState.PRESSED
+//                }
+//            }
         )
     }
 }
@@ -596,12 +552,12 @@ fun CrossingNotes(
                 value = modifiedNotes.value,
                 onValueChange = { modifiedNotes.value = it },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                onImeActionPerformed = { imeAction, keyboardController ->
-                    if (imeAction == ImeAction.Done) {
-                        onNotesUpdated(modifiedNotes.value)
-                        keyboardController?.hideSoftwareKeyboard()
-                    }
-                }
+//                onImeActionPerformed = { imeAction, keyboardController ->
+//                    if (imeAction == ImeAction.Done) {
+//                        onNotesUpdated(modifiedNotes.value)
+//                        keyboardController?.hideSoftwareKeyboard()
+//                    }
+//                }
             )
         }
     }

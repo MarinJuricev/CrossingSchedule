@@ -3,7 +3,7 @@ package com.example.crossingschedule
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.*
@@ -25,10 +25,10 @@ class MainActivity : AppCompatActivity() {
             val navController = rememberNavController()
 
             CrossingScheduleTheme {
-                NavHost(navController = navController, startDestination = LOGIN_PAGE_ROUTE) {
+                NavHost(navController = navController, startDestination = SCHEDULE_PAGE_ROUTE) {
                     composable(route = SCHEDULE_PAGE_ROUTE) { navBackStackEntry ->
                         val factory =
-                            HiltViewModelFactory(AmbientContext.current, navBackStackEntry)
+                            HiltViewModelFactory(LocalContext.current, navBackStackEntry)
                         val scheduleViewModel: ScheduleViewModel =
                             viewModel(ScheduleViewModel::class.java.canonicalName, factory)
 
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     composable(route = LOGIN_PAGE_ROUTE) { navBackStackEntry ->
                         val factory =
-                            HiltViewModelFactory(AmbientContext.current, navBackStackEntry)
+                            HiltViewModelFactory(LocalContext.current, navBackStackEntry)
                         val loginViewModel: LoginViewModel =
                             viewModel(LoginViewModel::class.java.canonicalName, factory)
 
