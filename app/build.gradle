@@ -110,6 +110,12 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-moshi:2.4.0"
 
+    def http_logging_interceptor = "4.9.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:$http_logging_interceptor"
+
+    def security =  "1.1.0-alpha03"
+    implementation "androidx.security:security-crypto:$security"
+
     def moshi = "1.11.0"
     implementation("com.squareup.moshi:moshi:$moshi")
 

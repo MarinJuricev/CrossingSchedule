@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
             val navController = rememberNavController()
 
             CrossingScheduleTheme {
-                NavHost(navController = navController, startDestination = SCHEDULE_PAGE_ROUTE) {
+                NavHost(navController = navController, startDestination = LOGIN_PAGE_ROUTE) {
                     composable(route = SCHEDULE_PAGE_ROUTE) { navBackStackEntry ->
                         val factory =
                             HiltViewModelFactory(LocalContext.current, navBackStackEntry)

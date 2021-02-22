@@ -7,6 +7,8 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
+const val AUTH_TOKEN_KEY = "AUTH_TOKEN_KEY"
+
 class AuthProviderImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ) : AuthProvider {

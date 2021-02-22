@@ -69,11 +69,11 @@ fun LoginPage(
                     contentDescription = null
                 )
             }
-        }
-        when (selectedTabPosition.value) {
-            LOGIN_TAB_POSITION -> LoginComponent(viewState.value, loginViewModel::onLoginClick)
-            SIGN_UP_TAB_POSITION -> Text("RENDER THE SIGN UP")
-            else -> Text("Render some kind of error container")//TODO Add a Crossing Error container
+            when (selectedTabPosition.value) {
+                LOGIN_TAB_POSITION -> LoginComponent(viewState.value, loginViewModel::onLoginClick)
+                SIGN_UP_TAB_POSITION -> Text("RENDER THE SIGN UP")
+                else -> Text("Render some kind of error container")//TODO Add a Crossing Error container
+            }
         }
         if (viewState.value.isLoading)
             CircularProgressIndicator(modifier = Modifier.size(128.dp))//TODO Style this...
