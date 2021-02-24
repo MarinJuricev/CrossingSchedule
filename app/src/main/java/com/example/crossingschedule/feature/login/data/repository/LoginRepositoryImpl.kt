@@ -5,14 +5,13 @@ import com.example.crossingschedule.core.util.EncryptedPrefsService
 import com.example.crossingschedule.core.util.Failure
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.login.domain.repository.LoginRepository
-import retrofit2.Response
 import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(
     private val authProvider: AuthProvider,
     private val loginApiService: LoginApiService,
     private val encryptedPrefsService: EncryptedPrefsService,
-    private val loginResponseToEitherMapper: Mapper<Either<Failure, Unit>, Response<String>>
+    private val loginResponseToEitherMapper: Mapper<Either<Failure, Unit>, String>
 ) : LoginRepository {
 
     override suspend fun login(

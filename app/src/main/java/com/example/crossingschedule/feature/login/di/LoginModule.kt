@@ -45,6 +45,6 @@ object LoginModule {
     @Provides
     fun provideTokenResponseToEitherMapper(
         tokenResponseToEitherMapper: TokenResponseToEitherMapper
-    ): Mapper<Either<Failure, Unit>, Response<String>> = tokenResponseToEitherMapper
+    ): Mapper<Either<Failure, Unit>, String> = tokenResponseToEitherMapper
 
 }
