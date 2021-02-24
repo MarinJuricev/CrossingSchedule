@@ -119,6 +119,10 @@ dependencies {
     def moshi = "1.11.0"
     implementation("com.squareup.moshi:moshi:$moshi")
 
+    // Use the most recent version of Compose available.
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose"
+    debugImplementation "org.jetbrains.kotlin:kotlin-reflect:1.4.30"
+
     testImplementation "junit:junit:4.13.1"
     testImplementation("io.mockk:mockk:1.10.5")
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2'
