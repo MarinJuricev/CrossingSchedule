@@ -1,16 +1,16 @@
 package com.example.crossingschedule.feature.login.presentation.components
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.imageFromResource
-import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -20,6 +20,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.crossingschedule.R
 import com.example.crossingschedule.feature.login.presentation.LOGIN_TAB_POSITION
 import com.example.crossingschedule.feature.login.presentation.SIGN_UP_TAB_POSITION
+import com.example.crossingschedule.feature.login.presentation.model.AnimatedValidatorState
 import com.example.crossingschedule.feature.login.presentation.model.LoginError
 import com.example.crossingschedule.feature.login.presentation.model.LoginViewState
 
@@ -66,18 +67,15 @@ fun LoginComponent(
     loginViewState: LoginViewState,
     onLoginClick: (String, String) -> Unit
 ) {
-    Crossfade(
-        targetState = Any(),
-    ) {
-        val emailText = remember { mutableStateOf(loginViewState.email) }
-        val passwordText = remember { mutableStateOf(loginViewState.password) }
-
+//    Crossfade(
+//        targetState = Any(),
+//    ) {
         ConstraintLayout(
             modifier = Modifier.fillMaxHeight()
         ) {
             val (loginImage, appTitle, salesPitch,
-                emailTextField, passwordTextField,
-                bottomDecor, loginButton) = createRefs()
+                loginInputFields, bottomDecor,
+                loginButton) = createRefs()
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -118,35 +116,14 @@ fun LoginComponent(
                 ),
                 contentDescription = null
             )
-            OutlinedTextField(
+            LoginInputFields(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .constrainAs(emailTextField) {
-                        top.linkTo(loginImage.bottom, margin = 16.dp)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    },
-                isErrorValue = loginViewState.loginError is LoginError.EmailError,
-                value = emailText.value,
-                onValueChange = { emailText.value = it },
-                singleLine = true,
-                label = { Text(stringResource(R.string.email)) },
-            )
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .constrainAs(passwordTextField) {
-                        top.linkTo(emailTextField.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    },
-                value = passwordText.value,
-                isErrorValue = loginViewState.loginError is LoginError.PasswordError,
-                onValueChange = { passwordText.value = it },
-                singleLine = true,
-                label = { Text(stringResource(R.string.password)) },
+                .constrainAs(loginInputFields) {
+                    top.linkTo(loginImage.bottom, margin = 8.dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
+                loginViewState = loginViewState
             )
             //TODO Add a sign in with Google ?
             Box(
@@ -167,7 +144,7 @@ fun LoginComponent(
                         top.linkTo(bottomDecor.top)
                         bottom.linkTo(bottomDecor.top)
                     },
-                onClick = { onLoginClick(emailText.value, passwordText.value) }) {
+                onClick = { onLoginClick("emailText.value", "") }) {
                 Text(
                     modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
                     text = stringResource(R.string.login),
@@ -176,5 +153,78 @@ fun LoginComponent(
                 )
             }
         }
+}
+
+@Composable
+fun LoginInputFields(
+    modifier: Modifier = Modifier,
+    loginViewState: LoginViewState
+) {
+    val emailText = remember { mutableStateOf(loginViewState.email) }
+    val passwordText = remember { mutableStateOf(loginViewState.password) }
+    val validatorAnimatedStates =
+        remember { mutableStateOf(AnimatedValidatorState.NO_ERROR) }
+
+    validatorAnimatedStates.value = when (loginViewState.loginError) {
+        is LoginError.GeneralError -> AnimatedValidatorState.NO_ERROR
+        is LoginError.EmailError -> AnimatedValidatorState.EMAIL_ERROR
+        is LoginError.PasswordError -> AnimatedValidatorState.PASSWORD_ERROR
+        else -> AnimatedValidatorState.NO_ERROR
+    }
+    val validatorTransition = updateTransition(targetState = validatorAnimatedStates)
+
+    val emailAlpha by validatorTransition.animateFloat(
+        transitionSpec = {
+            tween(durationMillis = 1000)
+        }
+    ) {
+        when (it.value) {
+            AnimatedValidatorState.NO_ERROR -> 0f
+            AnimatedValidatorState.PASSWORD_ERROR -> 0f
+            AnimatedValidatorState.EMAIL_ERROR -> 1f
+        }
+    }
+
+    val emailHeight = validatorTransition.animateDp(
+        transitionSpec = {
+            tween(durationMillis = 1000)
+        }
+    ) {
+        when (it.value) {
+            AnimatedValidatorState.NO_ERROR -> 0.dp
+            AnimatedValidatorState.PASSWORD_ERROR -> 0.dp
+            AnimatedValidatorState.EMAIL_ERROR -> 24.dp
+        }
+    }
+
+    Column(modifier = modifier) {
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            isErrorValue = loginViewState.loginError is LoginError.EmailError,
+            value = emailText.value,
+            onValueChange = { emailText.value = it },
+            singleLine = true,
+            label = { Text(stringResource(R.string.email)) },
+        )
+        if(loginViewState.loginError is LoginError.EmailError){
+            Text(
+                modifier = Modifier
+                    .alpha(emailAlpha)
+                    .height(emailHeight.value),
+                text = loginViewState.loginError.emailError,
+            )
+        }
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            value = passwordText.value,
+            isErrorValue = loginViewState.loginError is LoginError.PasswordError,
+            onValueChange = { passwordText.value = it },
+            singleLine = true,
+            label = { Text(stringResource(R.string.password)) },
+        )
     }
 }
