@@ -1,13 +1,18 @@
 package com.example.crossingschedule.feature.login.presentation.components
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.imageFromResource
@@ -65,11 +70,13 @@ fun LoginTab(
 @Composable
 fun LoginComponent(
     loginViewState: LoginViewState,
-    onLoginClick: (String, String) -> Unit
+    onLoginClick: () -> Unit,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
 ) {
-//    Crossfade(
-//        targetState = Any(),
-//    ) {
+    Crossfade(
+        targetState = loginViewState.navigateToSchedule,
+    ) {
         ConstraintLayout(
             modifier = Modifier.fillMaxHeight()
         ) {
@@ -118,12 +125,14 @@ fun LoginComponent(
             )
             LoginInputFields(
                 modifier = Modifier
-                .constrainAs(loginInputFields) {
-                    top.linkTo(loginImage.bottom, margin = 8.dp)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                },
-                loginViewState = loginViewState
+                    .constrainAs(loginInputFields) {
+                        top.linkTo(loginImage.bottom, margin = 8.dp)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    },
+                loginViewState = loginViewState,
+                onEmailChange = onEmailChange,
+                onPasswordChange = onPasswordChange,
             )
             //TODO Add a sign in with Google ?
             Box(
@@ -144,7 +153,8 @@ fun LoginComponent(
                         top.linkTo(bottomDecor.top)
                         bottom.linkTo(bottomDecor.top)
                     },
-                onClick = { onLoginClick("emailText.value", "") }) {
+                onClick = onLoginClick
+            ) {
                 Text(
                     modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
                     text = stringResource(R.string.login),
@@ -153,15 +163,16 @@ fun LoginComponent(
                 )
             }
         }
+    }
 }
 
 @Composable
 fun LoginInputFields(
     modifier: Modifier = Modifier,
-    loginViewState: LoginViewState
+    loginViewState: LoginViewState,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit
 ) {
-    val emailText = remember { mutableStateOf(loginViewState.email) }
-    val passwordText = remember { mutableStateOf(loginViewState.password) }
     val validatorAnimatedStates =
         remember { mutableStateOf(AnimatedValidatorState.NO_ERROR) }
 
@@ -197,34 +208,75 @@ fun LoginInputFields(
         }
     }
 
-    Column(modifier = modifier) {
+    val passwordHeight = validatorTransition.animateDp(
+        transitionSpec = {
+            tween(durationMillis = 1000)
+        }
+    ) {
+        when (it.value) {
+            AnimatedValidatorState.NO_ERROR -> 0.dp
+            AnimatedValidatorState.EMAIL_ERROR -> 0.dp
+            AnimatedValidatorState.PASSWORD_ERROR -> 12.dp
+        }
+    }
+
+    val passwordAlpha by validatorTransition.animateFloat(
+        transitionSpec = {
+            tween(durationMillis = 1000)
+        }
+    ) {
+        when (it.value) {
+            AnimatedValidatorState.NO_ERROR -> 0f
+            AnimatedValidatorState.EMAIL_ERROR -> 0f
+            AnimatedValidatorState.PASSWORD_ERROR -> 1f
+        }
+    }
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+    ) {
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             isErrorValue = loginViewState.loginError is LoginError.EmailError,
-            value = emailText.value,
-            onValueChange = { emailText.value = it },
+            value = loginViewState.email,
+            onValueChange = onEmailChange,
             singleLine = true,
             label = { Text(stringResource(R.string.email)) },
         )
-        if(loginViewState.loginError is LoginError.EmailError){
+        if (loginViewState.loginError is LoginError.EmailError) {
             Text(
                 modifier = Modifier
                     .alpha(emailAlpha)
+                    .fillMaxWidth()
                     .height(emailHeight.value),
                 text = loginViewState.loginError.emailError,
+                color = MaterialTheme.colors.error,
+                textAlign = TextAlign.Center,
             )
         }
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            value = passwordText.value,
+            value = loginViewState.password,
             isErrorValue = loginViewState.loginError is LoginError.PasswordError,
-            onValueChange = { passwordText.value = it },
+            onValueChange = onPasswordChange,
             singleLine = true,
             label = { Text(stringResource(R.string.password)) },
         )
+        if (loginViewState.loginError is LoginError.PasswordError) {
+            Text(
+                modifier = Modifier
+                    .alpha(passwordAlpha)
+                    .fillMaxWidth()
+                    .padding(passwordHeight.value),
+                text = loginViewState.loginError.passwordError,
+                color = MaterialTheme.colors.error,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }

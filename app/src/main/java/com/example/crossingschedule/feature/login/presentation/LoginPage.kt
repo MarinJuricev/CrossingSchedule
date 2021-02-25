@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.feature.login.presentation.components.LoginComponent
 import com.example.crossingschedule.feature.login.presentation.components.LoginTab
+import com.example.crossingschedule.feature.login.presentation.model.LoginError
 import com.example.crossingschedule.feature.login.presentation.model.LoginViewState
 
 const val LOGIN_PAGE_ROUTE = "LOGIN_PAGE"
@@ -70,14 +71,17 @@ fun LoginPage(
                 )
             }
             when (selectedTabPosition.value) {
-                LOGIN_TAB_POSITION -> LoginComponent(viewState.value, loginViewModel::onLoginClick)
+                LOGIN_TAB_POSITION -> LoginComponent(
+                    viewState.value, loginViewModel::onLoginClick,
+                    loginViewModel::onEmailChange, loginViewModel::onPasswordChange
+                )
                 SIGN_UP_TAB_POSITION -> Text("RENDER THE SIGN UP")
                 else -> Text("Render some kind of error container")//TODO Add a Crossing Error container
             }
         }
         if (viewState.value.isLoading)
             CircularProgressIndicator(modifier = Modifier.size(128.dp))//TODO Style this...
-        if (viewState.value.loginError != null) {
+        if (viewState.value.loginError is LoginError.GeneralError) {
             LaunchedEffect(
                 key1 = Any(),
                 block = {

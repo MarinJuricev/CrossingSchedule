@@ -22,19 +22,26 @@ class LoginViewModel @Inject constructor(
     private val _loginViewState = MutableStateFlow(LoginViewState())
     val loginViewState = _loginViewState
 
-    fun onLoginClick(
-        email: String,
-        password: String
-    ) {
+    fun onEmailChange(newEmail: String) {
         loginViewState.value =
             loginViewState.value.copy(
-                email = email,
-                password = password,
-                isLoading = true
+                email = newEmail
             )
+    }
+
+    fun onPasswordChange(newPassword: String) {
+        loginViewState.value =
+            loginViewState.value.copy(
+                password = newPassword
+            )
+    }
+
+    fun onLoginClick() {
+        triggerIsLoading()
+        val viewState = loginViewState.value
 
         viewModelScope.launch {
-            when (val result = performLogin(email, password)) {
+            when (val result = performLogin(viewState.email, viewState.password)) {
                 is Either.Right -> loginViewState.value =
                     loginViewState.value.copy(
                         navigateToSchedule = true,
@@ -50,4 +57,10 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    private fun triggerIsLoading() {
+        loginViewState.value =
+            loginViewState.value.copy(
+                isLoading = true
+            )
+    }
 }
