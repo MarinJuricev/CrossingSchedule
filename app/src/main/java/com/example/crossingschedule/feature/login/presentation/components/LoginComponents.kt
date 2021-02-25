@@ -246,17 +246,15 @@ fun LoginInputFields(
             singleLine = true,
             label = { Text(stringResource(R.string.email)) },
         )
-        if (loginViewState.loginError is LoginError.EmailError) {
-            Text(
-                modifier = Modifier
-                    .alpha(emailAlpha)
-                    .fillMaxWidth()
-                    .height(emailHeight.value),
-                text = loginViewState.loginError.emailError,
-                color = MaterialTheme.colors.error,
-                textAlign = TextAlign.Center,
-            )
-        }
+        Text(
+            modifier = Modifier
+                .alpha(emailAlpha)
+                .fillMaxWidth()
+                .height(emailHeight.value),
+            text = (loginViewState.loginError as? LoginError.EmailError)?.emailError ?: "",
+            color = MaterialTheme.colors.error,
+            textAlign = TextAlign.Center,
+        )
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -267,16 +265,15 @@ fun LoginInputFields(
             singleLine = true,
             label = { Text(stringResource(R.string.password)) },
         )
-        if (loginViewState.loginError is LoginError.PasswordError) {
-            Text(
-                modifier = Modifier
-                    .alpha(passwordAlpha)
-                    .fillMaxWidth()
-                    .padding(passwordHeight.value),
-                text = loginViewState.loginError.passwordError,
-                color = MaterialTheme.colors.error,
-                textAlign = TextAlign.Center,
-            )
-        }
+        Text(
+            modifier = Modifier
+                .alpha(passwordAlpha)
+                .fillMaxWidth()
+                .padding(passwordHeight.value),
+            text = (loginViewState.loginError as? LoginError.PasswordError)?.passwordError
+                ?: "",//TODO Cleaner API for this... this is mega messy
+            color = MaterialTheme.colors.error,
+            textAlign = TextAlign.Center,
+        )
     }
 }
