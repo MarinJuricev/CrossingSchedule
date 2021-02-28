@@ -51,11 +51,11 @@ class LoginValidatorTest {
     }
 
     @Test
-    fun `validate should return Unit when the provided password passes the requirements`() {
+    fun `validate should return Unit when the provided email,password passes the requirements`() {
         val invalidEmail = "validEmail@test.com"
-        val blankPassword = "strongPassword"
+        val strongPassword = "strongPassword"
 
-        val actualResult = sut.validate(invalidEmail, blankPassword)
+        val actualResult = sut.validate(invalidEmail, strongPassword)
         val expectedResult = Either.Right(Unit)
 
         assert(actualResult == expectedResult)

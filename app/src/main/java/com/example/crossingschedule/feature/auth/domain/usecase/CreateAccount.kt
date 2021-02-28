@@ -5,20 +5,20 @@ import com.example.crossingschedule.core.util.Failure
 import com.example.crossingschedule.feature.auth.domain.repository.AuthRepository
 import javax.inject.Inject
 
-
-class PerformLogin @Inject constructor(
-    private val repository: AuthRepository,
-    private val loginValidator: LoginValidator
+class CreateAccount @Inject constructor(
+    private val signUpValidator: SignUpValidator,
+    private val authRepository: AuthRepository,
 ) {
     suspend operator fun invoke(
         email: String,
-        password: String
+        password: String,
+        confirmPassword: String
     ): Either<Failure, Unit> {
-        val validationResult = loginValidator.validate(email, password)
-        if(validationResult is Either.Left){
+        val validationResult = signUpValidator.validate(email, password, confirmPassword)
+        if (validationResult is Either.Left) {
             return validationResult
         }
 
-        return repository.login(email, password)
+        return authRepository.createAccount(email, password, confirmPassword)
     }
 }

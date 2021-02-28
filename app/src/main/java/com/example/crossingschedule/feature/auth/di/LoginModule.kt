@@ -7,8 +7,8 @@ import com.example.crossingschedule.feature.auth.data.mapper.TokenResponseToEith
 import com.example.crossingschedule.feature.auth.data.repository.AuthProvider
 import com.example.crossingschedule.feature.auth.data.repository.AuthProviderImpl
 import com.example.crossingschedule.feature.auth.data.repository.LoginApiService
-import com.example.crossingschedule.feature.auth.data.repository.LoginRepositoryImpl
-import com.example.crossingschedule.feature.auth.domain.repository.LoginRepository
+import com.example.crossingschedule.feature.auth.data.repository.AuthRepositoryImpl
+import com.example.crossingschedule.feature.auth.domain.repository.AuthRepository
 import com.example.crossingschedule.feature.auth.presentation.mapper.FailureToLoginErrorMapper
 import com.example.crossingschedule.feature.auth.presentation.model.LoginError
 import dagger.Module
@@ -23,8 +23,8 @@ object LoginModule {
 
     @Provides
     fun provideLoginRepository(
-        loginRepositoryImpl: LoginRepositoryImpl
-    ): LoginRepository = loginRepositoryImpl
+        loginRepositoryImpl: AuthRepositoryImpl
+    ): AuthRepository = loginRepositoryImpl
 
     @Provides
     fun provideLoginErrorMapper(
