@@ -5,7 +5,7 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.crossingschedule.core.util.BaseUrlProvider
 import com.example.crossingschedule.core.util.EncryptedPrefsService
 import com.example.crossingschedule.core.util.EncryptedPrefsServiceImpl
-import com.example.crossingschedule.feature.login.data.repository.AUTH_TOKEN_KEY
+import com.example.crossingschedule.feature.auth.data.repository.AUTH_TOKEN_KEY
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.moshi.Moshi

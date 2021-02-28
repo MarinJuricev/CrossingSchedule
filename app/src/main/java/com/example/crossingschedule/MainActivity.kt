@@ -8,13 +8,15 @@ import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.*
 import com.example.crossingschedule.core.ui.CrossingScheduleTheme
-import com.example.crossingschedule.feature.login.presentation.LOGIN_PAGE_ROUTE
-import com.example.crossingschedule.feature.login.presentation.LoginPage
-import com.example.crossingschedule.feature.login.presentation.LoginViewModel
+import com.example.crossingschedule.feature.auth.presentation.AUTH_PAGE_ROUTE
+import com.example.crossingschedule.feature.auth.presentation.LoginPage
+import com.example.crossingschedule.feature.auth.presentation.LoginViewModel
+import com.example.crossingschedule.feature.auth.presentation.SignUpViewModel
 import com.example.crossingschedule.feature.schedule.presentation.SCHEDULE_PAGE_ROUTE
 import com.example.crossingschedule.feature.schedule.presentation.SchedulePage
 import com.example.crossingschedule.feature.schedule.presentation.ScheduleViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.sign
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -25,7 +27,7 @@ class MainActivity : AppCompatActivity() {
             val navController = rememberNavController()
 
             CrossingScheduleTheme {
-                NavHost(navController = navController, startDestination = LOGIN_PAGE_ROUTE) {
+                NavHost(navController = navController, startDestination = AUTH_PAGE_ROUTE) {
                     composable(route = SCHEDULE_PAGE_ROUTE) { navBackStackEntry ->
                         val factory =
                             HiltViewModelFactory(LocalContext.current, navBackStackEntry)
@@ -34,19 +36,22 @@ class MainActivity : AppCompatActivity() {
 
                         SchedulePage(scheduleViewModel)
                     }
-                    composable(route = LOGIN_PAGE_ROUTE) { navBackStackEntry ->
+                    composable(route = AUTH_PAGE_ROUTE) { navBackStackEntry ->
                         val factory =
                             HiltViewModelFactory(LocalContext.current, navBackStackEntry)
                         val loginViewModel: LoginViewModel =
                             viewModel(LoginViewModel::class.java.canonicalName, factory)
+                        val signUpViewModel: SignUpViewModel =
+                            viewModel(SignUpViewModel::class.java.canonicalName, factory)
 
                         LoginPage(
                             navigateToSchedule = {
                                 navController.navigate(SCHEDULE_PAGE_ROUTE) {
-                                    popUpTo(route = LOGIN_PAGE_ROUTE) { inclusive = true }
+                                    popUpTo(route = AUTH_PAGE_ROUTE) { inclusive = true }
                                 }
                             },
-                            loginViewModel = loginViewModel
+                            loginViewModel = loginViewModel,
+                            signUpViewModel = signUpViewModel,
                         )
                     }
                 }
