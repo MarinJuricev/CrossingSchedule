@@ -15,8 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.imageFromResource
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -117,10 +116,7 @@ fun LoginComponent(
                         start.linkTo(salesPitch.start)
                         end.linkTo(salesPitch.end)
                     },
-                bitmap = imageFromResource(
-                    LocalContext.current.resources,
-                    R.drawable.login_icon
-                ),
+                painter = painterResource(id = R.drawable.login_icon),
                 contentDescription = null
             )
             LoginInputFields(
@@ -240,7 +236,7 @@ fun LoginInputFields(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            isErrorValue = loginViewState.loginError is LoginError.EmailError,
+            isError = loginViewState.loginError is LoginError.EmailError,
             value = loginViewState.email,
             onValueChange = onEmailChange,
             singleLine = true,
@@ -260,7 +256,7 @@ fun LoginInputFields(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             value = loginViewState.password,
-            isErrorValue = loginViewState.loginError is LoginError.PasswordError,
+            isError = loginViewState.loginError is LoginError.PasswordError,
             onValueChange = onPasswordChange,
             singleLine = true,
             label = { Text(stringResource(R.string.password)) },

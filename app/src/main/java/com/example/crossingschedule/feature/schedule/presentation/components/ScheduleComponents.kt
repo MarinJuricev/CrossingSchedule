@@ -21,16 +21,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.core.ui.components.AnimatedContainer
@@ -54,10 +53,7 @@ fun BackgroundImage(
             .fillMaxWidth()
             .fillMaxHeight(),
         contentScale = ContentScale.FillBounds,
-        bitmap = imageFromResource(
-            LocalContext.current.resources,
-            resourceId
-        )
+        painter = painterResource(id = resourceId),
     )
 }
 
@@ -124,50 +120,35 @@ fun RawIngredientRow(
             modifier = Modifier
                 .size(42.dp)
                 .padding(top = 4.dp),
-            bitmap = imageFromResource(
-                LocalContext.current.resources,
-                R.drawable.tree_branch
-            )
+            painter = painterResource(id = R.drawable.tree_branch),
         )
         Image(
             contentDescription = null,
             modifier = Modifier
                 .size(42.dp)
                 .padding(bottom = 4.dp),
-            bitmap = imageFromResource(
-                LocalContext.current.resources,
-                R.drawable.stone
-            )
+            painter = painterResource(id = R.drawable.stone),
         )
         Image(
             contentDescription = null,
             modifier = Modifier
                 .size(42.dp)
                 .padding(top = 4.dp),
-            bitmap = imageFromResource(
-                LocalContext.current.resources,
-                R.drawable.clay
-            )
+            painter = painterResource(id = R.drawable.clay),
         )
         Image(
             contentDescription = null,
             modifier = Modifier
                 .size(42.dp)
                 .padding(bottom = 4.dp),
-            bitmap = imageFromResource(
-                LocalContext.current.resources,
-                R.drawable.hard_wood
-            )
+            painter = painterResource(id = R.drawable.hard_wood),
         )
         Image(
             contentDescription = null,
             modifier = Modifier
                 .size(42.dp)
                 .padding(top = 4.dp),
-            bitmap = imageFromResource(
-                LocalContext.current.resources,
-                R.drawable.iron_nugget
-            )
+            painter = painterResource(id = R.drawable.iron_nugget),
         )
     }
 }
@@ -304,10 +285,7 @@ fun CrossingShops(
                                 modifier = Modifier
                                     .size(42.dp)
                                     .padding(vertical = 8.dp),
-                                bitmap = imageFromResource(
-                                    LocalContext.current.resources,
-                                    shops[index].resourceImageId
-                                )
+                                painter = painterResource(id = shops[index].resourceImageId),
                             )
                             Checkbox(
                                 checked = shops[index].isVisited,
@@ -345,10 +323,7 @@ fun TurnipPriceList(
                     modifier = Modifier
                         .padding(start = 8.dp)
                         .size(36.dp),
-                    bitmap = imageFromResource(
-                        LocalContext.current.resources,
-                        R.drawable.daisy_mae
-                    )
+                    painter = painterResource(id = R.drawable.daisy_mae),
                 )
             }
             OutlinedTextField(
@@ -358,8 +333,7 @@ fun TurnipPriceList(
                 maxLines = 1,
                 label = {
                     Text(
-                        text = stringResource(id = R.string.turnip_am_price),
-                        fontSize = TextUnit(10)
+                        text = stringResource(id = R.string.turnip_am_price)
                     )
                 },
                 onValueChange = { turnipAmPrice.value = it },
@@ -440,10 +414,7 @@ fun VillagerInteractionsList(
                                             )
                                         },
                                     ),
-                                bitmap = imageFromResource(
-                                    LocalContext.current.resources,
-                                    R.drawable.present
-                                )
+                                painter = painterResource(id = R.drawable.present),
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Image(
@@ -459,10 +430,7 @@ fun VillagerInteractionsList(
                                             )
                                         },
                                     ),
-                                bitmap = imageFromResource(
-                                    LocalContext.current.resources,
-                                    R.drawable.speech_bubble
-                                )
+                                painter = painterResource(id = R.drawable.speech_bubble),
                             )
                         }
                     }
