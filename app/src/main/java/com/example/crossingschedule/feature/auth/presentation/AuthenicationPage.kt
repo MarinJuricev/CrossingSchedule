@@ -34,7 +34,7 @@ fun LoginPage(
 ) {
     val loginViewState = loginViewModel.loginViewState.collectAsState(LoginViewState())
     val signUpViewState = signUpViewModel.signUpViewState.collectAsState(SignUpViewState())
-    val selectedTabPosition = mutableStateOf(LOGIN_TAB_POSITION)
+    val selectedTabPosition = remember { mutableStateOf(LOGIN_TAB_POSITION) }
     val snackBarHostState = remember { SnackbarHostState() }
 
     //TODO Make a better API for this...
@@ -77,10 +77,17 @@ fun LoginPage(
             }
             when (selectedTabPosition.value) {
                 LOGIN_TAB_POSITION -> LoginComponent(
-                    loginViewState.value, loginViewModel::onLoginClick,
-                    loginViewModel::onEmailChange, loginViewModel::onPasswordChange
+                    loginViewState.value,
+                    loginViewModel::onLoginClick,
+                    loginViewModel::onEmailChange,
+                    loginViewModel::onPasswordChange
                 )
-                SIGN_UP_TAB_POSITION -> SignUpComponent(signUpViewState.value)
+                SIGN_UP_TAB_POSITION -> SignUpComponent(
+                    signUpViewState.value,
+                    signUpViewModel::onEmailChange,
+                    signUpViewModel::onPasswordChange,
+                    signUpViewModel::onConfirmPasswordChange
+                )
                 else -> CrossingErrorCard(
                     errorMessage = stringResource(id = R.string.unknown_error)
                 )

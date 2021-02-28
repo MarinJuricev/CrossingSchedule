@@ -3,6 +3,7 @@ package com.example.crossingschedule.feature.auth.presentation
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.OutlinedTextField
@@ -11,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -20,7 +23,10 @@ import com.example.crossingschedule.feature.auth.presentation.model.SignUpViewSt
 
 @Composable
 fun SignUpComponent(
-    signUpViewState: SignUpViewState
+    signUpViewState: SignUpViewState,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onConfirmPasswordChange: (String) -> Unit
 ) {
     Crossfade(
         targetState = Unit,
@@ -49,7 +55,10 @@ fun SignUpComponent(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 },
-                signUpViewState = signUpViewState
+                signUpViewState = signUpViewState,
+                onEmailChange = onEmailChange,
+                onPasswordChange = onPasswordChange,
+                onConfirmPasswordChange = onConfirmPasswordChange
             )
             Box(
                 modifier = Modifier
@@ -85,7 +94,10 @@ fun SignUpComponent(
 @Composable
 fun SignUpInputFields(
     modifier: Modifier = Modifier,
-    signUpViewState: SignUpViewState
+    signUpViewState: SignUpViewState,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onConfirmPasswordChange: (String) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -97,7 +109,8 @@ fun SignUpInputFields(
                 .padding(16.dp),
             isError = signUpViewState.signUpError is SignUpError.EmailError,
             value = signUpViewState.email,
-            onValueChange = {},
+            onValueChange = onEmailChange,
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
             singleLine = true,
             label = { Text(stringResource(R.string.email)) },
         )
@@ -116,8 +129,9 @@ fun SignUpInputFields(
                 .padding(horizontal = 16.dp),
             value = signUpViewState.password,
             isError = signUpViewState.signUpError is SignUpError.PasswordError,
-            onValueChange = {},
-            singleLine = true,
+            onValueChange = onPasswordChange,
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),            singleLine = true,
+            visualTransformation = PasswordVisualTransformation(),
             label = { Text(stringResource(R.string.password)) },
         )
 //        Text(
@@ -133,12 +147,14 @@ fun SignUpInputFields(
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(16.dp),
             value = signUpViewState.confirmPassword,
             isError = signUpViewState.signUpError is SignUpError.ConfirmPasswordError,
-            onValueChange = {},
+            onValueChange = onConfirmPasswordChange,
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
+            visualTransformation = PasswordVisualTransformation(),
             singleLine = true,
-            label = { Text(stringResource(R.string.password)) },
+            label = { Text(stringResource(R.string.confirm_password)) },
         )
     }
 }

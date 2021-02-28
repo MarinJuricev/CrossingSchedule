@@ -8,6 +8,7 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,6 +19,9 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -239,6 +243,7 @@ fun LoginInputFields(
             isError = loginViewState.loginError is LoginError.EmailError,
             value = loginViewState.email,
             onValueChange = onEmailChange,
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
             singleLine = true,
             label = { Text(stringResource(R.string.email)) },
         )
@@ -258,6 +263,8 @@ fun LoginInputFields(
             value = loginViewState.password,
             isError = loginViewState.loginError is LoginError.PasswordError,
             onValueChange = onPasswordChange,
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
             singleLine = true,
             label = { Text(stringResource(R.string.password)) },
         )

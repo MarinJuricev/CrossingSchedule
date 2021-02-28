@@ -13,4 +13,25 @@ class SignUpViewModel @Inject constructor(
 
     private val _signUpViewState = MutableStateFlow(SignUpViewState())
     val signUpViewState = _signUpViewState
+
+    fun onEmailChange(newEmail: String) {
+        _signUpViewState.value =
+            _signUpViewState.value.copy(
+                email = newEmail
+            )
+    }
+
+    fun onPasswordChange(newPassword: String) {
+        _signUpViewState.value =
+            _signUpViewState.value.copy(
+                password = newPassword
+            )
+    }
+
+    fun onConfirmPasswordChange(newConfirmPassword: String) {
+        _signUpViewState.value =
+            _signUpViewState.value.copy(
+                confirmPassword = newConfirmPassword
+            )
+    }
 }
