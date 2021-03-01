@@ -19,6 +19,6 @@ class CreateAccount @Inject constructor(
             return validationResult
         }
 
-        return authRepository.createAccount(email, password, confirmPassword)
+        return authRepository.createAccount(email, password)
     }
 }

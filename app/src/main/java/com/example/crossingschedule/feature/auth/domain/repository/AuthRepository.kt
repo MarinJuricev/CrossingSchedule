@@ -11,6 +11,5 @@ interface AuthRepository {
     suspend fun createAccount(
         email: String,
         password: String,
-        confirmPassword: String
     ): Either<Failure, Unit>
 }

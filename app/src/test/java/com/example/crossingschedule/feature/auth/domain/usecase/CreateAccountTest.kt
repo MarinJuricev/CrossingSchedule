@@ -40,13 +40,13 @@ class CreateAccountTest {
                 signUpValidator.validate(email, password, confirmPassword)
             } answers { failure }
             coEvery {
-                authRepository.createAccount(email, password, confirmPassword)
+                authRepository.createAccount(email, password)
             } coAnswers { failure }
 
             val actualResult = sut(email, password, confirmPassword)
 
             assert(actualResult == failure)
-            coVerify(exactly = 0) { authRepository.createAccount(email, password, confirmPassword) }
+            coVerify(exactly = 0) { authRepository.createAccount(email, password) }
         }
 
     @Test
@@ -61,12 +61,12 @@ class CreateAccountTest {
                 signUpValidator.validate(email, password, confirmPassword)
             } answers { success }
             coEvery {
-                authRepository.createAccount(email, password, confirmPassword)
+                authRepository.createAccount(email, password)
             } coAnswers { success }
 
             val actualResult = sut(email, password, confirmPassword)
 
             assert(actualResult == success)
-            coVerify(exactly = 1) { authRepository.createAccount(email, password, confirmPassword) }
+            coVerify(exactly = 1) { authRepository.createAccount(email, password) }
         }
 }

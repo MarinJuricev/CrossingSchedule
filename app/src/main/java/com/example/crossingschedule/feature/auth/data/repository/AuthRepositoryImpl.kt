@@ -17,19 +17,22 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun login(
         email: String,
         password: String
-    ): Either<Failure, Unit> = when (val loginResult = authProvider.login(email, password)) {
-        is Either.Right -> {
-            encryptedPrefsService.saveValue(AUTH_TOKEN_KEY, authProvider.getUserIdToken())
-            loginResponseToEitherMapper.map(loginApiService.authenticateUser())
-        }
-        is Either.Left -> loginResult
-    }
+    ): Either<Failure, Unit> =
+        authProvider.login(email, password).handleAuthProviderResponse()
 
     override suspend fun createAccount(
         email: String,
         password: String,
-        confirmPassword: String
-    ): Either<Failure, Unit> {
-        TODO("Not yet implemented")
+    ): Either<Failure, Unit> =
+        authProvider.createAccount(email, password).handleAuthProviderResponse()
+
+    private suspend fun Either<Failure, Unit>.handleAuthProviderResponse(): Either<Failure, Unit> {
+        return when (this) {
+            is Either.Right -> {
+                encryptedPrefsService.saveValue(AUTH_TOKEN_KEY, authProvider.getUserIdToken())
+                loginResponseToEitherMapper.map(loginApiService.authenticateUser())
+            }
+            is Either.Left -> this
+        }
     }
 }
