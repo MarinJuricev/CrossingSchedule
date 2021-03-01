@@ -10,10 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
@@ -173,10 +170,10 @@ fun LoginInputFields(
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit
 ) {
-    val validatorAnimatedStates =
+    var validatorAnimatedStates by
         remember { mutableStateOf(AnimatedLoginValidatorState.NO_ERROR) }
 
-    validatorAnimatedStates.value = when (loginViewState.loginError) {
+    validatorAnimatedStates = when (loginViewState.loginError) {
         is LoginError.GeneralError -> AnimatedLoginValidatorState.NO_ERROR
         is LoginError.EmailError -> AnimatedLoginValidatorState.EMAIL_ERROR
         is LoginError.PasswordError -> AnimatedLoginValidatorState.PASSWORD_ERROR
@@ -189,7 +186,7 @@ fun LoginInputFields(
             tween(durationMillis = 1000)
         }
     ) {
-        when (it.value) {
+        when (it) {
             AnimatedLoginValidatorState.NO_ERROR -> 0f
             AnimatedLoginValidatorState.PASSWORD_ERROR -> 0f
             AnimatedLoginValidatorState.EMAIL_ERROR -> 1f
@@ -201,7 +198,7 @@ fun LoginInputFields(
             tween(durationMillis = 1000)
         }
     ) {
-        when (it.value) {
+        when (it) {
             AnimatedLoginValidatorState.NO_ERROR -> 0.dp
             AnimatedLoginValidatorState.PASSWORD_ERROR -> 0.dp
             AnimatedLoginValidatorState.EMAIL_ERROR -> 24.dp
@@ -213,7 +210,7 @@ fun LoginInputFields(
             tween(durationMillis = 1000)
         }
     ) {
-        when (it.value) {
+        when (it) {
             AnimatedLoginValidatorState.NO_ERROR -> 0.dp
             AnimatedLoginValidatorState.EMAIL_ERROR -> 0.dp
             AnimatedLoginValidatorState.PASSWORD_ERROR -> 12.dp
@@ -225,7 +222,7 @@ fun LoginInputFields(
             tween(durationMillis = 1000)
         }
     ) {
-        when (it.value) {
+        when (it) {
             AnimatedLoginValidatorState.NO_ERROR -> 0f
             AnimatedLoginValidatorState.EMAIL_ERROR -> 0f
             AnimatedLoginValidatorState.PASSWORD_ERROR -> 1f

@@ -32,13 +32,14 @@ fun LoginPage(
     loginViewModel: LoginViewModel,
     signUpViewModel: SignUpViewModel,
 ) {
-    val loginViewState = loginViewModel.loginViewState.collectAsState(LoginViewState())
-    val signUpViewState = signUpViewModel.signUpViewState.collectAsState(SignUpViewState())
-    val selectedTabPosition = remember { mutableStateOf(LOGIN_TAB_POSITION) }
+    val loginViewState by loginViewModel.loginViewState.collectAsState(LoginViewState())
+    val signUpViewState by signUpViewModel.signUpViewState.collectAsState(SignUpViewState())
     val snackBarHostState = remember { SnackbarHostState() }
 
+    var selectedTabPosition by remember { mutableStateOf(LOGIN_TAB_POSITION) }
+
     //TODO Make a better API for this...
-    if (loginViewState.value.navigateToSchedule || signUpViewState.value.navigateToSchedule) {
+    if (loginViewState.navigateToSchedule || signUpViewState.navigateToSchedule) {
         navigateToSchedule()
     }
 
@@ -51,8 +52,8 @@ fun LoginPage(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 LoginTab(
-                    selectedTabPosition = selectedTabPosition.value,
-                    onTabClick = { selectedTabPosition.value = it }
+                    selectedTabPosition = selectedTabPosition,
+                    onTabClick = { selectedTabPosition = it }
                 )
                 Image(
                     modifier = Modifier
@@ -75,15 +76,15 @@ fun LoginPage(
                     contentDescription = null
                 )
             }
-            when (selectedTabPosition.value) {
+            when (selectedTabPosition) {
                 LOGIN_TAB_POSITION -> LoginComponent(
-                    loginViewState.value,
+                    loginViewState,
                     loginViewModel::onLoginClick,
                     loginViewModel::onEmailChange,
                     loginViewModel::onPasswordChange
                 )
                 SIGN_UP_TAB_POSITION -> SignUpComponent(
-                    signUpViewState.value,
+                    signUpViewState,
                     signUpViewModel::onEmailChange,
                     signUpViewModel::onPasswordChange,
                     signUpViewModel::onConfirmPasswordChange
@@ -93,14 +94,14 @@ fun LoginPage(
                 )
             }
         }
-        if (loginViewState.value.isLoading)
+        if (loginViewState.isLoading)
             CircularProgressIndicator(modifier = Modifier.size(128.dp))//TODO Style this...
-        if (loginViewState.value.loginError is LoginError.GeneralError) {
+        if (loginViewState.loginError is LoginError.GeneralError) {
             LaunchedEffect(
                 key1 = Any(),
                 block = {
                     snackBarHostState.showSnackbar(
-                        message = loginViewState.value.loginError!!.error,
+                        message = loginViewState.loginError!!.error,
                     )
                 },
             )

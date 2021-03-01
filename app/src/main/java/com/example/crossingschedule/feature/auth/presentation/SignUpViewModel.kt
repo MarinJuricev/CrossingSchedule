@@ -38,10 +38,18 @@ class SignUpViewModel @Inject constructor(
             )
     }
 
-    fun onCreateAccountClick(){
+    fun onCreateAccountClick() {
+        triggerIsLoading()
         val viewState = signUpViewState.value
 
         viewModelScope.launch {
         }
+    }
+
+    private fun triggerIsLoading() {
+        _signUpViewState.value =
+            _signUpViewState.value.copy(
+                isLoading = true
+            )
     }
 }
