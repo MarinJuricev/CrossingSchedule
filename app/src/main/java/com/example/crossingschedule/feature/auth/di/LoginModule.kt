@@ -6,11 +6,13 @@ import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.auth.data.mapper.TokenResponseToEitherMapper
 import com.example.crossingschedule.feature.auth.data.repository.AuthProvider
 import com.example.crossingschedule.feature.auth.data.repository.AuthProviderImpl
-import com.example.crossingschedule.feature.auth.data.repository.LoginApiService
 import com.example.crossingschedule.feature.auth.data.repository.AuthRepositoryImpl
+import com.example.crossingschedule.feature.auth.data.repository.LoginApiService
 import com.example.crossingschedule.feature.auth.domain.repository.AuthRepository
 import com.example.crossingschedule.feature.auth.presentation.mapper.FailureToLoginErrorMapper
+import com.example.crossingschedule.feature.auth.presentation.mapper.FailureToSignUpErrorMapper
 import com.example.crossingschedule.feature.auth.presentation.model.LoginError
+import com.example.crossingschedule.feature.auth.presentation.model.SignUpError
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,6 +32,11 @@ object LoginModule {
     fun provideLoginErrorMapper(
         failureToLoginErrorMapper: FailureToLoginErrorMapper
     ): Mapper<LoginError, Failure> = failureToLoginErrorMapper
+
+    @Provides
+    fun provideSignUpErrorMapper(
+        failureToSignUpErrorMapper: FailureToSignUpErrorMapper
+    ): Mapper<SignUpError, Failure> = failureToSignUpErrorMapper
 
     @Provides
     fun provideAuthApi(

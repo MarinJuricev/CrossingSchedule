@@ -85,6 +85,7 @@ fun LoginPage(
                 )
                 SIGN_UP_TAB_POSITION -> SignUpComponent(
                     signUpViewState,
+                    signUpViewModel::onCreateAccountClick,
                     signUpViewModel::onEmailChange,
                     signUpViewModel::onPasswordChange,
                     signUpViewModel::onConfirmPasswordChange

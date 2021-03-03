@@ -2,7 +2,11 @@ package com.example.crossingschedule.feature.auth.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.crossingschedule.core.util.Either
+import com.example.crossingschedule.core.util.Failure
+import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.auth.domain.usecase.CreateAccount
+import com.example.crossingschedule.feature.auth.presentation.model.SignUpError
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val createAccount: CreateAccount
+    private val createAccount: CreateAccount,
+    private val failureToSignUpErrorMapper: Mapper<SignUpError, Failure>
 ) : ViewModel() {
 
     private val _signUpViewState = MutableStateFlow(SignUpViewState())
@@ -43,6 +48,20 @@ class SignUpViewModel @Inject constructor(
         val viewState = signUpViewState.value
 
         viewModelScope.launch {
+            when (val result =
+                createAccount(viewState.email, viewState.password, viewState.confirmPassword)) {
+                is Either.Right -> _signUpViewState.value =
+                    _signUpViewState.value.copy(
+                        navigateToSchedule = true,
+                        signUpError = null,
+                        isLoading = false
+                    )
+                is Either.Left -> _signUpViewState.value =
+                    _signUpViewState.value.copy(
+                        signUpError = failureToSignUpErrorMapper.map(result.error),
+                        isLoading = false
+                    )
+            }
         }
     }
 

@@ -24,6 +24,7 @@ import com.example.crossingschedule.feature.auth.presentation.model.SignUpViewSt
 @Composable
 fun SignUpComponent(
     signUpViewState: SignUpViewState,
+    onSignUpClick: () -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit
@@ -78,7 +79,7 @@ fun SignUpComponent(
                         top.linkTo(bottomDecor.top)
                         bottom.linkTo(bottomDecor.top)
                     },
-                onClick = { }
+                onClick = onSignUpClick
             ) {
                 Text(
                     modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
