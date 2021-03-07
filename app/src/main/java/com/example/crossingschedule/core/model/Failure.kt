@@ -1,4 +1,4 @@
-package com.example.crossingschedule.core.util
+package com.example.crossingschedule.core.model
 
 //TODO: This approach does not scale separate failures by feature
 sealed class Failure(val errorMessage: String) {

@@ -1,4 +1,4 @@
-package com.example.crossingschedule.core.util
+package com.example.crossingschedule.core.model
 
 data class CrossingDay(
     val year: Int,

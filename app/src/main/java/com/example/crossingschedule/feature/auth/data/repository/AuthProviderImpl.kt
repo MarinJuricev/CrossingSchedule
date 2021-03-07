@@ -1,7 +1,7 @@
 package com.example.crossingschedule.feature.auth.data.repository
 
-import com.example.crossingschedule.core.util.Either
-import com.example.crossingschedule.core.util.Failure
+import com.example.crossingschedule.core.model.Either
+import com.example.crossingschedule.core.model.Failure
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth

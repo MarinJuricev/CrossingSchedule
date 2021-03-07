@@ -1,7 +1,7 @@
 package com.example.crossingschedule.feature.auth.domain.repository
 
-import com.example.crossingschedule.core.util.Either
-import com.example.crossingschedule.core.util.Failure
+import com.example.crossingschedule.core.model.Either
+import com.example.crossingschedule.core.model.Failure
 
 interface AuthRepository {
     suspend fun login(

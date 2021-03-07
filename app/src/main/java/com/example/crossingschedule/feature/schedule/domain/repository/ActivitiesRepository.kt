@@ -1,7 +1,7 @@
 package com.example.crossingschedule.feature.schedule.domain.repository
 
-import com.example.crossingschedule.core.util.Either
-import com.example.crossingschedule.core.util.Failure
+import com.example.crossingschedule.core.model.Either
+import com.example.crossingschedule.core.model.Failure
 import com.example.crossingschedule.feature.schedule.domain.model.*
 import kotlinx.coroutines.flow.Flow
 

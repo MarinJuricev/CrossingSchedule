@@ -1,12 +1,10 @@
 package com.example.crossingschedule.feature.auth.presentation.mapper
 
-import com.example.crossingschedule.core.util.Failure
+import com.example.crossingschedule.core.model.Failure
 import com.example.crossingschedule.core.util.Mapper
-import com.example.crossingschedule.feature.auth.presentation.model.LoginError
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpError
 import org.junit.Before
 
-import org.junit.Assert.*
 import org.junit.Test
 
 class FailureToSignUpErrorMapperTest {

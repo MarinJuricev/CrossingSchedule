@@ -2,8 +2,8 @@ package com.example.crossingschedule.feature.auth.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.crossingschedule.core.util.Either
-import com.example.crossingschedule.core.util.Failure
+import com.example.crossingschedule.core.model.Either
+import com.example.crossingschedule.core.model.Failure
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.auth.domain.usecase.CreateAccount
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpError

@@ -1,9 +1,10 @@
 package com.example.crossingschedule.feature.auth.data.repository
 
-import com.example.crossingschedule.core.util.Either
+import com.example.crossingschedule.core.model.Either
 import com.example.crossingschedule.core.util.EncryptedPrefsService
-import com.example.crossingschedule.core.util.Failure
+import com.example.crossingschedule.core.model.Failure
 import com.example.crossingschedule.core.util.Mapper
+import com.example.crossingschedule.feature.auth.data.model.AuthenticateUserResponse
 import com.example.crossingschedule.feature.auth.domain.repository.AuthRepository
 import javax.inject.Inject
 
@@ -11,7 +12,7 @@ class AuthRepositoryImpl @Inject constructor(
     private val authProvider: AuthProvider,
     private val authApiService: AuthApiService,
     private val encryptedPrefsService: EncryptedPrefsService,
-    private val loginResponseToEitherMapper: Mapper<Either<Failure, Unit>, String>
+    private val loginResponseToEitherMapper: Mapper<Either<Failure, Unit>, AuthenticateUserResponse>
 ) : AuthRepository {
 
     override suspend fun login(

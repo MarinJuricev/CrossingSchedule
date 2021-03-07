@@ -1,5 +1,6 @@
 package com.example.crossingschedule.core.util
 
+import com.example.crossingschedule.core.model.CrossingDay
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject

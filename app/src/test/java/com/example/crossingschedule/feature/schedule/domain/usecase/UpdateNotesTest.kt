@@ -1,6 +1,6 @@
 package com.example.crossingschedule.feature.schedule.domain.usecase
 
-import com.example.crossingschedule.core.util.Either
+import com.example.crossingschedule.core.model.Either
 import com.example.crossingschedule.feature.schedule.domain.repository.ActivitiesRepository
 import io.mockk.coEvery
 import io.mockk.coVerify

@@ -1,8 +1,8 @@
 package com.example.crossingschedule.feature.schedule.data.repository
 
 import android.util.Log
-import com.example.crossingschedule.core.util.Either
-import com.example.crossingschedule.core.util.Failure
+import com.example.crossingschedule.core.model.Either
+import com.example.crossingschedule.core.model.Failure
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.schedule.data.factory.DefaultShopFactory
 import com.example.crossingschedule.feature.schedule.domain.model.*

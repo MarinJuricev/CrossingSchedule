@@ -2,6 +2,7 @@ package com.example.crossingschedule.core.di
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.example.crossingschedule.core.model.CrossingStatus
 import com.example.crossingschedule.core.util.BaseUrlProvider
 import com.example.crossingschedule.core.util.EncryptedPrefsService
 import com.example.crossingschedule.core.util.EncryptedPrefsServiceImpl
@@ -9,6 +10,7 @@ import com.example.crossingschedule.feature.auth.data.repository.AUTH_TOKEN_KEY
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.EnumJsonAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -94,5 +96,11 @@ object DataModule {
             .build()
 
     @Provides
-    fun provideMoshi(): Moshi = Moshi.Builder().build()
+    fun provideMoshi(): Moshi = Moshi.Builder()
+        .add(
+            CrossingStatus::class.java,
+            EnumJsonAdapter.create(CrossingStatus::class.java)
+                .withUnknownFallback(CrossingStatus.Fail)
+        )
+        .build()
 }
