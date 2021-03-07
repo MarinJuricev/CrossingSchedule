@@ -18,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -171,7 +170,7 @@ fun LoginInputFields(
     onPasswordChange: (String) -> Unit
 ) {
     var validatorAnimatedStates by
-        remember { mutableStateOf(AnimatedLoginValidatorState.NO_ERROR) }
+    remember { mutableStateOf(AnimatedLoginValidatorState.NO_ERROR) }
 
     validatorAnimatedStates = when (loginViewState.loginError) {
         is LoginError.GeneralError -> AnimatedLoginValidatorState.NO_ERROR
@@ -187,9 +186,8 @@ fun LoginInputFields(
         }
     ) {
         when (it) {
-            AnimatedLoginValidatorState.NO_ERROR -> 0f
-            AnimatedLoginValidatorState.PASSWORD_ERROR -> 0f
             AnimatedLoginValidatorState.EMAIL_ERROR -> 1f
+            else -> 0f
         }
     }
 
@@ -199,9 +197,8 @@ fun LoginInputFields(
         }
     ) {
         when (it) {
-            AnimatedLoginValidatorState.NO_ERROR -> 0.dp
-            AnimatedLoginValidatorState.PASSWORD_ERROR -> 0.dp
             AnimatedLoginValidatorState.EMAIL_ERROR -> 24.dp
+            else -> 0.dp
         }
     }
 
@@ -211,9 +208,8 @@ fun LoginInputFields(
         }
     ) {
         when (it) {
-            AnimatedLoginValidatorState.NO_ERROR -> 0.dp
-            AnimatedLoginValidatorState.EMAIL_ERROR -> 0.dp
             AnimatedLoginValidatorState.PASSWORD_ERROR -> 12.dp
+            else -> 0.dp
         }
     }
 
@@ -223,9 +219,8 @@ fun LoginInputFields(
         }
     ) {
         when (it) {
-            AnimatedLoginValidatorState.NO_ERROR -> 0f
-            AnimatedLoginValidatorState.EMAIL_ERROR -> 0f
             AnimatedLoginValidatorState.PASSWORD_ERROR -> 1f
+            else -> 0f
         }
     }
 
