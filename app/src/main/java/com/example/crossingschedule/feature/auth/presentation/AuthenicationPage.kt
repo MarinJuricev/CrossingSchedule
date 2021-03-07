@@ -4,7 +4,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -95,14 +98,14 @@ fun LoginPage(
                 )
             }
         }
-        if (loginViewState.isLoading)
-            CircularProgressIndicator(modifier = Modifier.size(128.dp))//TODO Style this...
         if (loginViewState.loginError is LoginError.GeneralError) {
+            val errorMessage = loginViewState.loginError!!.error
+
             LaunchedEffect(
                 key1 = Any(),
                 block = {
                     snackBarHostState.showSnackbar(
-                        message = loginViewState.loginError!!.error,
+                        message = errorMessage,
                     )
                 },
             )

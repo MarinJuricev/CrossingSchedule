@@ -7,7 +7,7 @@ import com.example.crossingschedule.feature.auth.data.mapper.TokenResponseToEith
 import com.example.crossingschedule.feature.auth.data.repository.AuthProvider
 import com.example.crossingschedule.feature.auth.data.repository.AuthProviderImpl
 import com.example.crossingschedule.feature.auth.data.repository.AuthRepositoryImpl
-import com.example.crossingschedule.feature.auth.data.repository.LoginApiService
+import com.example.crossingschedule.feature.auth.data.repository.AuthApiService
 import com.example.crossingschedule.feature.auth.domain.repository.AuthRepository
 import com.example.crossingschedule.feature.auth.presentation.mapper.FailureToLoginErrorMapper
 import com.example.crossingschedule.feature.auth.presentation.mapper.FailureToSignUpErrorMapper
@@ -46,7 +46,7 @@ object LoginModule {
     @Provides
     fun provideLoginApiService(
         retrofit: Retrofit
-    ): LoginApiService = retrofit.create(LoginApiService::class.java)
+    ): AuthApiService = retrofit.create(AuthApiService::class.java)
 
     @Provides
     fun provideTokenResponseToEitherMapper(

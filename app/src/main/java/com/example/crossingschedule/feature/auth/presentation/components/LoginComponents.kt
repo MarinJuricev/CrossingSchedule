@@ -81,7 +81,7 @@ fun LoginComponent(
         ) {
             val (loginImage, appTitle, salesPitch,
                 loginInputFields, bottomDecor,
-                loginButton) = createRefs()
+                loginButton, loginProgressBar) = createRefs()
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -131,6 +131,16 @@ fun LoginComponent(
                 onPasswordChange = onPasswordChange,
             )
             //TODO Add a sign in with Google ?
+            if (loginViewState.isLoading) {
+                CircularProgressIndicator(modifier = Modifier
+                    .size(24.dp)
+                    .constrainAs(loginProgressBar) {
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    })
+            }
             Box(
                 modifier = Modifier
                     .background(MaterialTheme.colors.secondary)

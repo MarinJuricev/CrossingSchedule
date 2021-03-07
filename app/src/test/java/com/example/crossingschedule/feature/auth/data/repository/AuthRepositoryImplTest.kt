@@ -20,7 +20,7 @@ private const val AUTH_USER_RESPONSE = "SUCCESS"
 class AuthRepositoryImplTest {
 
     private val authProvider: AuthProvider = mockk()
-    private val loginApiService: LoginApiService = mockk()
+    private val authApiService: AuthApiService = mockk()
     private val encryptedPrefsService: EncryptedPrefsService = mockk()
     private val loginResponseToEitherMapper: Mapper<Either<Failure, Unit>, String> = mockk()
 
@@ -30,7 +30,7 @@ class AuthRepositoryImplTest {
     fun setUp() {
         sut = AuthRepositoryImpl(
             authProvider,
-            loginApiService,
+            authApiService,
             encryptedPrefsService,
             loginResponseToEitherMapper
         )
@@ -48,7 +48,7 @@ class AuthRepositoryImplTest {
         } coAnswers { ID_TOKEN }
 
         coEvery {
-            loginApiService.authenticateUser()
+            authApiService.authenticateUser()
         } coAnswers { AUTH_USER_RESPONSE } //TODO This really shouldn't be a string, it should be some kind of POKO
 
         coEvery {

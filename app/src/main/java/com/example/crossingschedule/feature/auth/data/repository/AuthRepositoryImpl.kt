@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val authProvider: AuthProvider,
-    private val loginApiService: LoginApiService,
+    private val authApiService: AuthApiService,
     private val encryptedPrefsService: EncryptedPrefsService,
     private val loginResponseToEitherMapper: Mapper<Either<Failure, Unit>, String>
 ) : AuthRepository {
@@ -30,7 +30,7 @@ class AuthRepositoryImpl @Inject constructor(
         return when (this) {
             is Either.Right -> {
                 encryptedPrefsService.saveValue(AUTH_TOKEN_KEY, authProvider.getUserIdToken())
-                loginResponseToEitherMapper.map(loginApiService.authenticateUser())
+                loginResponseToEitherMapper.map(authApiService.authenticateUser())
             }
             is Either.Left -> this
         }

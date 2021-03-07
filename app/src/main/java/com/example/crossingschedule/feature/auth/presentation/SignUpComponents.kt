@@ -8,10 +8,7 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -23,7 +20,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.crossingschedule.R
-import com.example.crossingschedule.feature.auth.presentation.model.AnimatedLoginValidatorState
 import com.example.crossingschedule.feature.auth.presentation.model.AnimatedSignUpValidatorState
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpError
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpViewState
@@ -34,16 +30,31 @@ fun SignUpComponent(
     onSignUpClick: () -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
-    onConfirmPasswordChange: (String) -> Unit
+    onConfirmPasswordChange: (String) -> Unit,
 ) {
     Crossfade(
         targetState = Unit,
     ) {
+
+//        if (signUpViewState.signUpError is SignUpError.GeneralError) {
+//            val errorMessage = signUpViewState.signUpError!!.error
+//
+//            LaunchedEffect(
+//                key1 = errorMessage,
+//                block = {
+//                    snackBarHostState.showSnackbar(
+//                        message = loginViewState.loginError!!.error,
+//                    )
+//                },
+//            )
+//        }
+
         ConstraintLayout(
             modifier = Modifier.fillMaxHeight()
         ) {
             val (signUpTitle, signUpInputFields,
-                bottomDecor, createAccountButton) = createRefs()
+                bottomDecor, createAccountButton,
+                signUpProgressBar) = createRefs()
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -68,6 +79,15 @@ fun SignUpComponent(
                 onPasswordChange = onPasswordChange,
                 onConfirmPasswordChange = onConfirmPasswordChange
             )
+            if (signUpViewState.isLoading) {
+                CircularProgressIndicator(modifier = Modifier
+                    .constrainAs(signUpProgressBar) {
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    })
+            }
             Box(
                 modifier = Modifier
                     .background(MaterialTheme.colors.secondary)
@@ -108,7 +128,7 @@ fun SignUpInputFields(
     onConfirmPasswordChange: (String) -> Unit
 ) {
     var validatorAnimatedStates by
-        remember { mutableStateOf(AnimatedSignUpValidatorState.NO_ERROR) }
+    remember { mutableStateOf(AnimatedSignUpValidatorState.NO_ERROR) }
 
     validatorAnimatedStates = when (signUpViewState.signUpError) {
         is SignUpError.EmailError -> AnimatedSignUpValidatorState.EMAIL_ERROR
