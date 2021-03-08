@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 
 //TODO Make a generic factory that can build this jsend blueprint
 @JsonClass(generateAdapter = true)
-data class AuthenticateUserResponse(
+data class LoginUserResponse(
     val status: CrossingStatus,
     val data: AuthResponse?,
     val message: String?

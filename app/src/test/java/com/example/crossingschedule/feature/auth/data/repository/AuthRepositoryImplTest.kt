@@ -5,7 +5,7 @@ import com.example.crossingschedule.core.model.Either
 import com.example.crossingschedule.core.model.Failure
 import com.example.crossingschedule.core.util.EncryptedPrefsService
 import com.example.crossingschedule.core.util.Mapper
-import com.example.crossingschedule.feature.auth.data.model.AuthenticateUserResponse
+import com.example.crossingschedule.feature.auth.data.model.LoginUserResponse
 import com.example.crossingschedule.feature.auth.domain.repository.AuthRepository
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,7 +16,7 @@ import org.junit.Test
 private const val EMAIL = "EMAIL"
 private const val PASSWORD = "PASSWORD"
 private const val ID_TOKEN = "ID_TOKEN"
-private val AUTH_USER_RESPONSE = AuthenticateUserResponse(CrossingStatus.Success, null, null)
+private val AUTH_USER_RESPONSE = LoginUserResponse(CrossingStatus.Success, null, null)
 
 @ExperimentalCoroutinesApi
 class AuthRepositoryImplTest {
@@ -24,7 +24,7 @@ class AuthRepositoryImplTest {
     private val authProvider: AuthProvider = mockk()
     private val authApiService: AuthApiService = mockk()
     private val encryptedPrefsService: EncryptedPrefsService = mockk()
-    private val loginResponseToEitherMapper: Mapper<Either<Failure, Unit>, AuthenticateUserResponse> =
+    private val loginResponseToEitherMapper: Mapper<Either<Failure, Unit>, LoginUserResponse> =
         mockk()
 
     lateinit var sut: AuthRepository
@@ -51,7 +51,7 @@ class AuthRepositoryImplTest {
         } coAnswers { ID_TOKEN }
 
         coEvery {
-            authApiService.authenticateUser()
+            authApiService.loginUser()
         } coAnswers { AUTH_USER_RESPONSE } //TODO This really shouldn't be a string, it should be some kind of POKO
 
         coEvery {

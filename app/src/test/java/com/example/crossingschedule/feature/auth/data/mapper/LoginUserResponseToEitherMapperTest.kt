@@ -4,13 +4,13 @@ import com.example.crossingschedule.core.model.CrossingStatus
 import com.example.crossingschedule.core.model.Either
 import com.example.crossingschedule.core.model.Failure
 import com.example.crossingschedule.core.util.Mapper
-import com.example.crossingschedule.feature.auth.data.model.AuthenticateUserResponse
+import com.example.crossingschedule.feature.auth.data.model.LoginUserResponse
 import org.junit.Before
 import org.junit.Test
 
-class AuthenticateUserResponseToEitherMapperTest {
+class LoginUserResponseToEitherMapperTest {
 
-    private lateinit var sut: Mapper<Either<Failure, Unit>, AuthenticateUserResponse>
+    private lateinit var sut: Mapper<Either<Failure, Unit>, LoginUserResponse>
 
     @Before
     fun setUp() {
@@ -19,7 +19,7 @@ class AuthenticateUserResponseToEitherMapperTest {
 
     @Test
     fun `map should return Right when the origin status is CrossingStatus Success`(){
-        val successResponse = AuthenticateUserResponse(
+        val successResponse = LoginUserResponse(
             status = CrossingStatus.Success,
             null,
             null,
@@ -34,7 +34,7 @@ class AuthenticateUserResponseToEitherMapperTest {
     @Test
     fun `map should return Left when the origin status is CrossingStatus Fail`(){
         val errorMessage = "errorMessage"
-        val failResponse = AuthenticateUserResponse(
+        val failResponse = LoginUserResponse(
             status = CrossingStatus.Fail,
             null,
             errorMessage,
@@ -48,7 +48,7 @@ class AuthenticateUserResponseToEitherMapperTest {
 
     @Test
     fun `map should return Left with default message when the origin status is CrossingStatus Fail and message is null`(){
-        val failResponse = AuthenticateUserResponse(
+        val failResponse = LoginUserResponse(
             status = CrossingStatus.Fail,
             null,
             null,

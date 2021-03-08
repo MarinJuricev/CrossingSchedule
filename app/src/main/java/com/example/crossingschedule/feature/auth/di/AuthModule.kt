@@ -4,7 +4,7 @@ import com.example.crossingschedule.core.model.Either
 import com.example.crossingschedule.core.model.Failure
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.auth.data.mapper.AuthenticateUserResponseToEitherMapper
-import com.example.crossingschedule.feature.auth.data.model.AuthenticateUserResponse
+import com.example.crossingschedule.feature.auth.data.model.LoginUserResponse
 import com.example.crossingschedule.feature.auth.data.repository.AuthApiService
 import com.example.crossingschedule.feature.auth.data.repository.AuthProvider
 import com.example.crossingschedule.feature.auth.data.repository.AuthProviderImpl
@@ -52,6 +52,6 @@ object AuthModule {
     @Provides
     fun provideTokenResponseToEitherMapper(
         authenticateUserResponseToEitherMapper: AuthenticateUserResponseToEitherMapper
-    ): Mapper<Either<Failure, Unit>, AuthenticateUserResponse> = authenticateUserResponseToEitherMapper
+    ): Mapper<Either<Failure, Unit>, LoginUserResponse> = authenticateUserResponseToEitherMapper
 
 }

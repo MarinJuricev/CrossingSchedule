@@ -1,10 +1,10 @@
 package com.example.crossingschedule.feature.auth.data.repository
 
-import com.example.crossingschedule.feature.auth.data.model.AuthenticateUserResponse
+import com.example.crossingschedule.feature.auth.data.model.LoginUserResponse
 import retrofit2.http.GET
 
 interface AuthApiService {
 
-    @GET("authenticate")
-    suspend fun authenticateUser(): AuthenticateUserResponse
+    @GET("login")
+    suspend fun loginUser(): LoginUserResponse
 }
