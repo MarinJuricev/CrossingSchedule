@@ -7,6 +7,7 @@ data class SignUpViewState(
     val email: String = "",
     val password: String = "",
     val confirmPassword: String = "",
+    val username: String = "",
 )
 
 sealed class SignUpError(val error: String) {

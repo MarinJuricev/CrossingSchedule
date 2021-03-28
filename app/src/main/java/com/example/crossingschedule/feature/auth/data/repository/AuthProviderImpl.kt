@@ -46,11 +46,10 @@ private fun Task<AuthResult>.addCrossingOnCompleteListener(
     onSuccess: () -> Unit,
     onFailure: (Failure) -> Unit,
 ) {
-    if (this.isSuccessful) {
-        onSuccess()
-    } else {
+    this.addOnSuccessListener { onSuccess() }
+    this.addOnFailureListener {
         val errorMessage = Failure.RemoteFailure(
-            this.exception?.localizedMessage ?: "Unknown Error Occurred"
+            it.localizedMessage ?: "Unknown Error Occurred"
         )
         onFailure(errorMessage)
     }

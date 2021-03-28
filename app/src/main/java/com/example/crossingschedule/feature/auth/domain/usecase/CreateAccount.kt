@@ -1,6 +1,7 @@
 package com.example.crossingschedule.feature.auth.domain.usecase
 
 import com.example.crossingschedule.core.model.Either
+import com.example.crossingschedule.core.model.Either.Left
 import com.example.crossingschedule.core.model.Failure
 import com.example.crossingschedule.feature.auth.domain.repository.AuthRepository
 import javax.inject.Inject
@@ -11,14 +12,15 @@ class CreateAccount @Inject constructor(
 ) {
     suspend operator fun invoke(
         email: String,
+        username: String,
         password: String,
-        confirmPassword: String
+        confirmPassword: String,
     ): Either<Failure, Unit> {
         val validationResult = signUpValidator.validate(email, password, confirmPassword)
-        if (validationResult is Either.Left) {
+        if (validationResult is Left) {
             return validationResult
         }
 
-        return authRepository.createAccount(email, password)
+        return authRepository.createAccount(email, password, username)
     }
 }

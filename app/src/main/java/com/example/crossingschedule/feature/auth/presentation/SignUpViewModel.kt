@@ -1,11 +1,12 @@
 package com.example.crossingschedule.feature.auth.presentation
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.crossingschedule.core.BaseViewModel
 import com.example.crossingschedule.core.model.Either
 import com.example.crossingschedule.core.model.Failure
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.auth.domain.usecase.CreateAccount
+import com.example.crossingschedule.feature.auth.presentation.SignUpEvent.*
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpError
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,39 +18,62 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
     private val createAccount: CreateAccount,
     private val failureToSignUpErrorMapper: Mapper<SignUpError, Failure>
-) : ViewModel() {
+) : BaseViewModel<SignUpEvent>() {
 
     private val _signUpViewState = MutableStateFlow(SignUpViewState())
     val signUpViewState = _signUpViewState
 
-    fun onEmailChange(newEmail: String) {
+    override fun onEvent(event: SignUpEvent) {
+        when (event) {
+            is OnEmailChange -> onEmailChange(event.newEmail)
+            is OnUsernameChange -> onUsernameChange(event.newUsername)
+            is OnConfirmPasswordChange -> onConfirmPasswordChange(event.newConfirmPassword)
+            is OnPasswordChange -> onPasswordChange((event.newPassword))
+            OnCreateAccountClicked -> onCreateAccountClick()
+        }
+    }
+
+    private fun onEmailChange(newEmail: String) {
         _signUpViewState.value =
             _signUpViewState.value.copy(
                 email = newEmail
             )
     }
 
-    fun onPasswordChange(newPassword: String) {
+    private fun onPasswordChange(newPassword: String) {
         _signUpViewState.value =
             _signUpViewState.value.copy(
                 password = newPassword
             )
     }
 
-    fun onConfirmPasswordChange(newConfirmPassword: String) {
+    private fun onConfirmPasswordChange(newConfirmPassword: String) {
         _signUpViewState.value =
             _signUpViewState.value.copy(
                 confirmPassword = newConfirmPassword
             )
     }
 
-    fun onCreateAccountClick() {
+    private fun onUsernameChange(newUsername: String) {
+        _signUpViewState.value =
+            _signUpViewState.value.copy(
+                username = newUsername
+            )
+    }
+
+    private fun onCreateAccountClick() {
         triggerIsLoading()
         val viewState = signUpViewState.value
 
         viewModelScope.launch {
             when (val result =
-                createAccount(viewState.email, viewState.password, viewState.confirmPassword)) {
+                createAccount(
+                    viewState.email,
+                    viewState.password,
+                    viewState.confirmPassword,
+                    viewState.username
+                )
+            ) {
                 is Either.Right -> _signUpViewState.value =
                     _signUpViewState.value.copy(
                         navigateToSchedule = true,

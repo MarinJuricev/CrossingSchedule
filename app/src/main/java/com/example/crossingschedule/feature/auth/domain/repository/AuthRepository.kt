@@ -8,8 +8,10 @@ interface AuthRepository {
         email: String,
         password: String
     ): Either<Failure, Unit>
+
     suspend fun createAccount(
         email: String,
         password: String,
+        username: String,
     ): Either<Failure, Unit>
 }

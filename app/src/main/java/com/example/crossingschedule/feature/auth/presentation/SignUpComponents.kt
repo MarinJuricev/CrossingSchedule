@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.crossingschedule.R
+import com.example.crossingschedule.feature.auth.presentation.SignUpEvent.*
 import com.example.crossingschedule.feature.auth.presentation.model.AnimatedSignUpValidatorState
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpError
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpViewState
@@ -27,10 +28,7 @@ import com.example.crossingschedule.feature.auth.presentation.model.SignUpViewSt
 @Composable
 fun SignUpComponent(
     signUpViewState: SignUpViewState,
-    onSignUpClick: () -> Unit,
-    onEmailChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onConfirmPasswordChange: (String) -> Unit,
+    onSignUpEvent: (SignUpEvent) -> Unit,
 ) {
     Crossfade(
         targetState = Unit,
@@ -75,9 +73,7 @@ fun SignUpComponent(
                     end.linkTo(parent.end)
                 },
                 signUpViewState = signUpViewState,
-                onEmailChange = onEmailChange,
-                onPasswordChange = onPasswordChange,
-                onConfirmPasswordChange = onConfirmPasswordChange
+                onSignUpEvent = onSignUpEvent,
             )
             if (signUpViewState.isLoading) {
                 CircularProgressIndicator(modifier = Modifier
@@ -106,7 +102,7 @@ fun SignUpComponent(
                         top.linkTo(bottomDecor.top)
                         bottom.linkTo(bottomDecor.top)
                     },
-                onClick = onSignUpClick
+                onClick = { onSignUpEvent(OnCreateAccountClicked) }
             ) {
                 Text(
                     modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
@@ -123,9 +119,7 @@ fun SignUpComponent(
 fun SignUpInputFields(
     modifier: Modifier = Modifier,
     signUpViewState: SignUpViewState,
-    onEmailChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onConfirmPasswordChange: (String) -> Unit
+    onSignUpEvent: (SignUpEvent) -> Unit
 ) {
     var validatorAnimatedStates by
     remember { mutableStateOf(AnimatedSignUpValidatorState.NO_ERROR) }
@@ -137,12 +131,16 @@ fun SignUpInputFields(
         else -> AnimatedSignUpValidatorState.NO_ERROR
     }
 
-    val validatorTransition = updateTransition(targetState = validatorAnimatedStates)
+    val validatorTransition = updateTransition(
+        label = "validatorTransition",
+        targetState = validatorAnimatedStates,
+    )
 
     val emailAlpha by validatorTransition.animateFloat(
+        label = "emailAlpha",
         transitionSpec = {
             tween(durationMillis = 1000)
-        }
+        },
     ) {
         when (it) {
             AnimatedSignUpValidatorState.EMAIL_ERROR -> 1f
@@ -151,9 +149,10 @@ fun SignUpInputFields(
     }
 
     val emailHeight = validatorTransition.animateDp(
+        label = "emailHeight",
         transitionSpec = {
             tween(durationMillis = 1000)
-        }
+        },
     ) {
         when (it) {
             AnimatedSignUpValidatorState.EMAIL_ERROR -> 24.dp
@@ -162,9 +161,10 @@ fun SignUpInputFields(
     }
 
     val passwordAlpha by validatorTransition.animateFloat(
+        label = "passwordAlpha",
         transitionSpec = {
             tween(durationMillis = 1000)
-        }
+        },
     ) {
         when (it) {
             AnimatedSignUpValidatorState.PASSWORD_ERROR -> 1f
@@ -173,9 +173,10 @@ fun SignUpInputFields(
     }
 
     val passwordHeight = validatorTransition.animateDp(
+        label = "passwordHeight",
         transitionSpec = {
             tween(durationMillis = 1000)
-        }
+        },
     ) {
         when (it) {
             AnimatedSignUpValidatorState.PASSWORD_ERROR -> 24.dp
@@ -184,9 +185,10 @@ fun SignUpInputFields(
     }
 
     val confirmPasswordAlpha by validatorTransition.animateFloat(
+        label = "confirmPasswordAlpha",
         transitionSpec = {
             tween(durationMillis = 1000)
-        }
+        },
     ) {
         when (it) {
             AnimatedSignUpValidatorState.CONFIRM_PASSWORD_ERROR -> 1f
@@ -195,9 +197,10 @@ fun SignUpInputFields(
     }
 
     val confirmPasswordHeight = validatorTransition.animateDp(
+        label = "confirmPasswordHeight",
         transitionSpec = {
             tween(durationMillis = 1000)
-        }
+        },
     ) {
         when (it) {
             AnimatedSignUpValidatorState.CONFIRM_PASSWORD_ERROR -> 24.dp
@@ -215,7 +218,7 @@ fun SignUpInputFields(
                 .padding(16.dp),
             isError = signUpViewState.signUpError is SignUpError.EmailError,
             value = signUpViewState.email,
-            onValueChange = onEmailChange,
+            onValueChange = { onSignUpEvent(OnEmailChange(it)) },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
             singleLine = true,
             label = { Text(stringResource(R.string.email)) },
@@ -235,7 +238,7 @@ fun SignUpInputFields(
                 .padding(horizontal = 16.dp),
             value = signUpViewState.password,
             isError = signUpViewState.signUpError is SignUpError.PasswordError,
-            onValueChange = onPasswordChange,
+            onValueChange = { onSignUpEvent(OnPasswordChange(it)) },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
@@ -257,7 +260,7 @@ fun SignUpInputFields(
                 .padding(horizontal = 16.dp),
             value = signUpViewState.confirmPassword,
             isError = signUpViewState.signUpError is SignUpError.ConfirmPasswordError,
-            onValueChange = onConfirmPasswordChange,
+            onValueChange = { onSignUpEvent(OnConfirmPasswordChange(it)) },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
             visualTransformation = PasswordVisualTransformation(),
             singleLine = true,

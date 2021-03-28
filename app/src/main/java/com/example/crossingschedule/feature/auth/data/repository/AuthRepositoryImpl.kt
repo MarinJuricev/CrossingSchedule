@@ -1,9 +1,10 @@
 package com.example.crossingschedule.feature.auth.data.repository
 
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.util.EncryptedPrefsService
 import com.example.crossingschedule.core.model.Failure
+import com.example.crossingschedule.core.util.EncryptedPrefsService
 import com.example.crossingschedule.core.util.Mapper
+import com.example.crossingschedule.feature.auth.data.model.CreateAccountBody
 import com.example.crossingschedule.feature.auth.data.model.LoginUserResponse
 import com.example.crossingschedule.feature.auth.domain.repository.AuthRepository
 import javax.inject.Inject
@@ -19,21 +20,24 @@ class AuthRepositoryImpl @Inject constructor(
         email: String,
         password: String
     ): Either<Failure, Unit> =
-        authProvider.login(email, password).handleAuthProviderResponse()
-
-    override suspend fun createAccount(
-        email: String,
-        password: String,
-    ): Either<Failure, Unit> =
-        authProvider.createAccount(email, password).handleAuthProviderResponse()
-
-    private suspend fun Either<Failure, Unit>.handleAuthProviderResponse(): Either<Failure, Unit> {
-        return when (this) {
+        when (val result = authProvider.login(email, password)) {
             is Either.Right -> {
                 encryptedPrefsService.saveValue(AUTH_TOKEN_KEY, authProvider.getUserIdToken())
                 loginResponseToEitherMapper.map(authApiService.loginUser())
             }
-            is Either.Left -> this
+            is Either.Left -> result
         }
-    }
+
+    override suspend fun createAccount(
+        email: String,
+        password: String,
+        username: String,
+    ): Either<Failure, Unit> =
+        when (val result = authProvider.createAccount(email, password)) {
+            is Either.Right -> {
+                encryptedPrefsService.saveValue(AUTH_TOKEN_KEY, authProvider.getUserIdToken())
+                loginResponseToEitherMapper.map(authApiService.createAccount(CreateAccountBody("")))
+            }
+            is Either.Left -> result
+        }
 }
