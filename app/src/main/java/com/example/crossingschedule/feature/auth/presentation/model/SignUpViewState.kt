@@ -11,6 +11,7 @@ data class SignUpViewState(
 )
 
 sealed class SignUpError(val error: String) {
+    data class UserNameError(val userNameError: String) : SignUpError(userNameError)
     data class EmailError(val emailError: String) : SignUpError(emailError)
     data class PasswordError(val passwordError: String) : SignUpError(passwordError)
     data class ConfirmPasswordError(val passwordError: String) : SignUpError(passwordError)

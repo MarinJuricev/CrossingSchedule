@@ -1,7 +1,7 @@
 package com.example.crossingschedule.feature.schedule.domain.usecase
 
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.Failure
+import com.example.crossingschedule.core.model.AuthFailure
 import com.example.crossingschedule.feature.schedule.domain.model.VillagerInteraction
 import com.example.crossingschedule.feature.schedule.domain.repository.ActivitiesRepository
 import javax.inject.Inject
@@ -14,7 +14,7 @@ class DeleteVillagerInteraction @Inject constructor(
         currentList: List<VillagerInteraction>,
         currentDate: String,
         villagerInteractionToBeDeleted: VillagerInteraction
-    ): Either<Failure, Unit> {
+    ): Either<AuthFailure, Unit> {
         val listToBeSent = generateListToBeSent(
             currentList,
             villagerInteractionToBeDeleted

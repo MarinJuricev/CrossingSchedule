@@ -2,8 +2,8 @@ package com.example.crossingschedule.feature.auth.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.example.crossingschedule.core.BaseViewModel
+import com.example.crossingschedule.core.model.AuthFailure
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.Failure
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.auth.domain.usecase.CreateAccount
 import com.example.crossingschedule.feature.auth.presentation.SignUpEvent.*
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val createAccount: CreateAccount,
-    private val failureToSignUpErrorMapper: Mapper<SignUpError, Failure>
+    private val authFailureToSignUpErrorMapper: Mapper<SignUpError, AuthFailure>
 ) : BaseViewModel<SignUpEvent>() {
 
     private val _signUpViewState = MutableStateFlow(SignUpViewState())
@@ -68,10 +68,10 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch {
             when (val result =
                 createAccount(
-                    viewState.email,
-                    viewState.password,
-                    viewState.confirmPassword,
-                    viewState.username
+                    username = viewState.username,
+                    email = viewState.email,
+                    password = viewState.password,
+                    confirmPassword = viewState.confirmPassword,
                 )
             ) {
                 is Either.Right -> _signUpViewState.value =
@@ -82,7 +82,7 @@ class SignUpViewModel @Inject constructor(
                     )
                 is Either.Left -> _signUpViewState.value =
                     _signUpViewState.value.copy(
-                        signUpError = failureToSignUpErrorMapper.map(result.error),
+                        signUpError = authFailureToSignUpErrorMapper.map(result.error),
                         isLoading = false
                     )
             }

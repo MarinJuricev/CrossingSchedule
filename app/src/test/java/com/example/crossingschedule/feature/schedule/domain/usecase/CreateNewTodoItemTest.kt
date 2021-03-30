@@ -2,7 +2,7 @@ package com.example.crossingschedule.feature.schedule.domain.usecase
 
 import com.example.crossingschedule.R
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.Failure
+import com.example.crossingschedule.core.model.AuthFailure
 import com.example.crossingschedule.core.util.IStringProvider
 import com.example.crossingschedule.feature.schedule.domain.model.CrossingTodo
 import com.example.crossingschedule.feature.schedule.domain.repository.ActivitiesRepository
@@ -43,7 +43,7 @@ class CreateNewTodoItemTest {
 
             val actualResult = sut(listOf(), "", "")
             val expectedResult = Either.Left(
-                Failure.ValidationFailure(
+                AuthFailure.ValidationAuthFailure(
                     ERROR_CANNOT_BE_EMPTY
                 )
             )

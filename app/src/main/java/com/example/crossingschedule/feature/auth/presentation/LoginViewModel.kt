@@ -3,7 +3,7 @@ package com.example.crossingschedule.feature.auth.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.Failure
+import com.example.crossingschedule.core.model.AuthFailure
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.auth.domain.usecase.PerformLogin
 import com.example.crossingschedule.feature.auth.presentation.model.LoginError
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val performLogin: PerformLogin,
-    private val failureToLoginErrorMapper: Mapper<LoginError, Failure>
+    private val authFailureToLoginErrorMapper: Mapper<LoginError, AuthFailure>
 ) : ViewModel() {
 
     private val _loginViewState = MutableStateFlow(LoginViewState())
@@ -50,7 +50,7 @@ class LoginViewModel @Inject constructor(
                     )
                 is Either.Left -> loginViewState.value =
                     loginViewState.value.copy(
-                        loginError = failureToLoginErrorMapper.map(result.error),
+                        loginError = authFailureToLoginErrorMapper.map(result.error),
                         isLoading = false
                     )
             }

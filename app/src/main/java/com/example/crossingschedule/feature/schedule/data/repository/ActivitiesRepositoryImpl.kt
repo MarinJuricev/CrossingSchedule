@@ -2,7 +2,7 @@ package com.example.crossingschedule.feature.schedule.data.repository
 
 import android.util.Log
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.Failure
+import com.example.crossingschedule.core.model.AuthFailure
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.schedule.data.factory.DefaultShopFactory
 import com.example.crossingschedule.feature.schedule.domain.model.*
@@ -27,7 +27,7 @@ class ActivitiesRepositoryImpl(
 
     //TODO CLEANUP THIS MESSY IMPLEMENTATION!!!!!
 
-    override suspend fun getActivitiesFoSpecifiedDay(selectedDate: String): Flow<Either<Failure, CrossingDailyActivities>> {
+    override suspend fun getActivitiesFoSpecifiedDay(selectedDate: String): Flow<Either<AuthFailure, CrossingDailyActivities>> {
         handleEmptyDocumentCase(selectedDate)
 
         return callbackFlow {
@@ -38,7 +38,7 @@ class ActivitiesRepositoryImpl(
                 .document(selectedDate)
                 .addSnapshotListener { value, error ->
                     if (error != null && error.localizedMessage != null) {
-                        offer(Either.Left(Failure.RemoteFailure(error.localizedMessage!!)))
+                        offer(Either.Left(AuthFailure.RemoteAuthFailure(error.localizedMessage!!)))
                     } else if (value != null) {
                         val mappedData = value.toObject(CrossingDailyActivities::class.java)
 
@@ -67,7 +67,7 @@ class ActivitiesRepositoryImpl(
         }
     }
 
-    override suspend fun getDefaultIslandActivities(): Either<Failure, CrossingDailyActivities> {
+    override suspend fun getDefaultIslandActivities(): Either<AuthFailure, CrossingDailyActivities> {
         val activitiesReference = fireStore
             .collection("/users/IYwmWMpVP3aV4RmWEa8q/islands")
             .document("TdWrr3sOWOzylTApiuV6")
@@ -89,12 +89,12 @@ class ActivitiesRepositoryImpl(
                         }
 
                     } else {
-                        continuation.resume(Either.Left(Failure.RemoteFailure("TEST")))
+                        continuation.resume(Either.Left(AuthFailure.RemoteAuthFailure("TEST")))
                     }
                 }.addOnFailureListener { exception ->
                     continuation.resume(
                         Either.Left(
-                            Failure.RemoteFailure(
+                            AuthFailure.RemoteAuthFailure(
                                 exception.message
                                     ?: "Unknown error occurred" //TODO provide localized value with StringProvider
                             )
@@ -107,7 +107,7 @@ class ActivitiesRepositoryImpl(
     override suspend fun updateCrossingTodoItems(
         updatedList: List<CrossingTodo>,
         currentDate: String
-    ): Either<Failure, Unit> {
+    ): Either<AuthFailure, Unit> {
         updateDefaultTodosWithDefaultValues(updatedList)
 
         val islandReference = fireStore.getIslandActivitiesForSpecifiedDateDocument(
@@ -137,7 +137,7 @@ class ActivitiesRepositoryImpl(
     override suspend fun updateShopItems(
         updatedList: List<Shop>,
         currentDate: String
-    ): Either<Failure, Unit> {
+    ): Either<AuthFailure, Unit> {
         val islandReference = fireStore.getIslandActivitiesForSpecifiedDateDocument(
             "TEST",
             "TEST",
@@ -156,7 +156,7 @@ class ActivitiesRepositoryImpl(
     override suspend fun updateNotes(
         updatedNotes: String,
         currentDate: String
-    ): Either<Failure, Unit> {
+    ): Either<AuthFailure, Unit> {
         val islandReference = fireStore.getIslandActivitiesForSpecifiedDateDocument(
             "TEST",
             "TEST",
@@ -175,7 +175,7 @@ class ActivitiesRepositoryImpl(
     override suspend fun updateVillagerInteractions(
         updatedList: List<VillagerInteraction>,
         currentDate: String
-    ): Either<Failure, Unit> {
+    ): Either<AuthFailure, Unit> {
         val islandReference = fireStore.getIslandActivitiesForSpecifiedDateDocument(
             "TEST",
             "TEST",
@@ -199,7 +199,7 @@ class ActivitiesRepositoryImpl(
     override suspend fun updateTurnipPrices(
         updatedTurnipPrices: TurnipPrices,
         currentDate: String
-    ): Either<Failure, Unit> {
+    ): Either<AuthFailure, Unit> {
         val islandReference = fireStore.getIslandActivitiesForSpecifiedDateDocument(
             "TEST",
             "TEST",

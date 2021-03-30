@@ -3,7 +3,7 @@ package com.example.crossingschedule.feature.schedule.domain.usecase
 import app.cash.turbine.test
 import com.example.crossingschedule.core.util.DateHandler
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.Failure
+import com.example.crossingschedule.core.model.AuthFailure
 import com.example.crossingschedule.feature.schedule.domain.repository.ActivitiesRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -41,7 +41,7 @@ class GetActivitiesForDayTest {
 
     @Test
     fun `getActivitiesForDay should trigger getActivitiesFoSpecifiedDay`() = runBlockingTest {
-        val failure = Either.Left(Failure.RemoteFailure(ERROR_MESSAGE))
+        val failure = Either.Left(AuthFailure.RemoteAuthFailure(ERROR_MESSAGE))
         val repositoryResult = flow {
             emit(failure)
         }

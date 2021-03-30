@@ -1,10 +1,10 @@
 package com.example.crossingschedule.feature.auth.data.repository
 
-import com.example.crossingschedule.core.model.CrossingStatus
-import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.Failure
+import com.example.crossingschedule.core.model.*
+import com.example.crossingschedule.core.model.AuthFailure.RemoteAuthFailure
 import com.example.crossingschedule.core.util.EncryptedPrefsService
 import com.example.crossingschedule.core.util.Mapper
+import com.example.crossingschedule.feature.auth.data.model.CreateAccountBody
 import com.example.crossingschedule.feature.auth.data.model.LoginUserResponse
 import com.example.crossingschedule.feature.auth.domain.repository.AuthRepository
 import io.mockk.*
@@ -13,9 +13,11 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Test
 
+private const val USERNAME = "USERNAME"
 private const val EMAIL = "EMAIL"
 private const val PASSWORD = "PASSWORD"
 private const val ID_TOKEN = "ID_TOKEN"
+
 private val AUTH_USER_RESPONSE = LoginUserResponse(CrossingStatus.Success, null, null)
 
 @ExperimentalCoroutinesApi
@@ -24,7 +26,7 @@ class AuthRepositoryImplTest {
     private val authProvider: AuthProvider = mockk()
     private val authApiService: AuthApiService = mockk()
     private val encryptedPrefsService: EncryptedPrefsService = mockk()
-    private val loginResponseToEitherMapper: Mapper<Either<Failure, Unit>, LoginUserResponse> =
+    private val loginResponseToEitherMapper: Mapper<Either<AuthFailure, Unit>, LoginUserResponse> =
         mockk()
 
     lateinit var sut: AuthRepository
@@ -56,13 +58,13 @@ class AuthRepositoryImplTest {
 
         coEvery {
             loginResponseToEitherMapper.map(AUTH_USER_RESPONSE)
-        } coAnswers { Either.Right(Unit) }
+        } coAnswers { Unit.buildRight() }
     }
 
     @Test
     fun `login should return EitherLeft when the authProvider calls returns a failure`() =
         runBlockingTest {
-            val failure = Either.Left(Failure.RemoteFailure(""))
+            val failure = RemoteAuthFailure("").buildLeft()
 
             coEvery {
                 authProvider.login(EMAIL, PASSWORD)
@@ -81,7 +83,7 @@ class AuthRepositoryImplTest {
     @Test
     fun `login should should trigger encryptedPrefsService and loginMapper when authProvider calls returns a success`() =
         runBlockingTest {
-            val success = Either.Right(Unit)
+            val success = Unit.buildRight()
 
             coEvery {
                 authProvider.login(EMAIL, PASSWORD)
@@ -100,7 +102,7 @@ class AuthRepositoryImplTest {
     @Test
     fun `createAccount should return EitherLeft when the authProvider calls returns a failure`() =
         runBlockingTest {
-            val failure = Either.Left(Failure.RemoteFailure(""))
+            val failure = RemoteAuthFailure("").buildLeft()
 
             coEvery {
                 authProvider.createAccount(EMAIL, PASSWORD)
@@ -108,7 +110,7 @@ class AuthRepositoryImplTest {
                 failure
             }
 
-            val actualResult = sut.createAccount(EMAIL, PASSWORD)
+            val actualResult = sut.createAccount(USERNAME, EMAIL, PASSWORD)
 
             coVerify(exactly = 0) { encryptedPrefsService.saveValue(AUTH_TOKEN_KEY, ID_TOKEN) }
             coVerify(exactly = 0) { loginResponseToEitherMapper.map(AUTH_USER_RESPONSE) }
@@ -119,15 +121,13 @@ class AuthRepositoryImplTest {
     @Test
     fun `createAccount should should trigger encryptedPrefsService and loginMapper when authProvider calls returns a success`() =
         runBlockingTest {
-            val success = Either.Right(Unit)
+            val success = Unit.buildRight()
+            val createAccountBody = CreateAccountBody(USERNAME)
 
-            coEvery {
-                authProvider.createAccount(EMAIL, PASSWORD)
-            } coAnswers {
-                success
-            }
+            coEvery { authProvider.createAccount(EMAIL, PASSWORD) } coAnswers { success }
+            coEvery { authApiService.createAccount(createAccountBody) } coAnswers { AUTH_USER_RESPONSE }
 
-            val actualResult = sut.createAccount(EMAIL, PASSWORD)
+            val actualResult = sut.createAccount(USERNAME, EMAIL, PASSWORD)
 
             coVerify(exactly = 1) { encryptedPrefsService.saveValue(AUTH_TOKEN_KEY, ID_TOKEN) }
             coVerify(exactly = 1) { loginResponseToEitherMapper.map(AUTH_USER_RESPONSE) }

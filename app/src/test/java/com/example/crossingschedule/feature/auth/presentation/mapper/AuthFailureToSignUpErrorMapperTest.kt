@@ -1,15 +1,15 @@
 package com.example.crossingschedule.feature.auth.presentation.mapper
 
-import com.example.crossingschedule.core.model.Failure
+import com.example.crossingschedule.core.model.AuthFailure
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpError
 import org.junit.Before
 
 import org.junit.Test
 
-class FailureToSignUpErrorMapperTest {
+class AuthFailureToSignUpErrorMapperTest {
 
-    lateinit var sut: Mapper<SignUpError, Failure>
+    lateinit var sut: Mapper<SignUpError, AuthFailure>
 
     @Before
     fun setUp() {
@@ -18,7 +18,7 @@ class FailureToSignUpErrorMapperTest {
 
     @Test
     fun `map should return EmailError when the provided failure is EmailValidationFailure`(){
-        val failure = Failure.EmailValidationFailure("")
+        val failure = AuthFailure.EmailValidationAuthFailure("")
 
         val actualResult = sut.map(failure)
         val expectedResult = SignUpError.EmailError("")
@@ -28,7 +28,7 @@ class FailureToSignUpErrorMapperTest {
 
     @Test
     fun `map should return PasswordError when the provided failure is PasswordValidationFailure`(){
-        val failure = Failure.PasswordValidationFailure("")
+        val failure = AuthFailure.PasswordValidationAuthFailure("")
 
         val actualResult = sut.map(failure)
         val expectedResult = SignUpError.PasswordError("")
@@ -38,7 +38,7 @@ class FailureToSignUpErrorMapperTest {
 
     @Test
     fun `map should return ConfirmPasswordError when the provided failure is ConfirmPasswordValidationFailure`(){
-        val failure = Failure.ConfirmPasswordValidationFailure("")
+        val failure = AuthFailure.ConfirmPasswordValidationAuthFailure("")
 
         val actualResult = sut.map(failure)
         val expectedResult = SignUpError.ConfirmPasswordError("")
@@ -48,7 +48,7 @@ class FailureToSignUpErrorMapperTest {
 
     @Test
     fun `map should return GeneralError when the provided failure is not of type EmailValidationFailure or PasswordValidationFailure or ConfirmPasswordValidationFailure`(){
-        val failure = Failure.RemoteFailure("")
+        val failure = AuthFailure.RemoteAuthFailure("")
 
         val actualResult = sut.map(failure)
         val expectedResult = SignUpError.GeneralError("")

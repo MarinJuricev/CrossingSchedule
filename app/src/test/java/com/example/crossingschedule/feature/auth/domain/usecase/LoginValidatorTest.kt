@@ -1,7 +1,7 @@
 package com.example.crossingschedule.feature.auth.domain.usecase
 
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.Failure
+import com.example.crossingschedule.core.model.AuthFailure
 import org.junit.Before
 
 import org.junit.Test
@@ -21,7 +21,7 @@ class LoginValidatorTest {
         val emptyPassword = ""
 
         val actualResult = sut.validate(invalidEmail, emptyPassword)
-        val expectedResult = Either.Left(Failure.EmailValidationFailure("Invalid e-mail provided"))
+        val expectedResult = Either.Left(AuthFailure.EmailValidationAuthFailure("Invalid e-mail provided"))
 
         assert(actualResult == expectedResult)
     }
@@ -33,7 +33,7 @@ class LoginValidatorTest {
 
         val actualResult = sut.validate(invalidEmail, blankPassword)
         val expectedResult =
-            Either.Left(Failure.PasswordValidationFailure("Password must have at least 8 chars"))
+            Either.Left(AuthFailure.PasswordValidationAuthFailure("Password must have at least 8 chars"))
 
         assert(actualResult == expectedResult)
     }
@@ -45,7 +45,7 @@ class LoginValidatorTest {
 
         val actualResult = sut.validate(invalidEmail, shortPassword)
         val expectedResult =
-            Either.Left(Failure.PasswordValidationFailure("Password must have at least 8 chars"))
+            Either.Left(AuthFailure.PasswordValidationAuthFailure("Password must have at least 8 chars"))
 
         assert(actualResult == expectedResult)
     }

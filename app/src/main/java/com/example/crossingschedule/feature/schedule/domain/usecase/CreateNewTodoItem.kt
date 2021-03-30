@@ -2,7 +2,7 @@ package com.example.crossingschedule.feature.schedule.domain.usecase
 
 import com.example.crossingschedule.R
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.Failure
+import com.example.crossingschedule.core.model.AuthFailure
 import com.example.crossingschedule.feature.schedule.domain.model.CrossingTodo
 import com.example.crossingschedule.feature.schedule.domain.repository.ActivitiesRepository
 import com.example.crossingschedule.core.util.IStringProvider
@@ -17,7 +17,7 @@ class CreateNewTodoItem @Inject constructor(
         currentList: List<CrossingTodo>,
         currentDate: String,
         newTodoItemMessage: String
-    ): Either<Failure, Unit> {
+    ): Either<AuthFailure, Unit> {
         if (newTodoItemMessage.isBlank()) {
             return buildError()
         }
@@ -38,9 +38,9 @@ class CreateNewTodoItem @Inject constructor(
             currentList.plus(newTodoItem)
         }
 
-    private fun buildError(): Either<Failure, Unit> =
+    private fun buildError(): Either<AuthFailure, Unit> =
         Either.Left(
-            Failure.ValidationFailure(
+            AuthFailure.ValidationAuthFailure(
                 stringProvider.getString(R.string.error_cannot_be_empty)
             )
         )

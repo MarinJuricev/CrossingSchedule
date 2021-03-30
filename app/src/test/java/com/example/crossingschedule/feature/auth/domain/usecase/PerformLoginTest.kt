@@ -1,7 +1,7 @@
 package com.example.crossingschedule.feature.auth.domain.usecase
 
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.Failure
+import com.example.crossingschedule.core.model.AuthFailure
 import com.example.crossingschedule.feature.auth.domain.repository.AuthRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -33,7 +33,7 @@ class PerformLoginTest {
         runBlockingTest {
             val email = "email"
             val password = "password"
-            val failure = Either.Left(Failure.EmailValidationFailure(""))
+            val failure = Either.Left(AuthFailure.EmailValidationAuthFailure(""))
 
             every {
                 loginValidator.validate(email, password)

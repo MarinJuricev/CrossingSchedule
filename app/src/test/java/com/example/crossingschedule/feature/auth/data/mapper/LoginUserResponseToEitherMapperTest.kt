@@ -2,7 +2,7 @@ package com.example.crossingschedule.feature.auth.data.mapper
 
 import com.example.crossingschedule.core.model.CrossingStatus
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.Failure
+import com.example.crossingschedule.core.model.AuthFailure
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.auth.data.model.LoginUserResponse
 import org.junit.Before
@@ -10,7 +10,7 @@ import org.junit.Test
 
 class LoginUserResponseToEitherMapperTest {
 
-    private lateinit var sut: Mapper<Either<Failure, Unit>, LoginUserResponse>
+    private lateinit var sut: Mapper<Either<AuthFailure, Unit>, LoginUserResponse>
 
     @Before
     fun setUp() {
@@ -41,7 +41,7 @@ class LoginUserResponseToEitherMapperTest {
         )
 
         val actualResult = sut.map(failResponse)
-        val expectedResult = Either.Left(Failure.RemoteFailure(errorMessage))
+        val expectedResult = Either.Left(AuthFailure.RemoteAuthFailure(errorMessage))
 
         assert(actualResult == expectedResult)
     }
@@ -55,7 +55,7 @@ class LoginUserResponseToEitherMapperTest {
         )
 
         val actualResult = sut.map(failResponse)
-        val expectedResult = Either.Left(Failure.RemoteFailure("Unknown Error Occurred"))
+        val expectedResult = Either.Left(AuthFailure.RemoteAuthFailure("Unknown Error Occurred"))
 
         assert(actualResult == expectedResult)
     }

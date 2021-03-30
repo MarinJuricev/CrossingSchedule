@@ -1,7 +1,7 @@
 package com.example.crossingschedule.feature.auth.data.repository
 
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.Failure
+import com.example.crossingschedule.core.model.AuthFailure
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -18,7 +18,7 @@ class AuthProviderImpl @Inject constructor(
     override suspend fun login(
         email: String,
         password: String
-    ) = suspendCancellableCoroutine<Either<Failure, Unit>> { continuation ->
+    ) = suspendCancellableCoroutine<Either<AuthFailure, Unit>> { continuation ->
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addCrossingOnCompleteListener(
                 onSuccess = { continuation.resume(Either.Right(Unit)) },
@@ -33,7 +33,7 @@ class AuthProviderImpl @Inject constructor(
     }
 
     override suspend fun createAccount(email: String, password: String) =
-        suspendCancellableCoroutine<Either<Failure, Unit>> { continuation ->
+        suspendCancellableCoroutine<Either<AuthFailure, Unit>> { continuation ->
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addCrossingOnCompleteListener(
                     onSuccess = { continuation.resume(Either.Right(Unit)) },
@@ -44,11 +44,11 @@ class AuthProviderImpl @Inject constructor(
 
 private fun Task<AuthResult>.addCrossingOnCompleteListener(
     onSuccess: () -> Unit,
-    onFailure: (Failure) -> Unit,
+    onFailure: (AuthFailure) -> Unit,
 ) {
     this.addOnSuccessListener { onSuccess() }
     this.addOnFailureListener {
-        val errorMessage = Failure.RemoteFailure(
+        val errorMessage = AuthFailure.RemoteAuthFailure(
             it.localizedMessage ?: "Unknown Error Occurred"
         )
         onFailure(errorMessage)

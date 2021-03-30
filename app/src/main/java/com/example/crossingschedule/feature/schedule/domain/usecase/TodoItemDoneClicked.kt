@@ -1,7 +1,7 @@
 package com.example.crossingschedule.feature.schedule.domain.usecase
 
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.Failure
+import com.example.crossingschedule.core.model.AuthFailure
 import com.example.crossingschedule.feature.schedule.domain.model.CrossingTodo
 import com.example.crossingschedule.feature.schedule.domain.repository.ActivitiesRepository
 import javax.inject.Inject
@@ -14,7 +14,7 @@ class TodoItemDoneClicked @Inject constructor(
         currentList: List<CrossingTodo>,
         currentDate: String,
         clickedItem: CrossingTodo
-    ): Either<Failure, Unit> {
+    ): Either<AuthFailure, Unit> {
         //TODO add a ID field, don't just compare with the message
         val listToBeSent = generateListToBeSent(currentList, clickedItem)
 

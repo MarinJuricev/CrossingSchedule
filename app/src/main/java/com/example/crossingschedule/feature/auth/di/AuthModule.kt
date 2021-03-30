@@ -1,7 +1,7 @@
 package com.example.crossingschedule.feature.auth.di
 
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.Failure
+import com.example.crossingschedule.core.model.AuthFailure
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.auth.data.mapper.AuthenticateUserResponseToEitherMapper
 import com.example.crossingschedule.feature.auth.data.model.LoginUserResponse
@@ -32,12 +32,12 @@ object AuthModule {
     @Provides
     fun provideLoginErrorMapper(
         failureToLoginErrorMapper: FailureToLoginErrorMapper
-    ): Mapper<LoginError, Failure> = failureToLoginErrorMapper
+    ): Mapper<LoginError, AuthFailure> = failureToLoginErrorMapper
 
     @Provides
     fun provideSignUpErrorMapper(
         failureToSignUpErrorMapper: FailureToSignUpErrorMapper
-    ): Mapper<SignUpError, Failure> = failureToSignUpErrorMapper
+    ): Mapper<SignUpError, AuthFailure> = failureToSignUpErrorMapper
 
     @Provides
     fun provideAuthApi(
@@ -52,6 +52,6 @@ object AuthModule {
     @Provides
     fun provideTokenResponseToEitherMapper(
         authenticateUserResponseToEitherMapper: AuthenticateUserResponseToEitherMapper
-    ): Mapper<Either<Failure, Unit>, LoginUserResponse> = authenticateUserResponseToEitherMapper
+    ): Mapper<Either<AuthFailure, Unit>, LoginUserResponse> = authenticateUserResponseToEitherMapper
 
 }

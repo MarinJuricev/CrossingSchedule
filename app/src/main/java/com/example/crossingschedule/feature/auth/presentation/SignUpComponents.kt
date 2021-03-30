@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.crossingschedule.R
 import com.example.crossingschedule.feature.auth.presentation.SignUpEvent.*
-import com.example.crossingschedule.feature.auth.presentation.model.AnimatedSignUpValidatorState
-import com.example.crossingschedule.feature.auth.presentation.model.SignUpError
+import com.example.crossingschedule.feature.auth.presentation.model.AnimatedSignUpValidatorState.*
+import com.example.crossingschedule.feature.auth.presentation.model.SignUpError.*
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpViewState
 
 @Composable
@@ -121,20 +121,44 @@ fun SignUpInputFields(
     signUpViewState: SignUpViewState,
     onSignUpEvent: (SignUpEvent) -> Unit
 ) {
-    var validatorAnimatedStates by
-    remember { mutableStateOf(AnimatedSignUpValidatorState.NO_ERROR) }
+    var validatorAnimatedStates by remember { mutableStateOf(NO_ERROR) }
 
     validatorAnimatedStates = when (signUpViewState.signUpError) {
-        is SignUpError.EmailError -> AnimatedSignUpValidatorState.EMAIL_ERROR
-        is SignUpError.PasswordError -> AnimatedSignUpValidatorState.PASSWORD_ERROR
-        is SignUpError.ConfirmPasswordError -> AnimatedSignUpValidatorState.CONFIRM_PASSWORD_ERROR
-        else -> AnimatedSignUpValidatorState.NO_ERROR
+        is UserNameError -> USERNAME_ERROR
+        is EmailError -> EMAIL_ERROR
+        is PasswordError -> PASSWORD_ERROR
+        is ConfirmPasswordError -> CONFIRM_PASSWORD_ERROR
+        else -> NO_ERROR
     }
 
     val validatorTransition = updateTransition(
         label = "validatorTransition",
         targetState = validatorAnimatedStates,
     )
+
+    val userNameAlpha by validatorTransition.animateFloat(
+        label = "userName",
+        transitionSpec = {
+            tween(durationMillis = 1000)
+        },
+    ) {
+        when (it) {
+            USERNAME_ERROR -> 1f
+            else -> 0f
+        }
+    }
+
+    val usernameHeight = validatorTransition.animateDp(
+        label = "usernameHeight",
+        transitionSpec = {
+            tween(durationMillis = 1000)
+        },
+    ) {
+        when (it) {
+            USERNAME_ERROR -> 24.dp
+            else -> 0.dp
+        }
+    }
 
     val emailAlpha by validatorTransition.animateFloat(
         label = "emailAlpha",
@@ -143,7 +167,7 @@ fun SignUpInputFields(
         },
     ) {
         when (it) {
-            AnimatedSignUpValidatorState.EMAIL_ERROR -> 1f
+            EMAIL_ERROR -> 1f
             else -> 0f
         }
     }
@@ -155,7 +179,7 @@ fun SignUpInputFields(
         },
     ) {
         when (it) {
-            AnimatedSignUpValidatorState.EMAIL_ERROR -> 24.dp
+            EMAIL_ERROR -> 24.dp
             else -> 0.dp
         }
     }
@@ -167,7 +191,7 @@ fun SignUpInputFields(
         },
     ) {
         when (it) {
-            AnimatedSignUpValidatorState.PASSWORD_ERROR -> 1f
+            PASSWORD_ERROR -> 1f
             else -> 0f
         }
     }
@@ -179,7 +203,7 @@ fun SignUpInputFields(
         },
     ) {
         when (it) {
-            AnimatedSignUpValidatorState.PASSWORD_ERROR -> 24.dp
+            PASSWORD_ERROR -> 24.dp
             else -> 0.dp
         }
     }
@@ -191,7 +215,7 @@ fun SignUpInputFields(
         },
     ) {
         when (it) {
-            AnimatedSignUpValidatorState.CONFIRM_PASSWORD_ERROR -> 1f
+            CONFIRM_PASSWORD_ERROR -> 1f
             else -> 0f
         }
     }
@@ -203,7 +227,7 @@ fun SignUpInputFields(
         },
     ) {
         when (it) {
-            AnimatedSignUpValidatorState.CONFIRM_PASSWORD_ERROR -> 24.dp
+            CONFIRM_PASSWORD_ERROR -> 24.dp
             else -> 0.dp
         }
     }
@@ -216,7 +240,26 @@ fun SignUpInputFields(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            isError = signUpViewState.signUpError is SignUpError.EmailError,
+            isError = signUpViewState.signUpError is UserNameError,
+            value = signUpViewState.username,
+            onValueChange = { onSignUpEvent(OnUsernameChange(it)) },
+            singleLine = true,
+            label = { Text(stringResource(R.string.username)) },
+        )
+        Text(
+            modifier = Modifier
+                .alpha(userNameAlpha)
+                .fillMaxWidth()
+                .height(usernameHeight.value),
+            text = (signUpViewState.signUpError as? UserNameError)?.userNameError ?: "",
+            color = MaterialTheme.colors.error,
+            textAlign = TextAlign.Center,
+        )
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            isError = signUpViewState.signUpError is EmailError,
             value = signUpViewState.email,
             onValueChange = { onSignUpEvent(OnEmailChange(it)) },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
@@ -228,7 +271,7 @@ fun SignUpInputFields(
                 .alpha(emailAlpha)
                 .fillMaxWidth()
                 .height(emailHeight.value),
-            text = (signUpViewState.signUpError as? SignUpError.EmailError)?.emailError ?: "",
+            text = (signUpViewState.signUpError as? EmailError)?.emailError ?: "",
             color = MaterialTheme.colors.error,
             textAlign = TextAlign.Center,
         )
@@ -237,7 +280,7 @@ fun SignUpInputFields(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             value = signUpViewState.password,
-            isError = signUpViewState.signUpError is SignUpError.PasswordError,
+            isError = signUpViewState.signUpError is PasswordError,
             onValueChange = { onSignUpEvent(OnPasswordChange(it)) },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
             singleLine = true,
@@ -249,7 +292,7 @@ fun SignUpInputFields(
                 .alpha(passwordAlpha)
                 .fillMaxWidth()
                 .padding(passwordHeight.value),
-            text = (signUpViewState.signUpError as? SignUpError.PasswordError)?.passwordError
+            text = (signUpViewState.signUpError as? PasswordError)?.passwordError
                 ?: "",//TODO Cleaner API for this... this is mega messy
             color = MaterialTheme.colors.error,
             textAlign = TextAlign.Center,
@@ -259,7 +302,7 @@ fun SignUpInputFields(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             value = signUpViewState.confirmPassword,
-            isError = signUpViewState.signUpError is SignUpError.ConfirmPasswordError,
+            isError = signUpViewState.signUpError is ConfirmPasswordError,
             onValueChange = { onSignUpEvent(OnConfirmPasswordChange(it)) },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
             visualTransformation = PasswordVisualTransformation(),
@@ -271,7 +314,7 @@ fun SignUpInputFields(
                 .alpha(confirmPasswordAlpha)
                 .fillMaxWidth()
                 .padding(confirmPasswordHeight.value),
-            text = (signUpViewState.signUpError as? SignUpError.ConfirmPasswordError)?.passwordError
+            text = (signUpViewState.signUpError as? ConfirmPasswordError)?.passwordError
                 ?: "",//TODO Cleaner API for this... this is mega messy
             color = MaterialTheme.colors.error,
             textAlign = TextAlign.Center,
