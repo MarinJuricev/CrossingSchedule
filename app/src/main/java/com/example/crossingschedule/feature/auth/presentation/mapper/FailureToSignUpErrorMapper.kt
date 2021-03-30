@@ -1,7 +1,7 @@
 package com.example.crossingschedule.feature.auth.presentation.mapper
 
-import com.example.crossingschedule.core.model.AuthFailure
-import com.example.crossingschedule.core.model.AuthFailure.*
+import com.example.crossingschedule.feature.auth.domain.model.AuthFailure
+import com.example.crossingschedule.feature.auth.domain.model.AuthFailure.*
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpError
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpError.*

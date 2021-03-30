@@ -1,7 +1,7 @@
 package com.example.crossingschedule.feature.auth.domain.usecase
 
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.AuthFailure
+import com.example.crossingschedule.feature.auth.domain.model.AuthFailure
 import com.example.crossingschedule.feature.auth.domain.EMAIL_REGEX
 import com.example.crossingschedule.feature.auth.domain.MINIMAL_PASSWORD_LENGTH
 import javax.inject.Inject

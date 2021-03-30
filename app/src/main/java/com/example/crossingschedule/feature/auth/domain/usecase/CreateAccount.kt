@@ -1,6 +1,6 @@
 package com.example.crossingschedule.feature.auth.domain.usecase
 
-import com.example.crossingschedule.core.model.AuthFailure
+import com.example.crossingschedule.feature.auth.domain.model.AuthFailure
 import com.example.crossingschedule.core.model.Either
 import com.example.crossingschedule.core.model.Either.Left
 import com.example.crossingschedule.feature.auth.domain.repository.AuthRepository

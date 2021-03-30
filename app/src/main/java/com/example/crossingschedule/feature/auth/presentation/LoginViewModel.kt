@@ -3,7 +3,7 @@ package com.example.crossingschedule.feature.auth.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.AuthFailure
+import com.example.crossingschedule.feature.auth.domain.model.AuthFailure
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.auth.domain.usecase.PerformLogin
 import com.example.crossingschedule.feature.auth.presentation.model.LoginError

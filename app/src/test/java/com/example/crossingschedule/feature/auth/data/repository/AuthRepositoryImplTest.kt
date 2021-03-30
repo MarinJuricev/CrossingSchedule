@@ -1,11 +1,12 @@
 package com.example.crossingschedule.feature.auth.data.repository
 
 import com.example.crossingschedule.core.model.*
-import com.example.crossingschedule.core.model.AuthFailure.RemoteAuthFailure
+import com.example.crossingschedule.feature.auth.domain.model.AuthFailure.RemoteAuthFailure
 import com.example.crossingschedule.core.util.EncryptedPrefsService
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.auth.data.model.CreateAccountBody
 import com.example.crossingschedule.feature.auth.data.model.LoginUserResponse
+import com.example.crossingschedule.feature.auth.domain.model.AuthFailure
 import com.example.crossingschedule.feature.auth.domain.repository.AuthRepository
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi

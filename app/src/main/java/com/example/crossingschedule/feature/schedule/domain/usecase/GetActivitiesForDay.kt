@@ -1,7 +1,7 @@
 package com.example.crossingschedule.feature.schedule.domain.usecase
 
 import com.example.crossingschedule.core.model.Either
-import com.example.crossingschedule.core.model.AuthFailure
+import com.example.crossingschedule.feature.auth.domain.model.AuthFailure
 import com.example.crossingschedule.core.util.DateHandler
 import com.example.crossingschedule.feature.schedule.domain.model.CrossingDailyActivities
 import com.example.crossingschedule.feature.schedule.domain.repository.ActivitiesRepository
