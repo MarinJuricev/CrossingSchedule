@@ -15,8 +15,10 @@ import com.example.crossingschedule.feature.auth.presentation.SignUpViewModel
 import com.example.crossingschedule.feature.schedule.presentation.SCHEDULE_PAGE_ROUTE
 import com.example.crossingschedule.feature.schedule.presentation.SchedulePage
 import com.example.crossingschedule.feature.schedule.presentation.ScheduleViewModel
+import com.example.crossingschedule.feature.settings.SETTINGS_PAGE_ROUTE
+import com.example.crossingschedule.feature.settings.SettingsScreen
+import com.example.crossingschedule.feature.settings.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.sign
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -27,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             val navController = rememberNavController()
 
             CrossingScheduleTheme {
-                NavHost(navController = navController, startDestination = AUTH_PAGE_ROUTE) {
+                NavHost(navController = navController, startDestination = SETTINGS_PAGE_ROUTE) {
                     composable(route = SCHEDULE_PAGE_ROUTE) { navBackStackEntry ->
                         val factory =
                             HiltViewModelFactory(LocalContext.current, navBackStackEntry)
@@ -52,6 +54,16 @@ class MainActivity : AppCompatActivity() {
                             },
                             loginViewModel = loginViewModel,
                             signUpViewModel = signUpViewModel,
+                        )
+                    }
+                    composable(route = SETTINGS_PAGE_ROUTE) { navBackStackEntry ->
+                        val factory =
+                            HiltViewModelFactory(LocalContext.current, navBackStackEntry)
+                        val settingsViewModel: SettingsViewModel =
+                            viewModel(SettingsViewModel::class.java.canonicalName, factory)
+
+                        SettingsScreen(
+                            settingsViewModel = settingsViewModel
                         )
                     }
                 }
