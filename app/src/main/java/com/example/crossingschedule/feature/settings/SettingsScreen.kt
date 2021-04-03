@@ -9,7 +9,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 
 const val SETTINGS_PAGE_ROUTE = "SETTINGS_PAGE_ROUTE"
@@ -19,14 +18,16 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel) {
 
 //    val dataset by settingsViewModel.observeConstantStream().collectAsState(0)
 
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val locationFlowLifecycleAware = remember(settingsViewModel, lifecycleOwner) {
+    val lifeCycleOwner = LocalLifecycleOwner.current
+    val lifeCycleAwareFlow = remember(settingsViewModel, lifeCycleOwner) {
         settingsViewModel
             .observeConstantStream()
-            .flowWithLifecycle(lifecycleOwner.lifecycle)
+            .flowWithLifecycle(lifeCycleOwner.lifecycle)
     }
 
-    val lifeycleAwareDataset by locationFlowLifecycleAware.collectAsState(initial = 0)
+    val lifeycleAwareDataset by lifeCycleAwareFlow.collectAsState(
+        initial = 0
+    )
 
     Column {
 //        Text(
