@@ -3,6 +3,7 @@ package com.example.crossingschedule.feature.auth.presentation.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.example.crossingschedule.core.BaseViewModel
 import com.example.crossingschedule.core.model.Either
+import com.example.crossingschedule.core.model.Either.*
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.auth.domain.model.AuthFailure
 import com.example.crossingschedule.feature.auth.domain.usecase.PerformLogin
@@ -52,13 +53,13 @@ class LoginViewModel @Inject constructor(
 
         viewModelScope.launch {
             when (val result = performLogin(viewState.email, viewState.password)) {
-                is Either.Right -> loginViewState.value =
+                is Right -> loginViewState.value =
                     loginViewState.value.copy(
                         navigateToSchedule = true,
                         loginError = null,
                         isLoading = false
                     )
-                is Either.Left -> loginViewState.value =
+                is Left -> loginViewState.value =
                     loginViewState.value.copy(
                         loginError = authFailureToLoginErrorMapper.map(result.error),
                         isLoading = false
@@ -73,6 +74,4 @@ class LoginViewModel @Inject constructor(
                 isLoading = true
             )
     }
-
-
 }
