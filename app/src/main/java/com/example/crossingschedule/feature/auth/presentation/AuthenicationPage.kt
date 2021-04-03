@@ -23,6 +23,8 @@ import com.example.crossingschedule.feature.auth.presentation.components.LoginTa
 import com.example.crossingschedule.feature.auth.presentation.model.LoginError
 import com.example.crossingschedule.feature.auth.presentation.model.LoginViewState
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpViewState
+import com.example.crossingschedule.feature.auth.presentation.viewmodel.LoginViewModel
+import com.example.crossingschedule.feature.auth.presentation.viewmodel.SignUpViewModel
 
 const val AUTH_PAGE_ROUTE = "AUTH_PAGE_ROUTE"
 
@@ -82,9 +84,7 @@ fun LoginPage(
             when (selectedTabPosition) {
                 LOGIN_TAB_POSITION -> LoginComponent(
                     loginViewState,
-                    loginViewModel::onLoginClick,
-                    loginViewModel::onEmailChange,
-                    loginViewModel::onPasswordChange
+                    loginViewModel::onEvent,
                 )
                 SIGN_UP_TAB_POSITION -> SignUpComponent(
                     signUpViewState,

@@ -14,7 +14,7 @@ import androidx.lifecycle.flowWithLifecycle
 const val SETTINGS_PAGE_ROUTE = "SETTINGS_PAGE_ROUTE"
 
 @Composable
-fun SettingsScreen(settingsViewModel: SettingsViewModel) {
+fun SettingsPage(settingsViewModel: SettingsViewModel) {
 
 //    val dataset by settingsViewModel.observeConstantStream().collectAsState(0)
 

@@ -26,6 +26,8 @@ import com.example.crossingschedule.feature.auth.presentation.LOGIN_TAB_POSITION
 import com.example.crossingschedule.feature.auth.presentation.SIGN_UP_TAB_POSITION
 import com.example.crossingschedule.feature.auth.presentation.model.AnimatedLoginValidatorState
 import com.example.crossingschedule.feature.auth.presentation.model.LoginError
+import com.example.crossingschedule.feature.auth.presentation.model.LoginEvent
+import com.example.crossingschedule.feature.auth.presentation.model.LoginEvent.*
 import com.example.crossingschedule.feature.auth.presentation.model.LoginViewState
 
 @Composable
@@ -69,9 +71,7 @@ fun LoginTab(
 @Composable
 fun LoginComponent(
     loginViewState: LoginViewState,
-    onLoginClick: () -> Unit,
-    onEmailChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
+    onLoginEvent: (LoginEvent) -> Unit,
 ) {
     Crossfade(
         targetState = loginViewState.navigateToSchedule,
@@ -127,8 +127,7 @@ fun LoginComponent(
                         end.linkTo(parent.end)
                     },
                 loginViewState = loginViewState,
-                onEmailChange = onEmailChange,
-                onPasswordChange = onPasswordChange,
+                onLoginEvent = onLoginEvent,
             )
             //TODO Add a sign in with Google ?
             if (loginViewState.isLoading) {
@@ -159,7 +158,7 @@ fun LoginComponent(
                         top.linkTo(bottomDecor.top)
                         bottom.linkTo(bottomDecor.top)
                     },
-                onClick = onLoginClick
+                onClick = { onLoginEvent(OnLoginClick) }
             ) {
                 Text(
                     modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
@@ -176,8 +175,7 @@ fun LoginComponent(
 fun LoginInputFields(
     modifier: Modifier = Modifier,
     loginViewState: LoginViewState,
-    onEmailChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit
+    onLoginEvent: (LoginEvent) -> Unit,
 ) {
     var validatorAnimatedStates by
     remember { mutableStateOf(AnimatedLoginValidatorState.NO_ERROR) }
@@ -244,7 +242,7 @@ fun LoginInputFields(
                 .padding(16.dp),
             isError = loginViewState.loginError is LoginError.EmailError,
             value = loginViewState.email,
-            onValueChange = onEmailChange,
+            onValueChange = { onLoginEvent(OnEmailChange(it)) },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
             singleLine = true,
             label = { Text(stringResource(R.string.email)) },
@@ -264,7 +262,7 @@ fun LoginInputFields(
                 .padding(horizontal = 16.dp),
             value = loginViewState.password,
             isError = loginViewState.loginError is LoginError.PasswordError,
-            onValueChange = onPasswordChange,
+            onValueChange = { onLoginEvent(OnPasswordChange(it)) },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
             singleLine = true,
