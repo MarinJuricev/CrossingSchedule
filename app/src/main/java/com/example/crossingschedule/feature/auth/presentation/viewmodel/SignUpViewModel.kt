@@ -2,9 +2,10 @@ package com.example.crossingschedule.feature.auth.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.example.crossingschedule.core.BaseViewModel
-import com.example.crossingschedule.feature.auth.domain.model.AuthFailure
 import com.example.crossingschedule.core.model.Either
+import com.example.crossingschedule.core.model.Either.*
 import com.example.crossingschedule.core.util.Mapper
+import com.example.crossingschedule.feature.auth.domain.model.AuthFailure
 import com.example.crossingschedule.feature.auth.domain.usecase.CreateAccount
 import com.example.crossingschedule.feature.auth.presentation.SignUpEvent
 import com.example.crossingschedule.feature.auth.presentation.SignUpEvent.*
@@ -12,6 +13,7 @@ import com.example.crossingschedule.feature.auth.presentation.model.SignUpError
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,7 +24,7 @@ class SignUpViewModel @Inject constructor(
 ) : BaseViewModel<SignUpEvent>() {
 
     private val _signUpViewState = MutableStateFlow(SignUpViewState())
-    val signUpViewState = _signUpViewState
+    val signUpViewState: StateFlow<SignUpViewState> = _signUpViewState
 
     override fun onEvent(event: SignUpEvent) {
         when (event) {
@@ -75,13 +77,13 @@ class SignUpViewModel @Inject constructor(
                     confirmPassword = viewState.confirmPassword,
                 )
             ) {
-                is Either.Right -> _signUpViewState.value =
+                is Right -> _signUpViewState.value =
                     _signUpViewState.value.copy(
                         navigateToSchedule = true,
                         signUpError = null,
                         isLoading = false
                     )
-                is Either.Left -> _signUpViewState.value =
+                is Left -> _signUpViewState.value =
                     _signUpViewState.value.copy(
                         signUpError = authFailureToSignUpErrorMapper.map(result.error),
                         isLoading = false
