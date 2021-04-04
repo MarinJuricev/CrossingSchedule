@@ -24,7 +24,7 @@ class CreateAccountTest {
     private val authRepository: AuthRepository = mockk()
     private val signUpValidator: SignUpValidator = mockk()
 
-    lateinit var sut: CreateAccount
+    private lateinit var sut: CreateAccount
 
     @Before
     fun setUp() {
