@@ -15,7 +15,7 @@ class ActivitiesToScheduleViewStateMapper @Inject constructor(
 ) : Mapper<ScheduleViewState, CrossingDailyActivities> {
 
     //TODO Separate into more independent mappers ?
-    override fun map(origin: CrossingDailyActivities): ScheduleViewState {
+    override suspend fun map(origin: CrossingDailyActivities): ScheduleViewState {
         return with(origin) {
             ScheduleViewState(
                 isLoading = false,

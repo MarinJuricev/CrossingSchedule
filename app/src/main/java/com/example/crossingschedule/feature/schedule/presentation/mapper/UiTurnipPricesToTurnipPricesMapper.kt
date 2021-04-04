@@ -8,7 +8,7 @@ import javax.inject.Inject
 class UiTurnipPricesToTurnipPricesMapper @Inject constructor(
 ) : Mapper<TurnipPrices, UiTurnipPrices> {
 
-    override fun map(origin: UiTurnipPrices): TurnipPrices {
+    override suspend fun map(origin: UiTurnipPrices): TurnipPrices {
         return with(origin) {
             TurnipPrices(
                 amPrice = amPrice.toInt(),

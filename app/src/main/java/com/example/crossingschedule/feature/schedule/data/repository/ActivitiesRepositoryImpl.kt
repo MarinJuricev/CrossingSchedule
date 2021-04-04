@@ -125,7 +125,7 @@ class ActivitiesRepositoryImpl(
         return Either.Right(Unit)
     }
 
-    private fun updateDefaultTodosWithDefaultValues(updatedList: List<CrossingTodo>) {
+    private suspend fun updateDefaultTodosWithDefaultValues(updatedList: List<CrossingTodo>) {
         val defaultValues = crossingTodosToDefaultCrossingTodosMapper.map(updatedList)
         val activitiesReference = fireStore.getIslandActivitiesDocument("TEST", "TEST")
 

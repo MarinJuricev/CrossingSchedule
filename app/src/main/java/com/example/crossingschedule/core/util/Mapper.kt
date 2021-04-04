@@ -1,5 +1,5 @@
 package com.example.crossingschedule.core.util
 
 interface Mapper<R, O> {
-    fun map(origin: O): R
+    suspend fun map(origin: O): R
 }

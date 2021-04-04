@@ -10,7 +10,7 @@ import javax.inject.Inject
 class AuthenticateUserResponseToEitherMapper @Inject constructor(
 ) : Mapper<Either<AuthFailure, Unit>, LoginUserResponse> {
 
-    override fun map(origin: LoginUserResponse): Either<AuthFailure, Unit> {
+    override suspend fun map(origin: LoginUserResponse): Either<AuthFailure, Unit> {
         return if (origin.status == CrossingStatus.Success) {
             Either.Right(Unit)
         } else {

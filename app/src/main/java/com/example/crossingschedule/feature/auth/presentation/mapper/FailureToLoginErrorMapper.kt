@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class FailureToLoginErrorMapper @Inject constructor(
 ) : Mapper<LoginError, AuthFailure> {
-    override fun map(origin: AuthFailure): LoginError =
+    override suspend fun map(origin: AuthFailure): LoginError =
         when (origin) {
             is AuthFailure.EmailValidationAuthFailure -> LoginError.EmailError(origin.errorMessage)
             is AuthFailure.PasswordValidationAuthFailure -> LoginError.PasswordError(origin.errorMessage)

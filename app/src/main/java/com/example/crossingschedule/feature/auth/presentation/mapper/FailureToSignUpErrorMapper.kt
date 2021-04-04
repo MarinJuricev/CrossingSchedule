@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class FailureToSignUpErrorMapper @Inject constructor(
 ) : Mapper<SignUpError, AuthFailure> {
-    override fun map(origin: AuthFailure): SignUpError =
+    override suspend fun map(origin: AuthFailure): SignUpError =
         when (origin) {
             is UserNameAuthFailure -> UserNameError(origin.errorMessage)
             is EmailValidationAuthFailure -> EmailError(origin.errorMessage)

@@ -9,7 +9,7 @@ import javax.inject.Inject
 class UiShopsToShopsMapper @Inject constructor(
 ) : Mapper<List<Shop>, List<UiShop>> {
 
-    override fun map(origin: List<UiShop>): List<Shop> {
+    override suspend fun map(origin: List<UiShop>): List<Shop> {
         return origin.map { uiShop ->
             when (uiShop.resourceImageId) {
                 KnownShops.NooksCranny.resourceId -> Shop(
