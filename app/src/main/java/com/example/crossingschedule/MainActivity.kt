@@ -12,6 +12,9 @@ import com.example.crossingschedule.feature.auth.presentation.AUTH_PAGE_ROUTE
 import com.example.crossingschedule.feature.auth.presentation.LoginPage
 import com.example.crossingschedule.feature.auth.presentation.viewmodel.LoginViewModel
 import com.example.crossingschedule.feature.auth.presentation.viewmodel.SignUpViewModel
+import com.example.crossingschedule.feature.islands.presentation.ISLAND_SELECTION_PAGE
+import com.example.crossingschedule.feature.islands.presentation.IslandSelectionPage
+import com.example.crossingschedule.feature.islands.presentation.viewmodel.IslandSelectionViewModel
 import com.example.crossingschedule.feature.schedule.presentation.SCHEDULE_PAGE_ROUTE
 import com.example.crossingschedule.feature.schedule.presentation.SchedulePage
 import com.example.crossingschedule.feature.schedule.presentation.ScheduleViewModel
@@ -29,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             val navController = rememberNavController()
 
             CrossingScheduleTheme {
-                NavHost(navController = navController, startDestination = AUTH_PAGE_ROUTE) {
+                NavHost(navController = navController, startDestination = ISLAND_SELECTION_PAGE) {
                     composable(route = SCHEDULE_PAGE_ROUTE) { navBackStackEntry ->
                         val factory =
                             HiltViewModelFactory(LocalContext.current, navBackStackEntry)
@@ -54,6 +57,16 @@ class MainActivity : AppCompatActivity() {
                             },
                             loginViewModel = loginViewModel,
                             signUpViewModel = signUpViewModel,
+                        )
+                    }
+                    composable(route = ISLAND_SELECTION_PAGE) { navBackStackEntry ->
+                        val factory =
+                            HiltViewModelFactory(LocalContext.current, navBackStackEntry)
+                        val islandSelectionViewModel: IslandSelectionViewModel =
+                            viewModel(IslandSelectionViewModel::class.java.canonicalName, factory)
+
+                        IslandSelectionPage(
+                            islandSelectionViewModel = islandSelectionViewModel
                         )
                     }
                     composable(route = SETTINGS_PAGE_ROUTE) { navBackStackEntry ->
