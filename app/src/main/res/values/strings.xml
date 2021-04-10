@@ -32,5 +32,6 @@
     <string name="confirm_password">Confirm password</string>
     <string name="username">username</string>
     <string name="select_island">Select an Island</string>
+    <string name="filter">Filter</string>
 
 </resources>

@@ -189,6 +189,7 @@ fun LoginInputFields(
     val validatorTransition = updateTransition(targetState = validatorAnimatedStates)
 
     val emailAlpha by validatorTransition.animateFloat(
+        label = "emailAlpha",
         transitionSpec = {
             tween(durationMillis = 1000)
         }
@@ -200,6 +201,7 @@ fun LoginInputFields(
     }
 
     val emailHeight = validatorTransition.animateDp(
+        label = "emailHeight",
         transitionSpec = {
             tween(durationMillis = 1000)
         }
@@ -211,6 +213,7 @@ fun LoginInputFields(
     }
 
     val passwordHeight = validatorTransition.animateDp(
+        label = "passwordHeight",
         transitionSpec = {
             tween(durationMillis = 1000)
         }
@@ -222,6 +225,7 @@ fun LoginInputFields(
     }
 
     val passwordAlpha by validatorTransition.animateFloat(
+        label = "passwordAlpha",
         transitionSpec = {
             tween(durationMillis = 1000)
         }

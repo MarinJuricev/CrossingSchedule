@@ -7,6 +7,7 @@ import com.example.crossingschedule.core.model.Either.Right
 import com.example.crossingschedule.feature.islands.domain.usecase.GetIslands
 import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent
 import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent.GetAllIslands
+import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent.IslandFilterStateChanged
 import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +26,7 @@ class IslandSelectionViewModel @Inject constructor(
     override fun onEvent(event: IslandSelectionEvent) {
         when (event) {
             GetAllIslands -> getIslandInformation()
+            IslandFilterStateChanged -> islandFilterStateChanged()
         }
     }
 
@@ -39,5 +41,14 @@ class IslandSelectionViewModel @Inject constructor(
                     errorMessage = result.error.errorMessage
                 )
         }
+    }
+
+    private fun islandFilterStateChanged() {
+        val viewState = _islandSelectionViewState.value
+
+        _islandSelectionViewState.value =
+            viewState.copy(
+                filterIslandExpanded = !viewState.filterIslandExpanded
+            )
     }
 }
