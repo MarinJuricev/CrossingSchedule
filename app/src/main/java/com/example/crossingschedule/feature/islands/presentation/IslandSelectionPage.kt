@@ -33,7 +33,7 @@ fun IslandSelectionPage(
     Scaffold {
         Column {
             Text(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                 text = stringResource(R.string.select_island),
                 style = MaterialTheme.typography.h2,
             )

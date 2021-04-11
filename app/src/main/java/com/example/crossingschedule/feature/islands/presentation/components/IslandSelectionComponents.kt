@@ -1,18 +1,18 @@
 package com.example.crossingschedule.feature.islands.presentation.components
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,9 +31,7 @@ fun IslandList(
     LazyColumn {
         items(
             count = islands.size,
-            key = { index ->
-                islands[index].id
-            }
+            key = { index -> islands[index].id }
         ) { index ->
             CrossingCard(
                 modifier = Modifier.padding(
@@ -75,9 +73,45 @@ fun IslandFilter(
     onIslandSelectionEvent: (IslandSelectionEvent) -> Unit,
     filterExpandedState: Boolean
 ) {
+    val filterTransition = updateTransition(
+        label = "filterTransition",
+        targetState = filterExpandedState,
+    )
+
+    val filterHeight by filterTransition.animateDp(
+        label = "filterHeight",
+        transitionSpec = {
+            spring(
+                dampingRatio = Spring.DampingRatioLowBouncy,
+                stiffness = Spring.StiffnessLow,
+            )
+        }
+    ) {
+        when (it) {
+            true -> 128.dp
+            false -> 48.dp
+        }
+    }
+
+    val filterOptionsVisibility by filterTransition.animateFloat(
+        label = "filterOptionsVisibility",
+        transitionSpec = {
+            spring(
+                dampingRatio = Spring.DampingRatioLowBouncy,
+                stiffness = Spring.StiffnessVeryLow,
+            )
+        }
+    ) {
+        when (it) {
+            true -> 1f
+            false -> 0f
+        }
+    }
+
     Column(
         modifier = Modifier
             .padding(16.dp)
+            .height(filterHeight)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -95,16 +129,33 @@ fun IslandFilter(
                 )
             }
         }
-        if (filterExpandedState) {
-            Row {
-                Icon(
-                    contentDescription = null,
-                    imageVector = Icons.Default.Add
-                )
-                Text(
-                    text = stringResource(R.string.filter),
-                    style = MaterialTheme.typography.h3,
-                )
+        Row(
+            modifier = Modifier
+                .alpha(filterOptionsVisibility)
+                .fillMaxWidth()
+                .padding(top = 24.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        )
+        {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = stringResource(R.string.hemisphere_filter)
+            )
+            Row(modifier = Modifier.weight(1f)) {
+                RadioButton(
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                    selected = true,
+                    onClick = {})
+                Text(text = "North")
+            }
+            Row(
+                modifier = Modifier.weight(1f)
+            ) {
+                RadioButton(
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                    selected = false,
+                    onClick = {})
+                Text(text = "South")
             }
         }
     }
