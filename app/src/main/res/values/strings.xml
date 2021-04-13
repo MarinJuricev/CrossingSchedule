@@ -34,5 +34,7 @@
     <string name="select_island">Select an Island</string>
     <string name="filter">Filter</string>
     <string name="hemisphere_filter">Hemisphere:</string>
+    <string name="north">North</string>
+    <string name="south">South</string>
 
 </resources>
