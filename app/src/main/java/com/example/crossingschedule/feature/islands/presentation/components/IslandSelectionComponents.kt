@@ -23,7 +23,7 @@ import com.example.crossingschedule.R
 import com.example.crossingschedule.core.ui.components.CrossingCard
 import com.example.crossingschedule.feature.islands.domain.model.IslandInfo
 import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent
-import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent.IslandFilterStateChanged
+import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent.IslandFilterGroupClicked
 
 @Composable
 fun IslandList(
@@ -191,7 +191,7 @@ fun IslandFilter(
                         backgroundColor = filterButtonBackgroundColor
                     ),
                     onClick = {
-                        onIslandSelectionEvent(IslandFilterStateChanged)
+                        onIslandSelectionEvent(IslandFilterGroupClicked)
                     }
                 ) {
                     Icon(
@@ -230,7 +230,8 @@ fun IslandFilter(
                 ) {
                     RadioButton(
                         selected = true,
-                        onClick = {})
+                        onClick = {},
+                    )
                     Spacer(modifier = Modifier.padding(horizontal = 2.dp))
                     Text(
                         text = stringResource(R.string.north),

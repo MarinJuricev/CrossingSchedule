@@ -4,10 +4,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.crossingschedule.core.BaseViewModel
 import com.example.crossingschedule.core.model.Either.Left
 import com.example.crossingschedule.core.model.Either.Right
+import com.example.crossingschedule.feature.islands.domain.model.Hemisphere
+import com.example.crossingschedule.feature.islands.domain.usecase.FilterIslandsByHemisphere
 import com.example.crossingschedule.feature.islands.domain.usecase.GetIslands
 import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent
 import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent.GetAllIslands
-import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent.IslandFilterStateChanged
+import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent.IslandFilterGroupClicked
 import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class IslandSelectionViewModel @Inject constructor(
-    private val getIslands: GetIslands
+    private val getIslands: GetIslands,
+    private val filterIslandsByHemisphere: FilterIslandsByHemisphere,
 ) : BaseViewModel<IslandSelectionEvent>() {
 
     private val _islandSelectionViewState = MutableStateFlow(IslandSelectionViewState())
@@ -26,7 +29,8 @@ class IslandSelectionViewModel @Inject constructor(
     override fun onEvent(event: IslandSelectionEvent) {
         when (event) {
             GetAllIslands -> getIslandInformation()
-            IslandFilterStateChanged -> islandFilterStateChanged()
+            IslandFilterGroupClicked -> islandFilterStateChanged()
+            is IslandSelectionEvent.IslandFilterNewHemisphereSort -> newHemisphereSort(event.newHemisphereSort)
         }
     }
 
@@ -51,4 +55,9 @@ class IslandSelectionViewModel @Inject constructor(
                 filterIslandExpanded = !viewState.filterIslandExpanded
             )
     }
+
+    private fun newHemisphereSort(newHemisphereSort: Hemisphere) {
+
+    }
+
 }
