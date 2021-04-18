@@ -12,6 +12,9 @@ import com.example.crossingschedule.feature.auth.presentation.AUTH_PAGE_ROUTE
 import com.example.crossingschedule.feature.auth.presentation.LoginPage
 import com.example.crossingschedule.feature.auth.presentation.viewmodel.LoginViewModel
 import com.example.crossingschedule.feature.auth.presentation.viewmodel.SignUpViewModel
+import com.example.crossingschedule.feature.islandCreation.presentation.ISLAND_CREATION_PAGE
+import com.example.crossingschedule.feature.islandCreation.presentation.IslandCreationPage
+import com.example.crossingschedule.feature.islandCreation.presentation.viewmodel.IslandCreationViewModel
 import com.example.crossingschedule.feature.islandSelection.presentation.ISLAND_SELECTION_PAGE
 import com.example.crossingschedule.feature.islandSelection.presentation.IslandSelectionPage
 import com.example.crossingschedule.feature.islandSelection.presentation.viewmodel.IslandSelectionViewModel
@@ -68,10 +71,19 @@ class MainActivity : AppCompatActivity() {
                         IslandSelectionPage(
                             islandSelectionViewModel = islandSelectionViewModel,
                             navigateToSchedule = { navController.navigate(SCHEDULE_PAGE_ROUTE) },
-                            navigateToIslandCreation = { TODO() }
+                            navigateToIslandCreation = { navController.navigate(ISLAND_CREATION_PAGE) }
                         )
                     }
+                    composable(route = ISLAND_CREATION_PAGE) { navBackStackEntry ->
+                        val factory =
+                            HiltViewModelFactory(LocalContext.current, navBackStackEntry)
+                        val islandCreationViewModel: IslandCreationViewModel =
+                            viewModel(IslandCreationViewModel::class.java.canonicalName, factory)
 
+                        IslandCreationPage(
+                            islandCreationViewModel = islandCreationViewModel,
+                        )
+                    }
                     composable(route = SETTINGS_PAGE_ROUTE) { navBackStackEntry ->
                         val factory =
                             HiltViewModelFactory(LocalContext.current, navBackStackEntry)

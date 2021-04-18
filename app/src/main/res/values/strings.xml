@@ -37,5 +37,6 @@
     <string name="north">North</string>
     <string name="south">South</string>
     <string name="none">None</string>
+    <string name="island_name">Island name</string>
 
 </resources>
