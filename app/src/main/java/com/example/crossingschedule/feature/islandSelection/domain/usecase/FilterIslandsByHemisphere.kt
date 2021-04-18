@@ -1,7 +1,7 @@
-package com.example.crossingschedule.feature.islands.domain.usecase
+package com.example.crossingschedule.feature.islandSelection.domain.usecase
 
-import com.example.crossingschedule.feature.islands.domain.model.Hemisphere
-import com.example.crossingschedule.feature.islands.domain.model.IslandInfo
+import com.example.crossingschedule.feature.islandSelection.domain.model.Hemisphere
+import com.example.crossingschedule.feature.islandSelection.domain.model.IslandInfo
 import javax.inject.Inject
 
 class FilterIslandsByHemisphere @Inject constructor() {

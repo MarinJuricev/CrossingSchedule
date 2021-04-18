@@ -1,4 +1,4 @@
-package com.example.crossingschedule.feature.islands.presentation
+package com.example.crossingschedule.feature.islandSelection.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -13,10 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
-import com.example.crossingschedule.feature.islands.presentation.components.IslandFilter
-import com.example.crossingschedule.feature.islands.presentation.components.IslandList
-import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent
-import com.example.crossingschedule.feature.islands.presentation.viewmodel.IslandSelectionViewModel
+import com.example.crossingschedule.feature.islandSelection.presentation.components.IslandFilter
+import com.example.crossingschedule.feature.islandSelection.presentation.components.IslandList
+import com.example.crossingschedule.feature.islandSelection.presentation.model.IslandSelectionEvent
+import com.example.crossingschedule.feature.islandSelection.presentation.viewmodel.IslandSelectionViewModel
 
 const val ISLAND_SELECTION_PAGE = "ISLAND_SELECTION_PAGE"
 

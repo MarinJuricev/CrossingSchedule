@@ -1,8 +1,8 @@
-package com.example.crossingschedule.feature.islands.domain.usecase
+package com.example.crossingschedule.feature.islandSelection.domain.usecase
 
 import com.example.crossingschedule.core.model.CrossingDay
-import com.example.crossingschedule.feature.islands.domain.model.Hemisphere
-import com.example.crossingschedule.feature.islands.domain.model.IslandInfo
+import com.example.crossingschedule.feature.islandSelection.domain.model.Hemisphere
+import com.example.crossingschedule.feature.islandSelection.domain.model.IslandInfo
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test

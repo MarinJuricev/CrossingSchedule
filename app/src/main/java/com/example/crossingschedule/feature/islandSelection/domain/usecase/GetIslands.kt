@@ -1,11 +1,11 @@
-package com.example.crossingschedule.feature.islands.domain.usecase
+package com.example.crossingschedule.feature.islandSelection.domain.usecase
 
 import com.example.crossingschedule.core.model.Either
 import com.example.crossingschedule.core.model.buildRight
 import com.example.crossingschedule.core.util.DateHandler
-import com.example.crossingschedule.feature.islands.domain.model.Hemisphere
-import com.example.crossingschedule.feature.islands.domain.model.IslandInfo
-import com.example.crossingschedule.feature.islands.domain.model.IslandsFailure
+import com.example.crossingschedule.feature.islandSelection.domain.model.Hemisphere
+import com.example.crossingschedule.feature.islandSelection.domain.model.IslandInfo
+import com.example.crossingschedule.feature.islandSelection.domain.model.IslandsFailure
 import java.util.*
 import javax.inject.Inject
 

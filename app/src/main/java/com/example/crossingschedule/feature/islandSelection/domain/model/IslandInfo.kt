@@ -1,4 +1,4 @@
-package com.example.crossingschedule.feature.islands.domain.model
+package com.example.crossingschedule.feature.islandSelection.domain.model
 
 import com.example.crossingschedule.core.model.CrossingDay
 

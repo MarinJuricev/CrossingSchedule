@@ -1,4 +1,4 @@
-package com.example.crossingschedule.feature.islands.presentation.components
+package com.example.crossingschedule.feature.islandSelection.presentation.components
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
@@ -22,13 +22,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.core.ui.components.CrossingCard
-import com.example.crossingschedule.feature.islands.domain.model.Hemisphere
-import com.example.crossingschedule.feature.islands.domain.model.Hemisphere.NORTH
-import com.example.crossingschedule.feature.islands.domain.model.Hemisphere.SOUTH
-import com.example.crossingschedule.feature.islands.domain.model.IslandInfo
-import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent
-import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent.IslandFilterGroupClicked
-import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent.IslandFilterNewHemisphereSort
+import com.example.crossingschedule.feature.islandSelection.domain.model.Hemisphere
+import com.example.crossingschedule.feature.islandSelection.domain.model.Hemisphere.NORTH
+import com.example.crossingschedule.feature.islandSelection.domain.model.Hemisphere.SOUTH
+import com.example.crossingschedule.feature.islandSelection.domain.model.IslandInfo
+import com.example.crossingschedule.feature.islandSelection.presentation.model.IslandSelectionEvent
+import com.example.crossingschedule.feature.islandSelection.presentation.model.IslandSelectionEvent.IslandFilterGroupClicked
+import com.example.crossingschedule.feature.islandSelection.presentation.model.IslandSelectionEvent.IslandFilterNewHemisphereSort
 
 @Composable
 fun IslandList(

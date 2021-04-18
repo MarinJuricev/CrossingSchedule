@@ -1,14 +1,14 @@
-package com.example.crossingschedule.feature.islands.presentation.viewmodel
+package com.example.crossingschedule.feature.islandSelection.presentation.viewmodel
 
 import app.cash.turbine.test
 import com.example.crossingschedule.core.model.buildLeft
 import com.example.crossingschedule.core.model.buildRight
 import com.example.crossingschedule.fakeIslandInfo
-import com.example.crossingschedule.feature.islands.domain.model.Hemisphere
-import com.example.crossingschedule.feature.islands.domain.model.IslandsFailure
-import com.example.crossingschedule.feature.islands.domain.usecase.FilterIslandsByHemisphere
-import com.example.crossingschedule.feature.islands.domain.usecase.GetIslands
-import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent
+import com.example.crossingschedule.feature.islandSelection.domain.model.Hemisphere
+import com.example.crossingschedule.feature.islandSelection.domain.model.IslandsFailure
+import com.example.crossingschedule.feature.islandSelection.domain.usecase.FilterIslandsByHemisphere
+import com.example.crossingschedule.feature.islandSelection.domain.usecase.GetIslands
+import com.example.crossingschedule.feature.islandSelection.presentation.model.IslandSelectionEvent
 import com.example.crossingschedule.testUtilities.MainCoroutineRule
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery

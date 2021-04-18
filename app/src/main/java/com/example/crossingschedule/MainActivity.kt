@@ -12,9 +12,9 @@ import com.example.crossingschedule.feature.auth.presentation.AUTH_PAGE_ROUTE
 import com.example.crossingschedule.feature.auth.presentation.LoginPage
 import com.example.crossingschedule.feature.auth.presentation.viewmodel.LoginViewModel
 import com.example.crossingschedule.feature.auth.presentation.viewmodel.SignUpViewModel
-import com.example.crossingschedule.feature.islands.presentation.ISLAND_SELECTION_PAGE
-import com.example.crossingschedule.feature.islands.presentation.IslandSelectionPage
-import com.example.crossingschedule.feature.islands.presentation.viewmodel.IslandSelectionViewModel
+import com.example.crossingschedule.feature.islandSelection.presentation.ISLAND_SELECTION_PAGE
+import com.example.crossingschedule.feature.islandSelection.presentation.IslandSelectionPage
+import com.example.crossingschedule.feature.islandSelection.presentation.viewmodel.IslandSelectionViewModel
 import com.example.crossingschedule.feature.schedule.presentation.SCHEDULE_PAGE_ROUTE
 import com.example.crossingschedule.feature.schedule.presentation.SchedulePage
 import com.example.crossingschedule.feature.schedule.presentation.ScheduleViewModel
