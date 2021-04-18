@@ -264,6 +264,22 @@ fun IslandFilter(
                         ),
                     )
                 }
+                Row(
+                    modifier = Modifier.weight(1f),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RadioButton(
+                        selected = currentHemisphereSelected == null,
+                        onClick = { onIslandSelectionEvent(IslandFilterNewHemisphereSort(null)) },
+                    )
+                    Spacer(modifier = Modifier.padding(horizontal = 2.dp))
+                    Text(
+                        text = stringResource(R.string.none),
+                        style = MaterialTheme.typography.body1.copy(
+                            color = MaterialTheme.colors.background
+                        ),
+                    )
+                }
             }
         }
     }

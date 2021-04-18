@@ -57,7 +57,7 @@ class IslandSelectionViewModel @Inject constructor(
             )
     }
 
-    private fun newHemisphereSort(newHemisphereSort: Hemisphere) {
+    private fun newHemisphereSort(newHemisphereSort: Hemisphere?) {
         val filteredIslands = filterIslandsByHemisphere(
             currentIslandInfo = _islandSelectionViewState.value.unfilteredIslandData,
             newHemisphere = newHemisphereSort

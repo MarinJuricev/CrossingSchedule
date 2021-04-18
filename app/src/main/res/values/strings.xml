@@ -36,5 +36,6 @@
     <string name="hemisphere_filter">Hemisphere:</string>
     <string name="north">North</string>
     <string name="south">South</string>
+    <string name="none">None</string>
 
 </resources>

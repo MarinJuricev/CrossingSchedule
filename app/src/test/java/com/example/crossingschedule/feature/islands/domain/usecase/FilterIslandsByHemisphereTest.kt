@@ -49,4 +49,22 @@ class FilterIslandsByHemisphereTest {
 
         assertThat(actualResult).isEqualTo(expectedResult)
     }
+
+    @Test
+    fun `invoke should return the provided islandInfo when null is provided as the newHemisphere`() {
+        val currentIslandInfo = listOf(
+            IslandInfo("", "NORTH", Hemisphere.NORTH, -1, CrossingDay(-1, -1, -1)),
+            IslandInfo("", "SOUTH", Hemisphere.SOUTH, -1, CrossingDay(-1, -1, -1))
+        )
+        val currentFilterState = null
+
+        val actualResult = sut(currentIslandInfo, currentFilterState)
+        val expectedResult =
+            listOf(
+                IslandInfo("", "NORTH", Hemisphere.NORTH, -1, CrossingDay(-1, -1, -1)),
+                IslandInfo("", "SOUTH", Hemisphere.SOUTH, -1, CrossingDay(-1, -1, -1))
+            )
+
+        assertThat(actualResult).isEqualTo(expectedResult)
+    }
 }

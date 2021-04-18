@@ -8,9 +8,13 @@ class FilterIslandsByHemisphere @Inject constructor() {
 
     operator fun invoke(
         currentIslandInfo: List<IslandInfo>,
-        newHemisphere: Hemisphere,
-    ): List<IslandInfo> =
-        currentIslandInfo.filter {
+        newHemisphere: Hemisphere?,
+    ): List<IslandInfo> {
+        if (newHemisphere == null)
+            return currentIslandInfo
+
+        return currentIslandInfo.filter {
             it.hemisphere != newHemisphere
         }
+    }
 }
