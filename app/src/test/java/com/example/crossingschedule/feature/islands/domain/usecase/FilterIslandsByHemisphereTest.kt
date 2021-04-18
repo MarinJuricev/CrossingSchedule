@@ -3,7 +3,7 @@ package com.example.crossingschedule.feature.islands.domain.usecase
 import com.example.crossingschedule.core.model.CrossingDay
 import com.example.crossingschedule.feature.islands.domain.model.Hemisphere
 import com.example.crossingschedule.feature.islands.domain.model.IslandInfo
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
 
@@ -17,7 +17,7 @@ class FilterIslandsByHemisphereTest {
     }
 
     @Test
-    fun `invoke should return`() {
+    fun `invoke should return only island in the South hemisphere when Hemisphere NORTH is provided`() {
         val currentIslandInfo = listOf(
             IslandInfo("", "NORTH", Hemisphere.NORTH, -1, CrossingDay(-1, -1, -1)),
             IslandInfo("", "SOUTH", Hemisphere.SOUTH, -1, CrossingDay(-1, -1, -1))
@@ -30,6 +30,23 @@ class FilterIslandsByHemisphereTest {
                 IslandInfo("", "SOUTH", Hemisphere.SOUTH, -1, CrossingDay(-1, -1, -1))
             )
 
-        Truth.assertThat(actualResult).isEqualTo(expectedResult)
+        assertThat(actualResult).isEqualTo(expectedResult)
+    }
+
+    @Test
+    fun `invoke should return only island in the North hemisphere when Hemisphere SOUTH is provided`() {
+        val currentIslandInfo = listOf(
+            IslandInfo("", "NORTH", Hemisphere.NORTH, -1, CrossingDay(-1, -1, -1)),
+            IslandInfo("", "SOUTH", Hemisphere.SOUTH, -1, CrossingDay(-1, -1, -1))
+        )
+        val currentFilterState = Hemisphere.SOUTH
+
+        val actualResult = sut(currentIslandInfo, currentFilterState)
+        val expectedResult =
+            listOf(
+                IslandInfo("", "NORTH", Hemisphere.NORTH, -1, CrossingDay(-1, -1, -1))
+            )
+
+        assertThat(actualResult).isEqualTo(expectedResult)
     }
 }

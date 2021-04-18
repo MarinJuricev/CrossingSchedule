@@ -38,7 +38,8 @@ class IslandSelectionViewModel @Inject constructor(
         when (val result = getIslands()) {
             is Right -> _islandSelectionViewState.value =
                 _islandSelectionViewState.value.copy(
-                    islandData = result.value
+                    islandData = result.value,
+                    unfilteredIslandData = result.value
                 )
             is Left -> _islandSelectionViewState.value =
                 _islandSelectionViewState.value.copy(
@@ -57,7 +58,15 @@ class IslandSelectionViewModel @Inject constructor(
     }
 
     private fun newHemisphereSort(newHemisphereSort: Hemisphere) {
+        val filteredIslands = filterIslandsByHemisphere(
+            currentIslandInfo = _islandSelectionViewState.value.unfilteredIslandData,
+            newHemisphere = newHemisphereSort
+        )
 
+        _islandSelectionViewState.value =
+            _islandSelectionViewState.value.copy(
+                islandData = filteredIslands,
+                hemisphereToFilter = newHemisphereSort,
+            )
     }
-
 }

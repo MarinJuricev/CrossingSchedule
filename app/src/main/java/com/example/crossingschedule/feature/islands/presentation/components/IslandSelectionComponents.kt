@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -21,14 +22,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.core.ui.components.CrossingCard
+import com.example.crossingschedule.feature.islands.domain.model.Hemisphere
+import com.example.crossingschedule.feature.islands.domain.model.Hemisphere.NORTH
+import com.example.crossingschedule.feature.islands.domain.model.Hemisphere.SOUTH
 import com.example.crossingschedule.feature.islands.domain.model.IslandInfo
 import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent
 import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent.IslandFilterGroupClicked
+import com.example.crossingschedule.feature.islands.presentation.model.IslandSelectionEvent.IslandFilterNewHemisphereSort
 
 @Composable
 fun IslandList(
-    modifier: Modifier = Modifier,
-    islands: List<IslandInfo>
+    islands: List<IslandInfo>,
+    navigateToSchedule: (islandId: String) -> Unit
 ) {
     LazyColumn {
         items(
@@ -36,10 +41,12 @@ fun IslandList(
             key = { index -> islands[index].id }
         ) { index ->
             CrossingCard(
-                modifier = Modifier.padding(
-                    horizontal = 16.dp,
-                    vertical = 8.dp
-                )
+                modifier = Modifier
+                    .padding(
+                        horizontal = 16.dp,
+                        vertical = 8.dp
+                    )
+                    .clickable { navigateToSchedule(islands[index].id) }
             ) {
                 Row(
                     modifier = Modifier
@@ -72,6 +79,7 @@ fun IslandList(
 
 @Composable
 fun IslandFilter(
+    currentHemisphereSelected: Hemisphere?,
     onIslandSelectionEvent: (IslandSelectionEvent) -> Unit,
     filterExpandedState: Boolean
 ) {
@@ -229,8 +237,8 @@ fun IslandFilter(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
-                        selected = true,
-                        onClick = {},
+                        selected = currentHemisphereSelected == NORTH,
+                        onClick = { onIslandSelectionEvent(IslandFilterNewHemisphereSort(NORTH)) },
                     )
                     Spacer(modifier = Modifier.padding(horizontal = 2.dp))
                     Text(
@@ -245,8 +253,9 @@ fun IslandFilter(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
-                        selected = false,
-                        onClick = {})
+                        selected = currentHemisphereSelected == SOUTH,
+                        onClick = { onIslandSelectionEvent(IslandFilterNewHemisphereSort(SOUTH)) },
+                    )
                     Spacer(modifier = Modifier.padding(horizontal = 2.dp))
                     Text(
                         text = stringResource(R.string.south),

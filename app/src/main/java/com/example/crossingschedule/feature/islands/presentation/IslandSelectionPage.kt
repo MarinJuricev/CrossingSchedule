@@ -2,9 +2,9 @@ package com.example.crossingschedule.feature.islands.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
@@ -22,7 +22,9 @@ const val ISLAND_SELECTION_PAGE = "ISLAND_SELECTION_PAGE"
 
 @Composable
 fun IslandSelectionPage(
-    islandSelectionViewModel: IslandSelectionViewModel
+    islandSelectionViewModel: IslandSelectionViewModel,
+    navigateToSchedule: (islandId: String) -> Unit,
+    navigateToIslandCreation: () -> Unit,
 ) {
     val islandSelectionViewState by islandSelectionViewModel.islandSelectionViewState.collectAsState()
 
@@ -30,7 +32,19 @@ fun IslandSelectionPage(
         islandSelectionViewModel.onEvent(IslandSelectionEvent.GetAllIslands)
     }
 
-    Scaffold {
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { navigateToIslandCreation() },
+                contentColor = MaterialTheme.colors.background,
+            ) {
+                Icon(
+                    Icons.Default.Add,
+                    null,
+                )
+            }
+        }
+    ) {
         Column {
             Text(
                 modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
@@ -38,10 +52,14 @@ fun IslandSelectionPage(
                 style = MaterialTheme.typography.h2,
             )
             IslandFilter(
+                currentHemisphereSelected = islandSelectionViewState.hemisphereToFilter,
                 onIslandSelectionEvent = islandSelectionViewModel::onEvent,
                 filterExpandedState = islandSelectionViewState.filterIslandExpanded,
             )
-            IslandList(islands = islandSelectionViewState.islandData)
+            IslandList(
+                islands = islandSelectionViewState.islandData,
+                navigateToSchedule = navigateToSchedule
+            )
         }
     }
 }

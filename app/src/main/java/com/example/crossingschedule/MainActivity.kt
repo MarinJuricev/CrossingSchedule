@@ -66,9 +66,12 @@ class MainActivity : AppCompatActivity() {
                             viewModel(IslandSelectionViewModel::class.java.canonicalName, factory)
 
                         IslandSelectionPage(
-                            islandSelectionViewModel = islandSelectionViewModel
+                            islandSelectionViewModel = islandSelectionViewModel,
+                            navigateToSchedule = { navController.navigate(SCHEDULE_PAGE_ROUTE) },
+                            navigateToIslandCreation = { TODO() }
                         )
                     }
+
                     composable(route = SETTINGS_PAGE_ROUTE) { navBackStackEntry ->
                         val factory =
                             HiltViewModelFactory(LocalContext.current, navBackStackEntry)
