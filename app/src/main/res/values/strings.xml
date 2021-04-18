@@ -31,6 +31,8 @@
     <string name="create_account">Create Account</string>
     <string name="confirm_password">Confirm password</string>
     <string name="username">username</string>
+
+    <!--Island Creation/Selection-->
     <string name="select_island">Select an Island</string>
     <string name="filter">Filter</string>
     <string name="hemisphere_filter">Hemisphere:</string>
@@ -38,5 +40,10 @@
     <string name="south">South</string>
     <string name="none">None</string>
     <string name="island_name">Island name</string>
+    <string name="hemisphere">Hemisphere</string>
+    <string name="hemisphere_selection">Hemisphere:</string>
+    <string name="create_an_island">Create an Island</string>
+    <string name="number_of_villagers">Number of villagers</string>
+    <string name="create">Create</string>
 
 </resources>
