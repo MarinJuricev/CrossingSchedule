@@ -19,6 +19,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -45,6 +46,7 @@ object AuthModule {
     ): AuthProvider = authApiImpl
 
     @Provides
+    @Singleton
     fun provideLoginApiService(
         retrofit: Retrofit
     ): AuthApiService = retrofit.create(AuthApiService::class.java)
