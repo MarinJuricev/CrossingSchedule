@@ -46,7 +46,6 @@ object AuthModule {
     ): AuthProvider = authApiImpl
 
     @Provides
-    @Singleton
     fun provideLoginApiService(
         retrofit: Retrofit
     ): AuthApiService = retrofit.create(AuthApiService::class.java)

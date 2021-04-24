@@ -20,7 +20,6 @@ object IslandCreationModule {
     ): IslandCreationRepository = islandCreationRepositoryImpl
 
     @Provides
-    @Singleton
     fun provideIslandCreationApiService(
         retrofit: Retrofit
     ): IslandCreationApiService = retrofit.create(IslandCreationApiService::class.java)
