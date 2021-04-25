@@ -40,7 +40,7 @@ android {
         def kotlin_compiler_version = "1.4.31"
         kotlinCompilerVersion kotlin_compiler_version
 
-        def kotlin_compiler_extension_version = "1.0.0-beta04"
+        def kotlin_compiler_extension_version = "1.0.0-beta05"
         kotlinCompilerExtensionVersion kotlin_compiler_extension_version
     }
 }
@@ -66,7 +66,7 @@ dependencies {
     def androidx_ui = "1.0.0-alpha07"
     implementation "androidx.ui:ui-tooling:$androidx_ui"
 
-    def compose = "1.0.0-beta04"
+    def compose = "1.0.0-beta05"
     implementation "androidx.compose.ui:ui:$compose"
     implementation "androidx.compose.foundation:foundation:$compose"
     implementation "androidx.compose.foundation:foundation-layout:$compose"
