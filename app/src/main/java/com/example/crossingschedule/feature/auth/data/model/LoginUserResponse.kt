@@ -13,5 +13,6 @@ data class LoginUserResponse(
 
 @JsonClass(generateAdapter = true)
 data class AuthResponse(
-    val message: String
+    val id: String,
+    val username: String,
 )
