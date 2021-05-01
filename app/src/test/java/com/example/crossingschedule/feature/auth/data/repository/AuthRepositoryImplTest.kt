@@ -1,12 +1,12 @@
 package com.example.crossingschedule.feature.auth.data.repository
 
 import com.example.crossingschedule.core.model.*
-import com.example.crossingschedule.feature.auth.domain.model.AuthFailure.RemoteAuthFailure
 import com.example.crossingschedule.core.util.EncryptedPrefsService
 import com.example.crossingschedule.core.util.Mapper
+import com.example.crossingschedule.feature.auth.data.model.AuthResponse
 import com.example.crossingschedule.feature.auth.data.model.CreateAccountBody
-import com.example.crossingschedule.feature.auth.data.model.LoginUserResponse
 import com.example.crossingschedule.feature.auth.domain.model.AuthFailure
+import com.example.crossingschedule.feature.auth.domain.model.AuthFailure.RemoteAuthFailure
 import com.example.crossingschedule.feature.auth.domain.repository.AuthRepository
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,7 +19,7 @@ private const val EMAIL = "EMAIL"
 private const val PASSWORD = "PASSWORD"
 private const val ID_TOKEN = "ID_TOKEN"
 
-private val AUTH_USER_RESPONSE = LoginUserResponse(CrossingStatus.Success, null, null)
+private val AUTH_USER_RESPONSE = CrossingResponse<AuthResponse>(CrossingStatus.Success, null, null)
 
 @ExperimentalCoroutinesApi
 class AuthRepositoryImplTest {
@@ -27,7 +27,7 @@ class AuthRepositoryImplTest {
     private val authProvider: AuthProvider = mockk()
     private val authApiService: AuthApiService = mockk()
     private val encryptedPrefsService: EncryptedPrefsService = mockk()
-    private val loginResponseToEitherMapper: Mapper<Either<AuthFailure, Unit>, LoginUserResponse> =
+    private val loginResponseToEitherMapper: Mapper<Either<AuthFailure, Unit>, CrossingResponse<AuthResponse>> =
         mockk()
 
     lateinit var sut: AuthRepository

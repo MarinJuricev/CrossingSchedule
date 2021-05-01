@@ -33,7 +33,7 @@ internal const val SIGN_UP_TAB_POSITION = 1
 
 @Composable
 fun LoginPage(
-    navigateToSchedule: () -> Unit,
+    navigateToIslandSelection: () -> Unit,
     loginViewModel: LoginViewModel,
     signUpViewModel: SignUpViewModel,
 ) {
@@ -45,7 +45,7 @@ fun LoginPage(
 
     //TODO Make a better API for this...
     if (loginViewState.navigateToSchedule || signUpViewState.navigateToSchedule) {
-        navigateToSchedule()
+        navigateToIslandSelection()
     }
 
     Scaffold(

@@ -1,9 +1,10 @@
 package com.example.crossingschedule.feature.auth.di
 
+import com.example.crossingschedule.core.model.CrossingResponse
 import com.example.crossingschedule.core.model.Either
 import com.example.crossingschedule.core.util.Mapper
-import com.example.crossingschedule.feature.auth.data.mapper.AuthenticateUserResponseToEitherMapper
-import com.example.crossingschedule.feature.auth.data.model.LoginUserResponse
+import com.example.crossingschedule.feature.auth.data.mapper.AuthResponseToEitherMapper
+import com.example.crossingschedule.feature.auth.data.model.AuthResponse
 import com.example.crossingschedule.feature.auth.data.repository.AuthApiService
 import com.example.crossingschedule.feature.auth.data.repository.AuthProvider
 import com.example.crossingschedule.feature.auth.data.repository.AuthProviderImpl
@@ -19,7 +20,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import retrofit2.Retrofit
-import javax.inject.Singleton
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -52,7 +52,8 @@ object AuthModule {
 
     @Provides
     fun provideTokenResponseToEitherMapper(
-        authenticateUserResponseToEitherMapper: AuthenticateUserResponseToEitherMapper
-    ): Mapper<Either<AuthFailure, Unit>, LoginUserResponse> = authenticateUserResponseToEitherMapper
+        authResponseToEitherMapper: AuthResponseToEitherMapper
+    ): Mapper<Either<AuthFailure, Unit>, CrossingResponse<AuthResponse>> =
+        authResponseToEitherMapper
 
 }

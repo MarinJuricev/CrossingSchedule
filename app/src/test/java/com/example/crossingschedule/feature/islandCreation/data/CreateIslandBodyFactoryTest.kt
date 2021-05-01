@@ -6,7 +6,6 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
 
-
 private const val ISLAND_NAME = "island"
 private const val NUMBER_OF_VILLAGERS = 4
 private val HEMISPHERE = Hemisphere.NORTH

@@ -53,8 +53,8 @@ class MainActivity : AppCompatActivity() {
                             viewModel(SignUpViewModel::class.java.canonicalName, factory)
 
                         LoginPage(
-                            navigateToSchedule = {
-                                navController.navigate(SCHEDULE_PAGE_ROUTE) {
+                            navigateToIslandSelection = {
+                                navController.navigate(ISLAND_SELECTION_PAGE) {
                                     popUpTo(route = AUTH_PAGE_ROUTE) { inclusive = true }
                                 }
                             },
