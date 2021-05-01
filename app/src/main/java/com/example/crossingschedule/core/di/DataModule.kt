@@ -6,7 +6,6 @@ import com.example.crossingschedule.core.model.CrossingStatus
 import com.example.crossingschedule.core.util.BaseUrlProvider
 import com.example.crossingschedule.core.util.EncryptedPrefsService
 import com.example.crossingschedule.core.util.EncryptedPrefsServiceImpl
-import com.example.crossingschedule.feature.auth.data.repository.AUTH_TOKEN_KEY
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.moshi.Moshi
@@ -23,6 +22,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+
+const val AUTH_TOKEN_KEY = "AUTH_TOKEN_KEY"
 
 @Module
 @InstallIn(SingletonComponent::class)

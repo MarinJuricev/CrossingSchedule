@@ -1,4 +1,4 @@
-package com.example.crossingschedule.feature.auth.data.repository
+package com.example.crossingschedule.feature.auth.data.service
 
 import com.example.crossingschedule.core.model.Either
 import com.example.crossingschedule.feature.auth.domain.model.AuthFailure
@@ -9,7 +9,6 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
-const val AUTH_TOKEN_KEY = "AUTH_TOKEN_KEY"
 
 class AuthProviderImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth

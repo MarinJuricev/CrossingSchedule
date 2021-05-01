@@ -1,4 +1,4 @@
-package com.example.crossingschedule.feature.auth.data.repository
+package com.example.crossingschedule.feature.auth.data.service
 
 import com.example.crossingschedule.core.model.CrossingResponse
 import com.example.crossingschedule.feature.auth.data.model.AuthResponse
