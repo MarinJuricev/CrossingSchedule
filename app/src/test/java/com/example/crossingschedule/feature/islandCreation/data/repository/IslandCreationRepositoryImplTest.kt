@@ -1,9 +1,11 @@
 package com.example.crossingschedule.feature.islandCreation.data.repository
 
+import com.example.crossingschedule.R
 import com.example.crossingschedule.core.model.CrossingResponse
 import com.example.crossingschedule.core.model.CrossingStatus
 import com.example.crossingschedule.core.model.buildLeft
 import com.example.crossingschedule.core.model.buildRight
+import com.example.crossingschedule.core.util.StringProvider
 import com.example.crossingschedule.feature.islandCreation.data.CreateIslandBodyFactory
 import com.example.crossingschedule.feature.islandCreation.data.model.CreateIslandBody
 import com.example.crossingschedule.feature.islandCreation.data.service.IslandCreationApiService
@@ -12,6 +14,7 @@ import com.example.crossingschedule.feature.islandCreation.domain.repository.Isl
 import com.example.crossingschedule.feature.islandSelection.domain.model.Hemisphere
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -28,6 +31,7 @@ class IslandCreationRepositoryImplTest {
 
     private val islandCreationApiService: IslandCreationApiService = mockk()
     private val createIslandBodyFactory: CreateIslandBodyFactory = mockk()
+    private val stringProvider: StringProvider = mockk()
 
     lateinit var sut: IslandCreationRepository
 
@@ -35,8 +39,13 @@ class IslandCreationRepositoryImplTest {
     fun setUp() {
         sut = IslandCreationRepositoryImpl(
             islandCreationApiService,
-            createIslandBodyFactory
+            createIslandBodyFactory,
+            stringProvider,
         )
+
+        every {
+            stringProvider.getString(R.string.generic_error_message)
+        } answers { ERROR_MESSAGE }
     }
 
     @Test

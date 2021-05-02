@@ -91,7 +91,7 @@ fun LoginPage(
                     signUpViewModel::onEvent
                 )
                 else -> CrossingErrorCard(
-                    errorMessage = stringResource(id = R.string.unknown_error)
+                    errorMessage = stringResource(id = R.string.crossing_unknown_error)
                 )
             }
         }

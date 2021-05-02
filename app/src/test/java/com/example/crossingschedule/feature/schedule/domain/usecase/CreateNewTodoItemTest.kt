@@ -2,8 +2,8 @@ package com.example.crossingschedule.feature.schedule.domain.usecase
 
 import com.example.crossingschedule.R
 import com.example.crossingschedule.core.model.Either
+import com.example.crossingschedule.core.util.StringProvider
 import com.example.crossingschedule.feature.auth.domain.model.AuthFailure
-import com.example.crossingschedule.core.util.IStringProvider
 import com.example.crossingschedule.feature.schedule.domain.model.CrossingTodo
 import com.example.crossingschedule.feature.schedule.domain.repository.ActivitiesRepository
 import io.mockk.coEvery
@@ -22,7 +22,7 @@ private const val NEW_TODO_2 = "NEW_TODO_2"
 class CreateNewTodoItemTest {
 
     private val activitiesRepository: ActivitiesRepository = mockk()
-    private val stringProvider: IStringProvider = mockk()
+    private val stringProvider: StringProvider = mockk()
 
     lateinit var sut: CreateNewTodoItem
 

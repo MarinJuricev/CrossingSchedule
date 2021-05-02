@@ -15,7 +15,8 @@
     <string name="add_new_villager">Add new Villager</string>
     <string name="villager_name">Villager Name</string>
 
-    <string name="unknown_error">¯\\_(ツ)_/¯ \n\n Unknown Error Occurred</string>
+    <string name="crossing_unknown_error">¯\\_(ツ)_/¯ \n\n Unknown Error Occurred</string>
+    <string name="generic_error_message">Unknown Error Occurred, please try again/later</string>
 
     <!--Auth-->
     <string name="sign_up">Sign Up</string>

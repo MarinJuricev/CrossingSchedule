@@ -26,9 +26,9 @@ import retrofit2.Retrofit
 object AuthModule {
 
     @Provides
-    fun provideLoginRepository(
-        loginRepositoryImpl: AuthRepositoryImpl
-    ): AuthRepository = loginRepositoryImpl
+    fun provideAuthRepository(
+        authRepositoryImpl: AuthRepositoryImpl
+    ): AuthRepository = authRepositoryImpl
 
     @Provides
     fun provideLoginErrorMapper(

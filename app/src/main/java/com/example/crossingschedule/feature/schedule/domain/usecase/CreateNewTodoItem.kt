@@ -2,15 +2,15 @@ package com.example.crossingschedule.feature.schedule.domain.usecase
 
 import com.example.crossingschedule.R
 import com.example.crossingschedule.core.model.Either
+import com.example.crossingschedule.core.util.StringProvider
 import com.example.crossingschedule.feature.auth.domain.model.AuthFailure
 import com.example.crossingschedule.feature.schedule.domain.model.CrossingTodo
 import com.example.crossingschedule.feature.schedule.domain.repository.ActivitiesRepository
-import com.example.crossingschedule.core.util.IStringProvider
 import javax.inject.Inject
 
 class CreateNewTodoItem @Inject constructor(
     private val repository: ActivitiesRepository,
-    private val stringProvider: IStringProvider
+    private val stringProvider: StringProvider
 ) {
 
     suspend operator fun invoke(

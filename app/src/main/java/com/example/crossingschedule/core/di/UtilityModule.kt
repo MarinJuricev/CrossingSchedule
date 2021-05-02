@@ -3,7 +3,7 @@ package com.example.crossingschedule.core.di
 import android.content.Context
 import com.example.crossingschedule.core.util.DateHandlerImpl
 import com.example.crossingschedule.core.util.DateHandler
-import com.example.crossingschedule.core.util.IStringProvider
+import com.example.crossingschedule.core.util.StringProvider
 import com.example.crossingschedule.core.util.StringProviderImpl
 import dagger.Module
 import dagger.Provides
@@ -18,7 +18,7 @@ object UtilityModule {
 
     @Singleton
     @Provides
-    fun provideStringProvider(@ApplicationContext context: Context): IStringProvider =
+    fun provideStringProvider(@ApplicationContext context: Context): StringProvider =
         StringProviderImpl(context = context)
 
     @Singleton
