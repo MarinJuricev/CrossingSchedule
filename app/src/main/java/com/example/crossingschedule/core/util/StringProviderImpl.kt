@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 import javax.inject.Inject
 
 class StringProviderImpl @Inject constructor(
-    private var context: Context
+    private val context: Context
 ) : StringProvider {
 
     override fun getString(@StringRes stringResId: Int): String {
