@@ -13,6 +13,7 @@ import com.example.crossingschedule.feature.islandSelection.data.model.IslandRes
 import com.example.crossingschedule.feature.islandSelection.data.service.IslandSelectionApiService
 import com.example.crossingschedule.feature.islandSelection.domain.model.IslandInfo
 import com.example.crossingschedule.feature.islandSelection.domain.model.IslandSelectionFailure
+import com.example.crossingschedule.feature.islandSelection.domain.model.IslandSelectionFailure.*
 import com.example.crossingschedule.feature.islandSelection.domain.repository.IslandSelectionRepository
 import javax.inject.Inject
 
@@ -30,6 +31,6 @@ class IslandSelectionRepositoryImpl @Inject constructor(
             islandSelectionApiService.getIslands()
         }) {
             is Right -> islandResponseToEitherMapper.map(result.value)
-            is Left -> IslandSelectionFailure.RemoteFailure(result.error).buildLeft()
+            is Left -> RemoteFailure(result.error).buildLeft()
         }
 }

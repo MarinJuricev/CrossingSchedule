@@ -1,7 +1,11 @@
 package com.example.crossingschedule.feature.islandSelection.data.mapper
 
 import com.example.crossingschedule.R
-import com.example.crossingschedule.core.model.*
+import com.example.crossingschedule.core.model.CrossingResponse
+import com.example.crossingschedule.core.model.CrossingStatus
+import com.example.crossingschedule.core.model.Either
+import com.example.crossingschedule.core.model.buildLeft
+import com.example.crossingschedule.core.model.buildRight
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.core.util.StringProvider
 import com.example.crossingschedule.feature.islandSelection.data.model.IslandResponse
