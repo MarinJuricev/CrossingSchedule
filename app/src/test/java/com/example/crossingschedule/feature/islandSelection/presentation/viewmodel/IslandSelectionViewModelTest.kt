@@ -5,7 +5,8 @@ import com.example.crossingschedule.core.model.buildLeft
 import com.example.crossingschedule.core.model.buildRight
 import com.example.crossingschedule.fakeIslandInfo
 import com.example.crossingschedule.feature.islandSelection.domain.model.Hemisphere
-import com.example.crossingschedule.feature.islandSelection.domain.model.IslandsFailure
+import com.example.crossingschedule.feature.islandSelection.domain.model.IslandSelectionFailure
+import com.example.crossingschedule.feature.islandSelection.domain.model.IslandSelectionFailure.*
 import com.example.crossingschedule.feature.islandSelection.domain.usecase.FilterIslandsByHemisphere
 import com.example.crossingschedule.feature.islandSelection.domain.usecase.GetIslands
 import com.example.crossingschedule.feature.islandSelection.presentation.model.IslandSelectionEvent
@@ -65,7 +66,7 @@ class IslandSelectionViewModelTest {
             val errorMessage = "errorMessage"
 
             coEvery { getIslands() } coAnswers {
-                IslandsFailure.RemoteFailure(errorMessage).buildLeft()
+                RemoteFailure(errorMessage).buildLeft()
             }
 
             sut.onEvent(IslandSelectionEvent.GetAllIslands)
