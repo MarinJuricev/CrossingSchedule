@@ -46,5 +46,6 @@
     <string name="create_an_island">Create an Island</string>
     <string name="number_of_villagers">Number of villagers</string>
     <string name="create">Create</string>
+    <string name="empty_islands_message">No islands found.\n\nPlease create one by clicking the button in the bottom right.</string>
 
 </resources>

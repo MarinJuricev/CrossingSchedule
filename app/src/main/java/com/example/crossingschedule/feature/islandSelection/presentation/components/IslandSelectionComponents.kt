@@ -1,13 +1,32 @@
 package com.example.crossingschedule.feature.islandSelection.presentation.components
 
 import androidx.compose.animation.animateColor
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.RadioButton
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
@@ -22,6 +41,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
 import com.example.crossingschedule.core.ui.components.CrossingCard
+import com.example.crossingschedule.core.ui.components.CrossingErrorCard
 import com.example.crossingschedule.feature.islandSelection.domain.model.Hemisphere
 import com.example.crossingschedule.feature.islandSelection.domain.model.Hemisphere.NORTH
 import com.example.crossingschedule.feature.islandSelection.domain.model.Hemisphere.SOUTH
@@ -35,42 +55,53 @@ fun IslandList(
     islands: List<IslandInfo>,
     navigateToSchedule: (islandId: String) -> Unit
 ) {
-    LazyColumn {
-        items(
-            count = islands.size,
-            key = { index -> islands[index].id }
-        ) { index ->
-            CrossingCard(
+    if (islands.isEmpty()) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            CrossingErrorCard(
                 modifier = Modifier
-                    .padding(
-                        horizontal = 16.dp,
-                        vertical = 8.dp
-                    )
-                    .clickable { navigateToSchedule(islands[index].id) }
-            ) {
-                Row(
+                    .align(Alignment.Center)
+                    .padding(horizontal = 16.dp),
+                errorMessage = stringResource(id = R.string.empty_islands_message)
+            )
+        }
+    } else {
+        LazyColumn {
+            items(
+                count = islands.size,
+                key = { index -> islands[index].id }
+            ) { index ->
+                CrossingCard(
                     modifier = Modifier
-                        .padding(vertical = 8.dp)
-                        .fillMaxWidth()
+                        .padding(
+                            horizontal = 16.dp,
+                            vertical = 8.dp
+                        )
+                        .clickable { navigateToSchedule(islands[index].id) }
                 ) {
-                    Image(
+                    Row(
                         modifier = Modifier
-                            .padding(horizontal = 8.dp)
-                            .clip(MaterialTheme.shapes.medium)
-                            .size(36.dp)
-                            .align(Alignment.CenterVertically)
-                            .background(MaterialTheme.colors.primary),
-                        painter = painterResource(id = R.drawable.person),
-                        contentDescription = null,
-                    )
-                    Column {
-                        Text(text = islands[index].name)
-                        Text(text = islands[index].hemisphere.name)
+                            .padding(vertical = 8.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp)
+                                .clip(MaterialTheme.shapes.medium)
+                                .size(36.dp)
+                                .align(Alignment.CenterVertically)
+                                .background(MaterialTheme.colors.primary),
+                            painter = painterResource(id = R.drawable.person),
+                            contentDescription = null,
+                        )
+                        Column {
+                            Text(text = islands[index].name)
+                            Text(text = islands[index].hemisphere.name)
+                        }
+                        Image(
+                            painter = painterResource(id = R.drawable.arrow_forward),
+                            contentDescription = null
+                        )
                     }
-                    Image(
-                        painter = painterResource(id = R.drawable.arrow_forward),
-                        contentDescription = null
-                    )
                 }
             }
         }
