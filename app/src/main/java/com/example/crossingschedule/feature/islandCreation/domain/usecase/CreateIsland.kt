@@ -29,7 +29,7 @@ class CreateIsland @Inject constructor(
         return islandCreationRepository.createIsland(
             islandName,
             hemisphere,
-            numberOfVillagers.toInt()
+            numberOfVillagers.toInt()//It's "safe" to call toInt since the validator does a is numericCheck
         )
     }
 }

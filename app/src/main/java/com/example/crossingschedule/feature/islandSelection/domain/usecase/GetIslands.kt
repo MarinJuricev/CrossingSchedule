@@ -9,7 +9,6 @@ import javax.inject.Inject
 class GetIslands @Inject constructor(
     private val islandSelectionRepository: IslandSelectionRepository
 ) {
-
     suspend operator fun invoke(): Either<IslandSelectionFailure, List<IslandInfo>> =
         islandSelectionRepository.getIslands()
 }
