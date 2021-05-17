@@ -14,7 +14,7 @@ class CreateIsland @Inject constructor(
 
     suspend operator fun invoke(
         islandName: String,
-        hemisphere: Hemisphere,
+        hemisphere: Hemisphere?,
         numberOfVillagers: String,
     ): Either<IslandCreationFailure, Unit> {
         val validationResult = islandCreationValidator.validate(
@@ -28,7 +28,7 @@ class CreateIsland @Inject constructor(
 
         return islandCreationRepository.createIsland(
             islandName,
-            hemisphere,
+            hemisphere!!, // The validator does the null check
             numberOfVillagers.toInt()//It's "safe" to call toInt since the validator does a is numericCheck
         )
     }

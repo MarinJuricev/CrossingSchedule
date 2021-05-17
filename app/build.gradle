@@ -119,13 +119,13 @@ dependencies {
     def security = "1.1.0-alpha03"
     implementation "androidx.security:security-crypto:$security"
 
-    def moshi = "1.11.0"
+    def moshi = "1.12.0"
     implementation("com.squareup.moshi:moshi:$moshi")
     implementation("com.squareup.moshi:moshi-adapters:$moshi")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshi")
 
     debugImplementation "androidx.compose.ui:ui-tooling:$compose"
-    debugImplementation "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
+    debugImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
     testImplementation "junit:junit:4.13.2"
     testImplementation("io.mockk:mockk:1.11.0")

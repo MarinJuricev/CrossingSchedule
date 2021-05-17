@@ -13,6 +13,7 @@ import com.example.crossingschedule.feature.auth.presentation.model.LoginEvent.*
 import com.example.crossingschedule.feature.auth.presentation.model.LoginViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ class LoginViewModel @Inject constructor(
 ) : BaseViewModel<LoginEvent>() {
 
     private val _loginViewState = MutableStateFlow(LoginViewState())
-    val loginViewState = _loginViewState
+    val loginViewState: StateFlow<LoginViewState> = _loginViewState
 
     override fun onEvent(event: LoginEvent) {
         when(event){
@@ -34,14 +35,14 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onEmailChange(newEmail: String) {
-        loginViewState.value =
+        _loginViewState.value =
             loginViewState.value.copy(
                 email = newEmail
             )
     }
 
     private fun onPasswordChange(newPassword: String) {
-        loginViewState.value =
+        _loginViewState.value =
             loginViewState.value.copy(
                 password = newPassword
             )
@@ -49,17 +50,17 @@ class LoginViewModel @Inject constructor(
 
     private fun onLoginClick() {
         triggerIsLoading()
-        val viewState = loginViewState.value
+        val viewState = _loginViewState.value
 
         viewModelScope.launch {
             when (val result = performLogin(viewState.email, viewState.password)) {
-                is Right -> loginViewState.value =
+                is Right -> _loginViewState.value =
                     loginViewState.value.copy(
                         navigateToSchedule = true,
                         loginError = null,
                         isLoading = false
                     )
-                is Left -> loginViewState.value =
+                is Left -> _loginViewState.value =
                     loginViewState.value.copy(
                         loginError = authFailureToLoginErrorMapper.map(result.error),
                         isLoading = false
@@ -69,7 +70,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun triggerIsLoading() {
-        loginViewState.value =
+        _loginViewState.value =
             loginViewState.value.copy(
                 isLoading = true
             )

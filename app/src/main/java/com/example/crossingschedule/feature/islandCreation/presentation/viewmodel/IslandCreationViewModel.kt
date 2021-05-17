@@ -1,7 +1,13 @@
 package com.example.crossingschedule.feature.islandCreation.presentation.viewmodel
 
+import androidx.lifecycle.viewModelScope
 import com.example.crossingschedule.core.BaseViewModel
+import com.example.crossingschedule.core.model.Either.Left
+import com.example.crossingschedule.core.model.Either.Right
+import com.example.crossingschedule.core.util.Mapper
+import com.example.crossingschedule.feature.islandCreation.domain.model.IslandCreationFailure
 import com.example.crossingschedule.feature.islandCreation.domain.usecase.CreateIsland
+import com.example.crossingschedule.feature.islandCreation.presentation.model.IslandCreationError
 import com.example.crossingschedule.feature.islandCreation.presentation.model.IslandCreationEvent
 import com.example.crossingschedule.feature.islandCreation.presentation.model.IslandCreationEvent.*
 import com.example.crossingschedule.feature.islandCreation.presentation.model.IslandCreationViewState
@@ -9,11 +15,13 @@ import com.example.crossingschedule.feature.islandSelection.domain.model.Hemisph
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class IslandCreationViewModel @Inject constructor(
-    private val createIsland: CreateIsland
+    private val createIsland: CreateIsland,
+    private val islandCreationFailureToErrorMapper: Mapper<IslandCreationError, IslandCreationFailure>,
 ) : BaseViewModel<IslandCreationEvent>() {
 
     private val _islandCreationViewState = MutableStateFlow(IslandCreationViewState())
@@ -47,6 +55,33 @@ class IslandCreationViewModel @Inject constructor(
     }
 
     private fun onCreateClicked() {
+        triggerIsLoading()
+        val viewState = islandCreationViewState.value
 
+        viewModelScope.launch {
+            when (val result = createIsland(
+                islandName = viewState.name,
+                hemisphere = viewState.hemisphere,
+                numberOfVillagers = viewState.numberOfVillagers,
+            )) {
+                is Left -> _islandCreationViewState.value =
+                    _islandCreationViewState.value.copy(
+                        islandCreationError = islandCreationFailureToErrorMapper.map(result.error),
+                        isLoading = false,
+                    )
+                is Right -> _islandCreationViewState.value =
+                    _islandCreationViewState.value.copy(
+
+                        isLoading = false,
+                    )
+            }
+        }
+    }
+
+    private fun triggerIsLoading() {
+        _islandCreationViewState.value =
+            _islandCreationViewState.value.copy(
+                isLoading = true
+            )
     }
 }
