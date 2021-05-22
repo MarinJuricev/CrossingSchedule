@@ -15,4 +15,5 @@ sealed class IslandCreationError(val error: String) {
     data class HemisphereError(val hemisphereError: String) : IslandCreationError(hemisphereError)
     data class NumberOfVillagersError(val numberOfVillagersError: String) :
         IslandCreationError(numberOfVillagersError)
+    data class GeneralError(val errorMessage: String) : IslandCreationError(errorMessage)
 }
