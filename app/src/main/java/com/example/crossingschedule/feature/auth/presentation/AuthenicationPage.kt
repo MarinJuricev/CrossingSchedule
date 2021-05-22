@@ -99,7 +99,7 @@ fun LoginPage(
             val errorMessage = loginViewState.loginError!!.error
 
             LaunchedEffect(
-                key1 = Any(),
+                key1 = loginViewState.loginError,
                 block = {
                     snackBarHostState.showSnackbar(
                         message = errorMessage,

@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.crossingschedule.core.ui.CrossingScheduleTheme
 import com.example.crossingschedule.feature.auth.presentation.AUTH_PAGE_ROUTE
 import com.example.crossingschedule.feature.auth.presentation.LoginPage
@@ -82,6 +84,7 @@ class MainActivity : AppCompatActivity() {
 
                         IslandCreationPage(
                             islandCreationViewModel = islandCreationViewModel,
+                            popBackStack = {navController.popBackStack()}
                         )
                     }
                     composable(route = SETTINGS_PAGE_ROUTE) { navBackStackEntry ->
