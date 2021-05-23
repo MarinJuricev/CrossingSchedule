@@ -8,6 +8,7 @@ data class IslandCreationViewState(
     val hemisphere: Hemisphere? = null,
     val numberOfVillagers: String = "",
     val islandCreationError: IslandCreationError? = null,
+    val islandCreationSuccess: Unit? = null
 )
 
 sealed class IslandCreationError(val error: String) {

@@ -1,4 +1,4 @@
-package com.example.crossingschedule.feature.auth.presentation
+package com.example.crossingschedule.feature.auth.presentation.components
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateDp
@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.crossingschedule.R
+import com.example.crossingschedule.feature.auth.presentation.SignUpEvent
 import com.example.crossingschedule.feature.auth.presentation.SignUpEvent.*
 import com.example.crossingschedule.feature.auth.presentation.model.AnimatedSignUpValidatorState.*
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpError.*
@@ -33,20 +34,6 @@ fun SignUpComponent(
     Crossfade(
         targetState = Unit,
     ) {
-
-//        if (signUpViewState.signUpError is SignUpError.GeneralError) {
-//            val errorMessage = signUpViewState.signUpError!!.error
-//
-//            LaunchedEffect(
-//                key1 = errorMessage,
-//                block = {
-//                    snackBarHostState.showSnackbar(
-//                        message = loginViewState.loginError!!.error,
-//                    )
-//                },
-//            )
-//        }
-
         ConstraintLayout(
             modifier = Modifier.fillMaxHeight()
         ) {

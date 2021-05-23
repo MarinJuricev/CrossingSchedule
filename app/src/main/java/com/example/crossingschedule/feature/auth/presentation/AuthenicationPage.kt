@@ -20,6 +20,7 @@ import com.example.crossingschedule.R
 import com.example.crossingschedule.core.ui.components.CrossingErrorCard
 import com.example.crossingschedule.feature.auth.presentation.components.LoginComponent
 import com.example.crossingschedule.feature.auth.presentation.components.LoginTab
+import com.example.crossingschedule.feature.auth.presentation.components.SignUpComponent
 import com.example.crossingschedule.feature.auth.presentation.model.LoginError
 import com.example.crossingschedule.feature.auth.presentation.model.LoginViewState
 import com.example.crossingschedule.feature.auth.presentation.model.SignUpViewState
@@ -45,7 +46,9 @@ fun LoginPage(
 
     //TODO Make a better API for this...
     if (loginViewState.navigateToSchedule || signUpViewState.navigateToSchedule) {
-        navigateToIslandSelection()
+        LaunchedEffect(key1 = Unit, block = {
+            navigateToIslandSelection()
+        })
     }
 
     Scaffold(

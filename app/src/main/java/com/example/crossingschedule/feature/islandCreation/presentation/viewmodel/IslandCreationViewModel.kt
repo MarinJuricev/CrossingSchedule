@@ -71,7 +71,7 @@ class IslandCreationViewModel @Inject constructor(
                     )
                 is Right -> _islandCreationViewState.value =
                     _islandCreationViewState.value.copy(
-
+                        islandCreationSuccess = Unit, //TODO Implement some kind of navigator and inject it into viewmodels...
                         isLoading = false,
                     )
             }
