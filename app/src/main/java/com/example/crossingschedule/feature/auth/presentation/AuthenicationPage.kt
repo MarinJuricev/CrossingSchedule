@@ -98,14 +98,11 @@ fun LoginPage(
                 )
             }
         }
-        if (loginViewState.loginError is LoginError.GeneralError) {
-            val errorMessage = loginViewState.loginError!!.error
-
-            LaunchedEffect(
+        if (loginViewState.loginError is LoginError.GeneralError) { LaunchedEffect(
                 key1 = loginViewState.loginError,
                 block = {
                     snackBarHostState.showSnackbar(
-                        message = errorMessage,
+                        message = loginViewState.loginError!!.error,
                     )
                 },
             )
