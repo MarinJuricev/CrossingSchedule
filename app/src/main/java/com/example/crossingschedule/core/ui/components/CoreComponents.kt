@@ -19,6 +19,9 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.feature.schedule.presentation.model.AnimatedContainerState
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun CrossingCard(
@@ -93,4 +96,19 @@ fun AnimatedContainer(
             }
         }
     }
+}
+
+@Composable
+fun PullToRefreshLoadingContent(
+    isEmpty: Boolean,
+    emptyContent: @Composable () -> Unit,
+    isLoading: Boolean,
+    onRefresh: () -> Unit,
+    content: @Composable () -> Unit
+) {
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing = isLoading),
+        onRefresh = onRefresh,
+        content = if (isEmpty) emptyContent else content
+    )
 }

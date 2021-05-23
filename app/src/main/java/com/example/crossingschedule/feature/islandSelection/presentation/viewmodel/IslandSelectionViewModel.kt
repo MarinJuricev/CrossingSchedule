@@ -35,15 +35,19 @@ class IslandSelectionViewModel @Inject constructor(
     }
 
     private fun getIslandInformation() = viewModelScope.launch {
+        triggerIsLoading()
+
         when (val result = getIslands()) {
             is Right -> _islandSelectionViewState.value =
                 _islandSelectionViewState.value.copy(
                     islandData = result.value,
-                    unfilteredIslandData = result.value
+                    unfilteredIslandData = result.value,
+                    isLoading = false,
                 )
             is Left -> _islandSelectionViewState.value =
                 _islandSelectionViewState.value.copy(
-                    errorMessage = result.error.errorMessage
+                    errorMessage = result.error.errorMessage,
+                    isLoading = false,
                 )
         }
     }
@@ -67,6 +71,13 @@ class IslandSelectionViewModel @Inject constructor(
             _islandSelectionViewState.value.copy(
                 islandData = filteredIslands,
                 hemisphereToFilter = newHemisphereSort,
+            )
+    }
+
+    private fun triggerIsLoading() {
+        _islandSelectionViewState.value =
+            _islandSelectionViewState.value.copy(
+                isLoading = true
             )
     }
 }

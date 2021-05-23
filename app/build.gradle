@@ -120,6 +120,9 @@ dependencies {
     implementation("com.squareup.moshi:moshi-adapters:$moshi")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshi")
 
+    def accompanist = "0.10.0"
+    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist"
+
     debugImplementation "androidx.compose.ui:ui-tooling:$compose"
     debugImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 

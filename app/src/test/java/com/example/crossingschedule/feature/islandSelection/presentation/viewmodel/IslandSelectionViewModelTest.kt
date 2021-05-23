@@ -5,7 +5,6 @@ import com.example.crossingschedule.core.model.buildLeft
 import com.example.crossingschedule.core.model.buildRight
 import com.example.crossingschedule.fakeIslandInfo
 import com.example.crossingschedule.feature.islandSelection.domain.model.Hemisphere
-import com.example.crossingschedule.feature.islandSelection.domain.model.IslandSelectionFailure
 import com.example.crossingschedule.feature.islandSelection.domain.model.IslandSelectionFailure.*
 import com.example.crossingschedule.feature.islandSelection.domain.usecase.FilterIslandsByHemisphere
 import com.example.crossingschedule.feature.islandSelection.domain.usecase.GetIslands
@@ -53,10 +52,11 @@ class IslandSelectionViewModelTest {
             sut.onEvent(IslandSelectionEvent.GetAllIslands)
 
             sut.islandSelectionViewState.test {
-                val expectedViewState = expectItem()
+                val expectedItem = expectItem()
 
-                assertThat(expectedViewState.islandData).isEqualTo(islandInfoList)
-                assertThat(expectedViewState.unfilteredIslandData).isEqualTo(islandInfoList)
+                assertThat(expectedItem.islandData).isEqualTo(islandInfoList)
+                assertThat(expectedItem.unfilteredIslandData).isEqualTo(islandInfoList)
+                assertThat(expectedItem.isLoading).isEqualTo(false)
             }
         }
 
@@ -72,7 +72,10 @@ class IslandSelectionViewModelTest {
             sut.onEvent(IslandSelectionEvent.GetAllIslands)
 
             sut.islandSelectionViewState.test {
-                assertThat(expectItem().errorMessage).isEqualTo(errorMessage)
+                val expectedItem = expectItem()
+
+                assertThat(expectedItem.errorMessage).isEqualTo(errorMessage)
+                assertThat(expectedItem.isLoading).isEqualTo(false)
             }
         }
 
@@ -103,6 +106,7 @@ class IslandSelectionViewModelTest {
 
                 assertThat(expectedItem.islandData).isEqualTo(newIslandData)
                 assertThat(expectedItem.hemisphereToFilter).isEqualTo(newHemisphere)
+                assertThat(expectedItem.isLoading).isEqualTo(false)
             }
         }
 }

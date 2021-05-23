@@ -1,7 +1,10 @@
 package com.example.crossingschedule.feature.islandSelection.presentation
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -13,9 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.R
+import com.example.crossingschedule.core.ui.components.PullToRefreshLoadingContent
+import com.example.crossingschedule.feature.islandSelection.presentation.components.EmptyIslandCard
 import com.example.crossingschedule.feature.islandSelection.presentation.components.IslandFilter
 import com.example.crossingschedule.feature.islandSelection.presentation.components.IslandList
-import com.example.crossingschedule.feature.islandSelection.presentation.model.IslandSelectionEvent
+import com.example.crossingschedule.feature.islandSelection.presentation.model.IslandSelectionEvent.GetAllIslands
 import com.example.crossingschedule.feature.islandSelection.presentation.viewmodel.IslandSelectionViewModel
 
 const val ISLAND_SELECTION_PAGE = "ISLAND_SELECTION_PAGE"
@@ -29,7 +34,7 @@ fun IslandSelectionPage(
     val islandSelectionViewState by islandSelectionViewModel.islandSelectionViewState.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
-        islandSelectionViewModel.onEvent(IslandSelectionEvent.GetAllIslands)
+        islandSelectionViewModel.onEvent(GetAllIslands)
     }
 
     Scaffold(
@@ -56,9 +61,21 @@ fun IslandSelectionPage(
                 onIslandSelectionEvent = islandSelectionViewModel::onEvent,
                 filterExpandedState = islandSelectionViewState.filterIslandExpanded,
             )
-            IslandList(
-                islands = islandSelectionViewState.islandData,
-                navigateToSchedule = navigateToSchedule
+            PullToRefreshLoadingContent(
+                isEmpty = islandSelectionViewState.islandData.isEmpty(),
+                emptyContent = {
+                    EmptyIslandCard(modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()))
+                },
+                isLoading = islandSelectionViewState.isLoading,
+                onRefresh = { islandSelectionViewModel.onEvent(GetAllIslands) },
+                content = {
+                    IslandList(
+                        islands = islandSelectionViewState.islandData,
+                        navigateToSchedule = navigateToSchedule
+                    )
+                }
             )
         }
     }

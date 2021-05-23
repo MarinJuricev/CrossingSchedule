@@ -51,57 +51,60 @@ import com.example.crossingschedule.feature.islandSelection.presentation.model.I
 import com.example.crossingschedule.feature.islandSelection.presentation.model.IslandSelectionEvent.IslandFilterNewHemisphereSort
 
 @Composable
+fun EmptyIslandCard(
+    modifier: Modifier = Modifier
+) {
+    Box(modifier = modifier) {
+        CrossingErrorCard(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(horizontal = 16.dp),
+            errorMessage = stringResource(id = R.string.empty_islands_message)
+        )
+    }
+}
+
+@Composable
 fun IslandList(
     islands: List<IslandInfo>,
     navigateToSchedule: (islandId: String) -> Unit
 ) {
-    if (islands.isEmpty()) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            CrossingErrorCard(
+    LazyColumn {
+        items(
+            count = islands.size,
+            key = { index -> islands[index].id }
+        ) { index ->
+            CrossingCard(
                 modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(horizontal = 16.dp),
-                errorMessage = stringResource(id = R.string.empty_islands_message)
-            )
-        }
-    } else {
-        LazyColumn {
-            items(
-                count = islands.size,
-                key = { index -> islands[index].id }
-            ) { index ->
-                CrossingCard(
+                    .padding(
+                        horizontal = 16.dp,
+                        vertical = 8.dp
+                    )
+                    .clickable { navigateToSchedule(islands[index].id) }
+            ) {
+                Row(
                     modifier = Modifier
-                        .padding(
-                            horizontal = 16.dp,
-                            vertical = 8.dp
-                        )
-                        .clickable { navigateToSchedule(islands[index].id) }
+                        .padding(vertical = 8.dp)
+                        .fillMaxWidth()
                 ) {
-                    Row(
+                    Image(
                         modifier = Modifier
-                            .padding(vertical = 8.dp)
-                            .fillMaxWidth()
-                    ) {
-                        Image(
-                            modifier = Modifier
-                                .padding(horizontal = 8.dp)
-                                .clip(MaterialTheme.shapes.medium)
-                                .size(36.dp)
-                                .align(Alignment.CenterVertically)
-                                .background(MaterialTheme.colors.primary),
-                            painter = painterResource(id = R.drawable.person),
-                            contentDescription = null,
-                        )
-                        Column {
-                            Text(text = islands[index].name)
-                            Text(text = islands[index].hemisphere.name)
-                        }
-                        Image(
-                            painter = painterResource(id = R.drawable.arrow_forward),
-                            contentDescription = null
-                        )
+                            .padding(horizontal = 8.dp)
+                            .clip(MaterialTheme.shapes.medium)
+                            .size(36.dp)
+                            .align(Alignment.CenterVertically)
+                            .background(MaterialTheme.colors.primary),
+                        painter = painterResource(id = R.drawable.person),
+                        contentDescription = null,
+                    )
+                    Column {
+                        Text(text = islands[index].name)
+                        Text(text = islands[index].hemisphere.name)
                     }
+                    Image(
+                        painter = painterResource(id = R.drawable.arrow_forward),
+                        contentDescription = null
+                    )
                 }
             }
         }

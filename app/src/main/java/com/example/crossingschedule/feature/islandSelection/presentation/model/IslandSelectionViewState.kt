@@ -4,6 +4,7 @@ import com.example.crossingschedule.feature.islandSelection.domain.model.Hemisph
 import com.example.crossingschedule.feature.islandSelection.domain.model.IslandInfo
 
 data class IslandSelectionViewState(
+    val isLoading: Boolean = false,
     val islandData: List<IslandInfo> = listOf(),
     val unfilteredIslandData: List<IslandInfo> = listOf(),
     val filterIslandExpanded: Boolean = false,
