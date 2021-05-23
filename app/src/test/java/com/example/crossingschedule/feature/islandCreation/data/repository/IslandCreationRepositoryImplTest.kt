@@ -8,6 +8,7 @@ import com.example.crossingschedule.core.model.buildRight
 import com.example.crossingschedule.core.util.StringProvider
 import com.example.crossingschedule.feature.islandCreation.data.CreateIslandBodyFactory
 import com.example.crossingschedule.feature.islandCreation.data.model.CreateIslandBody
+import com.example.crossingschedule.feature.islandCreation.data.model.IslandResponse
 import com.example.crossingschedule.feature.islandCreation.data.service.IslandCreationApiService
 import com.example.crossingschedule.feature.islandCreation.domain.model.IslandCreationFailure.RemoteFailure
 import com.example.crossingschedule.feature.islandCreation.domain.repository.IslandCreationRepository
@@ -85,7 +86,7 @@ class IslandCreationRepositoryImplTest {
             )
             val successResponse = CrossingResponse(
                 status = CrossingStatus.Success,
-                data = "",
+                data = mockk<IslandResponse>(),
             )
 
             coEvery {
