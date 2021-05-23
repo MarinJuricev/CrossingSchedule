@@ -6,15 +6,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.crossingschedule.core.ui.components.CrossingCard
 import com.example.crossingschedule.feature.islandCreation.presentation.components.IslandCreationContent
+import com.example.crossingschedule.feature.islandCreation.presentation.model.IslandCreationError
 import com.example.crossingschedule.feature.islandCreation.presentation.viewmodel.IslandCreationViewModel
 
 const val ISLAND_CREATION_PAGE = "ISLAND_CREATION_PAGE"
@@ -26,6 +27,7 @@ fun IslandCreationPage(
 ) {
 
     val viewState by islandCreationViewModel.islandCreationViewState.collectAsState()
+    val snackBarHostState = remember { SnackbarHostState() }
 
     viewState.islandCreationSuccess?.let {
         LaunchedEffect(key1 = viewState.islandCreationSuccess) {
@@ -33,23 +35,36 @@ fun IslandCreationPage(
         }
     }
 
-    Box(
-        modifier = Modifier
-            .background(MaterialTheme.colors.primary)
-            .fillMaxSize()
+    Scaffold(
+        scaffoldState = rememberScaffoldState(snackbarHostState = snackBarHostState)
     ) {
-        CrossingCard(
+        Box(
             modifier = Modifier
                 .background(MaterialTheme.colors.primary)
-                .fillMaxWidth()
-                .align(Alignment.Center)
-                .padding(36.dp)
+                .fillMaxSize()
         ) {
-            IslandCreationContent(
-                islandCreationViewModel::onEvent,
-                viewState,
-            )
+            CrossingCard(
+                modifier = Modifier
+                    .background(MaterialTheme.colors.primary)
+                    .fillMaxWidth()
+                    .align(Alignment.Center)
+                    .padding(36.dp)
+            ) {
+                IslandCreationContent(
+                    islandCreationViewModel::onEvent,
+                    viewState,
+                )
+            }
         }
-
+    }
+    if (viewState.islandCreationError is IslandCreationError.GeneralError) {
+        LaunchedEffect(
+            key1 = viewState.islandCreationError,
+            block = {
+                snackBarHostState.showSnackbar(
+                    message = viewState.islandCreationError!!.error,
+                )
+            },
+        )
     }
 }
