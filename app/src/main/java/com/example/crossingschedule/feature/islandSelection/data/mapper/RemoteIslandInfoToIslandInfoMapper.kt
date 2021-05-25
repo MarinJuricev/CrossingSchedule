@@ -1,11 +1,13 @@
 package com.example.crossingschedule.feature.islandSelection.data.mapper
 
+import com.example.crossingschedule.core.util.DateHandler
 import com.example.crossingschedule.core.util.Mapper
 import com.example.crossingschedule.feature.islandSelection.data.model.RemoteIslandInfo
 import com.example.crossingschedule.feature.islandSelection.domain.model.IslandInfo
 import javax.inject.Inject
 
 class RemoteIslandInfoToIslandInfoMapper @Inject constructor(
+    private val dateHandler: DateHandler,
 ) : Mapper<List<IslandInfo>, List<RemoteIslandInfo>> {
 
     override suspend fun map(origin: List<RemoteIslandInfo>): List<IslandInfo> =
@@ -16,7 +18,7 @@ class RemoteIslandInfoToIslandInfoMapper @Inject constructor(
                     name = name,
                     hemisphere = hemisphere,
                     numberOfVillagers = numberOfVillagers,
-                    lastVisited = lastVisited
+                    lastVisited = dateHandler.fromTimeStampToCrossingDay(lastVisited)
                 )
             }
         }

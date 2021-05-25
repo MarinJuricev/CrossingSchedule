@@ -10,5 +10,5 @@ data class RemoteIslandInfo(
     val name: String,
     val hemisphere: Hemisphere,
     val numberOfVillagers: Int,
-    val lastVisited: CrossingDay
+    val lastVisited: Long,
 )

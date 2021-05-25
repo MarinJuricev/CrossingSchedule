@@ -12,6 +12,8 @@ interface DateHandler {
         day: Int
     ): String
 
+    fun fromTimeStampToCrossingDay(timestamp: Long): CrossingDay
+
     fun provideCurrentCrossingDay(): CrossingDay
 }
 
@@ -31,12 +33,21 @@ class DateHandlerImpl @Inject constructor() : DateHandler {
         return format.format(formattedDate.time)
     }
 
-    override fun provideCurrentCrossingDay(): CrossingDay {
-        val calendar = Calendar.getInstance()
+    override fun fromTimeStampToCrossingDay(timestamp: Long): CrossingDay {
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = timestamp
+        }
 
-        val currentYear = calendar.get(Calendar.YEAR)
-        val currentMonth = calendar.get(Calendar.MONTH)
-        val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+        return calendar.buildCrossingDay()
+    }
+
+    override fun provideCurrentCrossingDay(): CrossingDay =
+        Calendar.getInstance().buildCrossingDay()
+
+    private fun Calendar.buildCrossingDay(): CrossingDay {
+        val currentYear = get(Calendar.YEAR)
+        val currentMonth = get(Calendar.MONTH)
+        val currentDay = get(Calendar.DAY_OF_MONTH)
 
         return CrossingDay(currentYear, currentMonth, currentDay)
     }
