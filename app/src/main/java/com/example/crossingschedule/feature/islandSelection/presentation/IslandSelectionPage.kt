@@ -8,10 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -32,12 +29,14 @@ fun IslandSelectionPage(
     navigateToIslandCreation: () -> Unit,
 ) {
     val islandSelectionViewState by islandSelectionViewModel.islandSelectionViewState.collectAsState()
+    val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(key1 = Unit) {
         islandSelectionViewModel.onEvent(GetAllIslands)
     }
 
     Scaffold(
+        scaffoldState = rememberScaffoldState(snackbarHostState = snackBarHostState),
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navigateToIslandCreation() },
@@ -64,9 +63,11 @@ fun IslandSelectionPage(
             PullToRefreshLoadingContent(
                 isEmpty = islandSelectionViewState.islandData.isEmpty(),
                 emptyContent = {
-                    EmptyIslandCard(modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState()))
+                    EmptyIslandCard(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
+                    )
                 },
                 isLoading = islandSelectionViewState.isLoading,
                 onRefresh = { islandSelectionViewModel.onEvent(GetAllIslands) },
@@ -75,6 +76,14 @@ fun IslandSelectionPage(
                         islands = islandSelectionViewState.islandData,
                         navigateToSchedule = navigateToSchedule
                     )
+                }
+            )
+        }
+        if (islandSelectionViewState.errorMessage.isNotEmpty()) {
+            LaunchedEffect(
+                key1 = islandSelectionViewState.errorMessage,
+                block = {
+                    snackBarHostState.showSnackbar(islandSelectionViewState.errorMessage)
                 }
             )
         }

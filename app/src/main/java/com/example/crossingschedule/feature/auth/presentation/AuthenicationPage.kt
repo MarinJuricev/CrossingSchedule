@@ -98,12 +98,11 @@ fun LoginPage(
                 )
             }
         }
-        if (loginViewState.loginError is LoginError.GeneralError) { LaunchedEffect(
+        if (loginViewState.loginError is LoginError.GeneralError) {
+            LaunchedEffect(
                 key1 = loginViewState.loginError,
                 block = {
-                    snackBarHostState.showSnackbar(
-                        message = loginViewState.loginError!!.error,
-                    )
+                    snackBarHostState.showSnackbar(loginViewState.loginError!!.error)
                 },
             )
         }
