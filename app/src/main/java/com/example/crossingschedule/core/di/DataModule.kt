@@ -75,20 +75,13 @@ object DataModule {
         @ApplicationContext context: Context,
         httpLoggingInterceptor: HttpLoggingInterceptor,
         authInterceptor: Interceptor
-    ): OkHttpClient {
-        val okhttp = OkHttpClient.Builder()
-            .addNetworkInterceptor(httpLoggingInterceptor)
-            .addInterceptor(authInterceptor)
-            .readTimeout(20, TimeUnit.SECONDS)
-            .connectTimeout(20, TimeUnit.SECONDS)
-
-        if (BuildConfig.DEBUG) {
-            okhttp.addInterceptor(ChuckerInterceptor.Builder(context).build())
-        }
-
-        return okhttp.build()
-    }
-
+    ): OkHttpClient = OkHttpClient.Builder()
+        .addNetworkInterceptor(httpLoggingInterceptor)
+        .addInterceptor(authInterceptor)
+        .addInterceptor(ChuckerInterceptor.Builder(context).build())
+        .readTimeout(20, TimeUnit.SECONDS)
+        .connectTimeout(20, TimeUnit.SECONDS)
+        .build()
 
     @Singleton
     @Provides

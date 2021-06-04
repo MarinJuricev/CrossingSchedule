@@ -110,6 +110,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
 
     debugImplementation "com.github.chuckerteam.chucker:library:3.4.0"
+    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.4.0"
 
     def security = "1.1.0-alpha03"
     implementation "androidx.security:security-crypto:$security"
