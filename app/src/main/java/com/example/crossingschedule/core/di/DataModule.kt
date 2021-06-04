@@ -2,6 +2,7 @@ package com.example.crossingschedule.core.di
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.example.crossingschedule.BuildConfig
 import com.example.crossingschedule.core.model.CrossingStatus
 import com.example.crossingschedule.core.util.BaseUrlProvider
 import com.example.crossingschedule.core.util.EncryptedPrefsService
@@ -74,14 +75,20 @@ object DataModule {
         @ApplicationContext context: Context,
         httpLoggingInterceptor: HttpLoggingInterceptor,
         authInterceptor: Interceptor
-    ): OkHttpClient =
-        OkHttpClient.Builder()
+    ): OkHttpClient {
+        val okhttp = OkHttpClient.Builder()
             .addNetworkInterceptor(httpLoggingInterceptor)
             .addInterceptor(authInterceptor)
-            .addInterceptor(ChuckerInterceptor.Builder(context).build())
             .readTimeout(20, TimeUnit.SECONDS)
             .connectTimeout(20, TimeUnit.SECONDS)
-            .build()
+
+        if (BuildConfig.DEBUG) {
+            okhttp.addInterceptor(ChuckerInterceptor.Builder(context).build())
+        }
+
+        return okhttp.build()
+    }
+
 
     @Singleton
     @Provides
