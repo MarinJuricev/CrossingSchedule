@@ -127,9 +127,9 @@ dependencies {
     debugImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
     testImplementation "junit:junit:4.13.2"
-    testImplementation("io.mockk:mockk:1.11.0")
+    testImplementation "io.mockk:mockk:1.11.0"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.3"
-    testImplementation "app.cash.turbine:turbine:0.4.1"
+    testImplementation "app.cash.turbine:turbine:0.5.2"
     testImplementation "com.google.truth:truth:1.1.2"
 }
 
